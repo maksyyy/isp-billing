@@ -1,0 +1,154 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Customer;
+use App\Models\Invoice;
+use App\Models\Payment;
+use Illuminate\Http\Request;
+
+class InvoiceController extends Controller
+{
+    // =========================
+    // INDEX + SEARCH
+    // =========================
+    public function index(Request $request)
+    {
+        $search = $request->search;
+
+        $invoices = Invoice::with('customer')
+            ->where('status', '!=', 'paid')
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('customer', function ($q) use ($search) {
+                    $q->where('name', 'like', "%$search%");
+                });
+            })
+            ->get();
+
+        return view('invoices.index', compact('invoices'));
+    }
+
+    // =========================
+    // GENERATE
+    // =========================
+    public function generate(Request $request)
+    {
+        $request->validate([
+            'due_date' => 'required|date'
+        ]);
+
+        $customers = Customer::with('package')->get();
+
+        foreach ($customers as $customer) {
+            Invoice::create([
+                'customer_id' => $customer->id,
+                'amount' => $customer->package->price,
+                'due_date' => $request->due_date,
+                'status' => 'unpaid',
+                'paid_amount' => 0
+            ]);
+        }
+
+        return redirect()->route('invoices.index')
+            ->with('success', 'Invoice berhasil dibuat');
+    }
+
+    public function generateForm()
+    {
+        $customers = Customer::all();
+        return view('invoices.generate', compact('customers'));
+    }
+
+    public function generateMultiple(Request $request)
+    {
+        $request->validate([
+            'due_date' => 'required|date'
+        ]);
+
+        $customers = $request->generate_all
+            ? Customer::with('package')->get()
+            : Customer::with('package')->whereIn('id', $request->customer_ids)->get();
+
+        foreach ($customers as $customer) {
+            Invoice::create([
+                'customer_id' => $customer->id,
+                'amount' => $customer->package->price,
+                'due_date' => $request->due_date,
+                'status' => 'unpaid',
+                'paid_amount' => 0
+            ]);
+        }
+
+        return redirect()->route('invoices.index')
+            ->with('success', 'Invoice berhasil dibuat');
+    }
+
+    // =========================
+    // BAYAR
+    // =========================
+    public function pay(Request $request, $id)
+    {
+        $invoice = Invoice::findOrFail($id);
+
+        $request->validate([
+            'amount' => 'required|numeric|min:1'
+        ]);
+
+        Payment::create([
+            'invoice_id' => $invoice->id,
+            'customer_id' => $invoice->customer_id,
+            'amount' => $request->amount,
+            'payment_date' => now()
+        ]);
+
+        $invoice->paid_amount += $request->amount;
+
+        if ($invoice->paid_amount >= $invoice->amount) {
+            $invoice->status = 'paid';
+        }
+
+        $invoice->save();
+
+        return back()->with('success', 'Pembayaran berhasil');
+    }
+
+    // =========================
+    // SELESAI
+    // =========================
+    public function selesai($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+
+        $invoice->status = 'paid';
+        $invoice->save();
+
+        return back()->with('success', 'Invoice ditandai selesai');
+    }
+
+    // =========================
+    // PRINT
+    // =========================
+    public function printSelected(Request $request)
+    {
+        $invoices = Invoice::with('customer')
+            ->whereIn('id', $request->invoice_ids)
+            ->get();
+
+        return view('invoices.print', compact('invoices'));
+    }
+
+    public function printAll()
+    {
+        $invoices = Invoice::with('customer')->get();
+        return view('invoices.print', compact('invoices'));
+    }
+
+    public function print($id)
+    {
+        $invoices = Invoice::with('customer')
+            ->where('id', $id)
+            ->get();
+
+        return view('invoices.print', compact('invoices'));
+    }
+}

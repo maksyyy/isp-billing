@@ -1,0 +1,71 @@
+# =========================
+# SYSTEM FILE
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# ENV (PENTING 🔥)
+# =========================
+.env
+.env.*
+.env.backup
+.env.production
+
+# =========================
+# LOG
+# =========================
+*.log
+
+# =========================
+# IDE / EDITOR
+# =========================
+.vscode
+.idea
+.fleet
+.zed
+.phpactor.json
+
+# =========================
+# LARAVEL CORE
+# =========================
+/vendor
+/node_modules
+
+/public/build
+/public/hot
+/public/storage
+
+/storage/*.key
+/storage/pail
+
+/bootstrap/cache
+
+# =========================
+# CACHE
+# =========================
+.phpunit.result.cache
+.phpunit.cache
+
+# =========================
+# CONFIG / TOOL
+# =========================
+auth.json
+Homestead.json
+Homestead.yaml
+
+# =========================
+# OPTIONAL (AMAN TAMBAHAN)
+# =========================
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Laravel Sail / Docker
+docker-compose.override.yml
+
+# Testing
+coverage/
+
+# Misc
+*.sqlite
