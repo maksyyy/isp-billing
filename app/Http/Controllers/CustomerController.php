@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Package;
+use App\Models\Invoice;
+use App\Models\Ticket;
 
 class CustomerController extends Controller
 {
     // =========================
-    // INDEX + SEARCH 🔥
+    // INDEX + SEARCH
     // =========================
     public function index(Request $request)
     {
@@ -107,21 +109,27 @@ class CustomerController extends Controller
     }
 
     // =========================
-    // 🔥 HISTORY (PEMBAYARAN + PERBAIKAN)
+    // 🔥 HISTORY (FIX FINAL)
     // =========================
     public function history($id)
     {
         $customer = Customer::findOrFail($id);
 
-        // ✅ RIWAYAT PEMBAYARAN
-        $invoices = \App\Models\Invoice::where('customer_id', $id)
-            ->where('status', 'paid')
+        // ✅ RIWAYAT INVOICE (SUDAH SELESAI)
+        $invoices = Invoice::where('customer_id', $id)
+            ->where('status', 'paid') // tetap pakai ini untuk filter riwayat
             ->latest()
-            ->get();
+            ->get()
+            ->map(function ($inv) {
+                // 🔥 LOGIC UTAMA
+                $inv->is_lunas = $inv->paid_amount >= $inv->amount;
+                $inv->sisa_tagihan = $inv->amount - $inv->paid_amount;
+                return $inv;
+            });
 
-        // 🔥 RIWAYAT PERBAIKAN (TICKET)
-        $tickets = \App\Models\Ticket::where('customer_id', $id)
-            ->whereNotNull('archived_at') // hanya yang sudah lewat jam 00:00
+        // ✅ RIWAYAT TICKET
+        $tickets = Ticket::where('customer_id', $id)
+            ->whereNotNull('archived_at')
             ->latest()
             ->get();
 

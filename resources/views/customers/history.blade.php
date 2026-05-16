@@ -31,25 +31,52 @@
 
                 <tbody>
                     @forelse($invoices as $inv)
+                    @php
+                        $isLunas = $inv->paid_amount >= $inv->amount;
+                        $sisa = $inv->amount - $inv->paid_amount;
+                    @endphp
+
                     <tr class="border">
 
+                        <!-- TANGGAL -->
                         <td class="p-2">
                             {{ $inv->created_at->format('d-m-Y') }}
                         </td>
 
+                        <!-- JUMLAH (FIX UTAMA 🔥) -->
                         <td class="p-2">
-                            Rp {{ number_format($inv->amount) }}
+                            <div>
+                                <strong class="text-blue-600">
+                                    Rp {{ number_format($inv->paid_amount) }}
+                                </strong>
+                                <br>
+                                <small class="text-gray-400">
+                                    dari Rp {{ number_format($inv->amount) }}
+                                </small>
+                            </div>
                         </td>
 
+                        <!-- STATUS DINAMIS -->
                         <td class="p-2">
-                            <span class="text-green-600 font-bold">
-                                Lunas
-                            </span>
+                            @if($isLunas)
+                                <span class="text-green-600 font-bold">
+                                    Lunas
+                                </span>
+                            @else
+                                <span class="text-orange-500 font-bold">
+                                    Belum Lunas
+                                </span>
+                                <br>
+                                <small class="text-gray-500">
+                                    Sisa: Rp {{ number_format($sisa) }}
+                                </small>
+                            @endif
                         </td>
 
+                        <!-- AKSI -->
                         <td class="p-2">
                             <a href="{{ route('invoices.print', $inv->id) }}"
-                               class="bg-blue-500 text-white px-3 py-1 rounded text-xs">
+                               class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">
                                 Cetak
                             </a>
                         </td>
@@ -91,22 +118,18 @@
                     @forelse($tickets as $t)
                     <tr class="border">
 
-                        <!-- TANGGAL -->
                         <td class="p-2">
                             {{ $t->tanggal_selesai ? \Carbon\Carbon::parse($t->tanggal_selesai)->format('d-m-Y H:i') : '-' }}
                         </td>
 
-                        <!-- MASALAH -->
                         <td class="p-2">
                             {{ $t->description }}
                         </td>
 
-                        <!-- TEKNISI -->
                         <td class="p-2">
                             {{ $t->teknisi->name ?? '-' }}
                         </td>
 
-                        <!-- BUKTI -->
                         <td class="p-2">
                             @if($t->bukti)
                                 <a href="{{ asset('storage/'.$t->bukti) }}" target="_blank">

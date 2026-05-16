@@ -10,19 +10,20 @@ use Illuminate\Http\Request;
 class InvoiceController extends Controller
 {
     // =========================
-    // INDEX + SEARCH
+    // INDEX (YANG TAMPIL DI HALAMAN INVOICE)
     // =========================
     public function index(Request $request)
     {
         $search = $request->search;
 
         $invoices = Invoice::with('customer')
-            ->where('status', '!=', 'paid')
+            ->where('status', '!=', 'paid') // 🔥 hanya yang tampil di halaman
             ->when($search, function ($query) use ($search) {
                 $query->whereHas('customer', function ($q) use ($search) {
                     $q->where('name', 'like', "%$search%");
                 });
             })
+            ->latest()
             ->get();
 
         return view('invoices.index', compact('invoices'));
@@ -84,7 +85,7 @@ class InvoiceController extends Controller
     }
 
     // =========================
-    // BAYAR
+    // BAYAR (CICILAN)
     // =========================
     public function pay(Request $request, $id)
     {
@@ -103,6 +104,7 @@ class InvoiceController extends Controller
 
         $invoice->paid_amount += $request->amount;
 
+        // ✅ hanya auto lunas kalau benar-benar full
         if ($invoice->paid_amount >= $invoice->amount) {
             $invoice->status = 'paid';
         }
@@ -113,36 +115,50 @@ class InvoiceController extends Controller
     }
 
     // =========================
-    // SELESAI
+    // SELESAI (MASUK HISTORY)
     // =========================
     public function selesai($id)
     {
         $invoice = Invoice::findOrFail($id);
 
+        // 🔥 tandai selesai (masuk history)
         $invoice->status = 'paid';
+
+        // ❗ tidak ubah jumlah bayar
         $invoice->save();
 
-        return back()->with('success', 'Invoice ditandai selesai');
+        return back()->with('success', 'Masuk ke riwayat pelanggan');
     }
 
     // =========================
-    // PRINT
+    // PRINT SELECTED
     // =========================
     public function printSelected(Request $request)
     {
         $invoices = Invoice::with('customer')
             ->whereIn('id', $request->invoice_ids)
+            ->where('status', '!=', 'paid') // 🔥 hanya yg tampil
             ->get();
 
         return view('invoices.print', compact('invoices'));
     }
 
+    // =========================
+    // PRINT ALL (FIX 🔥)
+    // =========================
     public function printAll()
     {
-        $invoices = Invoice::with('customer')->get();
+        $invoices = Invoice::with('customer')
+            ->where('status', '!=', 'paid') // 🔥 SAMA seperti halaman index
+            ->latest()
+            ->get();
+
         return view('invoices.print', compact('invoices'));
     }
 
+    // =========================
+    // PRINT SINGLE
+    // =========================
     public function print($id)
     {
         $invoices = Invoice::with('customer')

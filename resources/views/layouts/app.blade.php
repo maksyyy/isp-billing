@@ -34,13 +34,16 @@
             <ul class="space-y-3">
 
                 <!-- DASHBOARD -->
+                
+                @if($role == 'admin' || $role == 'finance')
                 <li>
-                    <a href="{{ route('dashboard') }}"
-                       class="block px-4 py-2 rounded hover:bg-gray-700
-                       {{ request()->routeIs('dashboard') ? 'bg-gray-700' : '' }}">
-                       🏠 Dashboard
+                    <a href="{{ route('api.page') }}"
+                    class="block px-4 py-2 rounded hover:bg-gray-700
+                    {{ request()->routeIs('api.page') ? 'bg-gray-700' : '' }}">
+                    ⚡ API Dashboard
                     </a>
                 </li>
+                @endif
 
                 <!-- ADMIN -->
                 @if($role == 'admin')
