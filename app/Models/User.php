@@ -16,6 +16,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'parent_admin_id',
     ];
 
     protected $hidden = [
@@ -34,5 +35,15 @@ class User extends Authenticatable
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function parentAdmin()
+    {
+        return $this->belongsTo(User::class, 'parent_admin_id');
+    }
+
+    public function subUsers()
+    {
+        return $this->hasMany(User::class, 'parent_admin_id');
     }
 }

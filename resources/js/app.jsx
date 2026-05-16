@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import axios from "axios";
 
-function App() {
+function App({ role }) {
     const [data, setData] = useState(null);
     const [modal, setModal] = useState(null);
     const [prtg, setPrtg] = useState([]);
+    const canViewFinance = ["admin", "finance"].includes(role);
+    const canViewDevices = ["admin", "noc"].includes(role);
+    const canViewPublicApi = ["admin", "finance"].includes(role);
 
     const [month, setMonth] = useState(
         new Date().toISOString().slice(0, 7)
@@ -12,15 +16,19 @@ function App() {
 
     useEffect(() => {
         fetchData();
-        fetchPrtg();
+        if (canViewDevices) {
+            fetchPrtg();
+        }
 
         const interval = setInterval(() => {
             fetchData();
-            fetchPrtg();
+            if (canViewDevices) {
+                fetchPrtg();
+            }
         }, 10000);
 
         return () => clearInterval(interval);
-    }, [month]);
+    }, [month, canViewDevices]);
 
     const fetchData = () => {
         fetch(`/api/dashboard-data?month=${month}`)
@@ -66,12 +74,14 @@ function App() {
         <div style={{ padding: "20px" }}>
             <h2>📊 API Dashboard</h2>
 
-            <input
-                type="month"
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-                style={{ marginBottom: "20px", padding: "8px" }}
-            />
+            {canViewFinance && (
+                <input
+                    type="month"
+                    value={month}
+                    onChange={(e) => setMonth(e.target.value)}
+                    style={{ marginBottom: "20px", padding: "8px" }}
+                />
+            )}
 
             <div style={grid}>
                 <Card
@@ -88,6 +98,8 @@ function App() {
                     }
                 />
 
+                {canViewFinance && (
+                    <>
                 <Card
                     title="Total Invoice"
                     value={data.total_invoices || 0}
@@ -145,8 +157,12 @@ function App() {
                         })
                     }
                 />
+                    </>
+                )}
 
                 {/* PRTG */}
+                {canViewDevices && (
+                    <>
                 <Card
                     title="Device Online"
                     value={`🟢 ${online}`}
@@ -193,7 +209,11 @@ function App() {
                         })
                     }
                 />
+                    </>
+                )}
             </div>
+
+            {canViewPublicApi && <PublicApiCustomers />}
 
             {/* MODAL */}
             {modal && (
@@ -276,6 +296,71 @@ function App() {
                 </div>
             )}
         </div>
+    );
+}
+
+function PublicApiCustomers() {
+    const [customers, setCustomers] = useState([]);
+    const [loadingCustomers, setLoadingCustomers] = useState(true);
+    const [customersError, setCustomersError] = useState(null);
+
+    useEffect(() => {
+        setLoadingCustomers(true);
+        setCustomersError(null);
+
+        axios
+            .get("https://jsonplaceholder.typicode.com/users")
+            .then((res) => setCustomers(res.data))
+            .catch(() => setCustomersError("Gagal mengambil data pelanggan dari Public API"))
+            .finally(() => setLoadingCustomers(false));
+    }, []);
+
+    return (
+        <section style={publicApiSection}>
+            <div style={publicApiHeader}>
+                <div>
+                    <h3 style={{ margin: 0 }}>Data Pelanggan Public API</h3>
+                    <p style={publicApiText}>
+                        10 data pelanggan dummy dari JSONPlaceholder menggunakan Axios.
+                    </p>
+                </div>
+                <span style={apiBadge}>Axios</span>
+            </div>
+
+            {loadingCustomers && (
+                <div style={loadingBox}>
+                    <strong>Loading data pelanggan...</strong>
+                    <span>Mohon tunggu, data Public API sedang diambil.</span>
+                </div>
+            )}
+
+            {customersError && <div style={errorBox}>{customersError}</div>}
+
+            {!loadingCustomers && !customersError && (
+                <div style={postsGrid}>
+                    {customers.map((customer) => (
+                        <article key={customer.id} style={postCard}>
+                            <small style={{ color: "#64748b" }}>Customer #{customer.id}</small>
+                            <h4 style={{ margin: "8px 0", color: "#111827" }}>
+                                {customer.name}
+                            </h4>
+                            <p style={{ margin: "0 0 6px", color: "#4b5563" }}>
+                                {customer.email}
+                            </p>
+                            <p style={{ margin: "0 0 6px", color: "#4b5563" }}>
+                                {customer.phone}
+                            </p>
+                            <p style={{ margin: "0 0 6px", color: "#4b5563" }}>
+                                {customer.address.street}, {customer.address.city}
+                            </p>
+                            <strong style={{ color: "#374151" }}>
+                                {customer.company.name}
+                            </strong>
+                        </article>
+                    ))}
+                </div>
+            )}
+        </section>
     );
 }
 
@@ -363,8 +448,70 @@ const btnBlue = {
     cursor: "pointer",
 };
 
+const publicApiSection = {
+    marginTop: "30px",
+    background: "#fff",
+    borderRadius: "10px",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
+    padding: "20px",
+};
+
+const publicApiHeader = {
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "15px",
+    alignItems: "center",
+    marginBottom: "15px",
+};
+
+const publicApiText = {
+    margin: "6px 0 0",
+    color: "#64748b",
+};
+
+const apiBadge = {
+    background: "#dbeafe",
+    color: "#1d4ed8",
+    padding: "6px 10px",
+    borderRadius: "999px",
+    fontSize: "12px",
+    fontWeight: "bold",
+};
+
+const loadingBox = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "6px",
+    padding: "18px",
+    border: "1px solid #bfdbfe",
+    borderRadius: "8px",
+    background: "#eff6ff",
+    color: "#1e40af",
+};
+
+const errorBox = {
+    padding: "14px",
+    border: "1px solid #fecaca",
+    borderRadius: "8px",
+    background: "#fef2f2",
+    color: "#b91c1c",
+};
+
+const postsGrid = {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+    gap: "14px",
+};
+
+const postCard = {
+    border: "1px solid #e5e7eb",
+    borderRadius: "8px",
+    padding: "14px",
+    background: "#f9fafb",
+};
+
 const container = document.getElementById("app");
 
 if (container) {
-    createRoot(container).render(<App />);
+    createRoot(container).render(<App role={container.dataset.role || ""} />);
 }

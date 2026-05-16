@@ -28,6 +28,10 @@ class DashboardController extends Controller
         return view('dashboard.noc');
     }
 
+    if ($role == 'master') {
+        return view('dashboard.master');
+    }
+
     abort(403);
         return view('dashboard', [
             'totalCustomers' => Customer::count(),

@@ -8,6 +8,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\BrandingController;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -34,12 +35,13 @@ Route::get('/api/prtg', function () {
 
 Route::get('/api/dashboard-data', function (Request $request) {
 
+    $role = auth()->user()->role;
     $month = $request->get('month', now()->format('Y-m'));
 
     $start = Carbon::parse($month . '-01')->startOfMonth();
     $end   = Carbon::parse($month . '-01')->endOfMonth();
 
-    return response()->json([
+    $data = [
         'month' => $month,
 
         // =========================
@@ -82,9 +84,19 @@ Route::get('/api/dashboard-data', function (Request $request) {
             ->latest()
             ->limit(10)
             ->get(),
-    ]);
+    ];
 
-})->middleware(['auth', 'role:admin,finance']); // 🔥 WAJIB TAMBAH INI
+    if ($role == 'noc') {
+        $data = [
+            'month' => $month,
+            'total_customers' => $data['total_customers'],
+            'customers' => $data['customers'],
+        ];
+    }
+
+    return response()->json($data);
+
+})->middleware(['auth', 'role:admin,finance,noc']); // 🔥 WAJIB TAMBAH INI
 /*
 |--------------------------------------------------------------------------
 | PUBLIC
@@ -153,6 +165,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/invoices/print-selected', [InvoiceController::class, 'printSelected'])->name('invoices.print.selected');
         Route::get('/invoices/print/all', [InvoiceController::class, 'printAll'])->name('invoices.printAll');
         Route::get('/invoices/{id}/print', [InvoiceController::class, 'print'])->name('invoices.print');
+        Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
     });
 
     // =========================
@@ -174,7 +187,12 @@ Route::middleware(['auth'])->group(function () {
     // =========================
     Route::middleware(['role:admin'])->group(function () {
         Route::resource('packages', PackageController::class);
-        Route::resource('users', UserController::class);
+    });
+
+    Route::middleware(['role:master,admin'])->group(function () {
+        Route::resource('users', UserController::class)->except(['show']);
+        Route::get('/branding', [BrandingController::class, 'edit'])->name('branding.edit');
+        Route::post('/branding', [BrandingController::class, 'update'])->name('branding.update');
     });
 
     // =========================

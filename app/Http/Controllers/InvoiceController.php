@@ -167,4 +167,15 @@ class InvoiceController extends Controller
 
         return view('invoices.print', compact('invoices'));
     }
+
+    // =========================
+    // HAPUS INVOICE
+    // =========================
+    public function destroy($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->delete();
+
+        return back()->with('success', 'Invoice berhasil dihapus');
+    }
 }

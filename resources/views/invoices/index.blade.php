@@ -129,6 +129,15 @@
                            class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded">
                             Cetak
                         </a>
+
+                        <form action="{{ route('invoices.destroy', $i->id) }}" method="POST"
+                              onsubmit="return confirm('Yakin ingin menghapus invoice ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded">
+                                Hapus
+                            </button>
+                        </form>
                         @endif
 
                     </td>
