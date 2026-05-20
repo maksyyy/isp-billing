@@ -15,6 +15,26 @@ function App({ role }) {
     );
 
     useEffect(() => {
+        const fetchData = () => {
+            fetch(`/api/dashboard-data?month=${month}`)
+                .then((res) => {
+                    if (!res.ok) throw new Error("Gagal mengambil data dashboard");
+                    return res.json();
+                })
+                .then((res) => setData(res))
+                .catch((err) => console.error("Error fetchData:", err));
+        };
+
+        const fetchPrtg = () => {
+            fetch(`/api/prtg`)
+                .then((res) => {
+                    if (!res.ok) throw new Error("Gagal mengambil data PRTG");
+                    return res.json();
+                })
+                .then((res) => setPrtg(res.sensors || [])) // PERBAIKAN: ubah devices menjadi sensors
+                .catch((err) => console.error("Error fetchPrtg:", err));
+        };
+
         fetchData();
         if (canViewDevices) {
             fetchPrtg();
@@ -30,26 +50,6 @@ function App({ role }) {
         return () => clearInterval(interval);
     }, [month, canViewDevices]);
 
-    const fetchData = () => {
-        fetch(`/api/dashboard-data?month=${month}`)
-            .then((res) => {
-                if (!res.ok) throw new Error("Gagal mengambil data dashboard");
-                return res.json();
-            })
-            .then((res) => setData(res))
-            .catch((err) => console.error("Error fetchData:", err));
-    };
-
-    const fetchPrtg = () => {
-        fetch(`/api/prtg`)
-            .then((res) => {
-                if (!res.ok) throw new Error("Gagal mengambil data PRTG");
-                return res.json();
-            })
-            .then((res) => setPrtg(res.sensors || [])) // PERBAIKAN: ubah devices menjadi sensors
-            .catch((err) => console.error("Error fetchPrtg:", err));
-    };
-
     if (!data) return <p style={{ padding: "20px" }}>⏳ Loading...</p>;
 
     // FILTER HANYA PELANGGAN (ID DIAWALI ANGKA)
@@ -62,26 +62,42 @@ function App({ role }) {
     const offline = filtered.filter(
         (d) =>
             [4, 5].includes(Number(d.status_raw)) ||
-            d.status.toLowerCase().includes("down") ||
-            d.status.toLowerCase().includes("warning")
+            d.status?.toLowerCase().includes("down") ||
+            d.status?.toLowerCase().includes("warning")
     ).length;
 
     const paused = filtered.filter(
-        (d) => d.status_raw == 7 || d.status.toLowerCase().includes("paused")
+        (d) => d.status_raw == 7 || d.status?.toLowerCase().includes("paused")
     ).length;
 
     return (
-        <div style={{ padding: "20px" }}>
-            <h2>📊 API Dashboard</h2>
+        <div style={appContainer}>
+            <style>{`
+                body { margin: 0; background-color: #f8fafc; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+                * { box-sizing: border-box; }
+                .modal-anim { animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+                @keyframes modalFadeIn {
+                    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+                    to { opacity: 1; transform: translateY(0) scale(1); }
+                }
+                ::-webkit-scrollbar { width: 8px; }
+                ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+                ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+                ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+            `}</style>
 
-            {canViewFinance && (
-                <input
-                    type="month"
-                    value={month}
-                    onChange={(e) => setMonth(e.target.value)}
-                    style={{ marginBottom: "20px", padding: "8px" }}
-                />
-            )}
+            <div style={headerStyle}>
+                <h2 style={titleStyle}>✨ API Dashboard</h2>
+
+                {canViewFinance && (
+                    <input
+                        type="month"
+                        value={month}
+                        onChange={(e) => setMonth(e.target.value)}
+                        style={inputStyle}
+                    />
+                )}
+            </div>
 
             <div style={grid}>
                 <Card
@@ -218,7 +234,7 @@ function App({ role }) {
             {/* MODAL */}
             {modal && (
                 <div style={overlay} onClick={() => setModal(null)}>
-                    <div style={modalBox} onClick={(e) => e.stopPropagation()}>
+                    <div style={modalBox} className="modal-anim" onClick={(e) => e.stopPropagation()}>
                         <h3>{modal.title}</h3>
 
                         <div style={content}>
@@ -366,36 +382,77 @@ function PublicApiCustomers() {
 
 /* CARD */
 function Card({ title, value, color, onClick }) {
+    const [isHovered, setIsHovered] = useState(false);
     return (
         <div
             onClick={onClick}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             style={{
                 ...card,
-                borderLeft: `5px solid ${color}`,
+                borderTop: `5px solid ${color}`,
                 cursor: "pointer",
+                transform: isHovered ? "translateY(-5px)" : "translateY(0)",
+                boxShadow: isHovered
+                    ? "0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)"
+                    : "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)",
             }}
         >
-            <h4 style={{ color: "#555" }}>{title}</h4>
-            <p style={{ fontSize: "22px", fontWeight: "bold", color }}>
-                {value}
-            </p>
-            <small style={{ color: "#999" }}>Klik untuk detail</small>
+            <h4 style={{ color: "#64748b", margin: "0 0 10px 0", fontSize: "14px", textTransform: "uppercase", letterSpacing: "0.5px" }}>{title}</h4>
+            <p style={{ fontSize: "28px", fontWeight: "800", color, margin: 0 }}>{value}</p>
+            <div style={{ marginTop: "15px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <small style={{ color: "#94a3b8", fontWeight: "500" }}>Klik untuk detail &rarr;</small>
+            </div>
         </div>
     );
 }
 
 /* STYLE */
+const appContainer = {
+    padding: "30px",
+    maxWidth: "1200px",
+    margin: "0 auto",
+    color: "#334155"
+};
+
+const headerStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "30px",
+    paddingBottom: "15px",
+    borderBottom: "1px solid #e2e8f0"
+};
+
+const titleStyle = {
+    margin: 0,
+    fontSize: "26px",
+    fontWeight: "700",
+    color: "#0f172a"
+};
+
+const inputStyle = {
+    padding: "10px 15px",
+    borderRadius: "8px",
+    border: "1px solid #cbd5e1",
+    fontSize: "15px",
+    outline: "none",
+    cursor: "pointer",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+    background: "#fff"
+};
+
 const grid = {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-    gap: "15px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gap: "24px",
 };
 
 const card = {
     background: "#fff",
-    padding: "20px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
+    padding: "24px",
+    borderRadius: "16px",
+    transition: "all 0.3s ease",
 };
 
 const overlay = {
@@ -404,56 +461,67 @@ const overlay = {
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(0,0,0,0.5)",
+    background: "rgba(15, 23, 42, 0.6)",
+    backdropFilter: "blur(4px)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 999
 };
 
 const modalBox = {
     background: "#fff",
-    padding: "20px",
-    borderRadius: "10px",
-    width: "350px",
+    padding: "25px",
+    borderRadius: "16px",
+    width: "90%",
+    maxWidth: "400px",
+    boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)",
 };
 
 const content = {
-    maxHeight: "300px",
+    maxHeight: "350px",
     overflowY: "auto",
-    marginTop: "15px",
+    marginTop: "20px",
+    paddingRight: "5px"
 };
 
 const listItem = {
-    padding: "10px",
-    borderBottom: "1px solid #eee",
+    padding: "12px 16px",
+    marginBottom: "10px",
+    background: "#f8fafc",
+    borderRadius: "10px",
+    border: "1px solid #e2e8f0",
     display: "flex",
+    alignItems: "center",
     justifyContent: "space-between",
+    fontSize: "14px",
+    color: "#475569"
 };
 
 const btn = {
-    padding: "8px 12px",
+    padding: "10px 16px",
     background: "#ef4444",
     color: "#fff",
     border: "none",
-    borderRadius: "5px",
+    borderRadius: "8px",
     cursor: "pointer",
+    fontWeight: "600",
+    flex: 1,
+    textAlign: "center"
 };
 
 const btnBlue = {
-    padding: "8px 12px",
-    background: "#3b82f6",
-    color: "#fff",
-    borderRadius: "5px",
+    ...btn,
+    background: "#2563eb",
     textDecoration: "none",
-    cursor: "pointer",
 };
 
 const publicApiSection = {
-    marginTop: "30px",
+    marginTop: "40px",
     background: "#fff",
-    borderRadius: "10px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
-    padding: "20px",
+    borderRadius: "16px",
+    boxShadow: "0 10px 15px -3px rgba(0,0,0,0.05)",
+    padding: "25px",
 };
 
 const publicApiHeader = {
@@ -499,15 +567,16 @@ const errorBox = {
 
 const postsGrid = {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-    gap: "14px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gap: "20px",
 };
 
 const postCard = {
     border: "1px solid #e5e7eb",
-    borderRadius: "8px",
-    padding: "14px",
-    background: "#f9fafb",
+    borderRadius: "12px",
+    padding: "20px",
+    background: "#ffffff",
+    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)"
 };
 
 const container = document.getElementById("app");

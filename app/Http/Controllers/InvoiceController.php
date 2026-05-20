@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -95,21 +96,23 @@ class InvoiceController extends Controller
             'amount' => 'required|numeric|min:1'
         ]);
 
-        Payment::create([
-            'invoice_id' => $invoice->id,
-            'customer_id' => $invoice->customer_id,
-            'amount' => $request->amount,
-            'payment_date' => now()
-        ]);
+        DB::transaction(function () use ($request, $invoice) {
+            Payment::create([
+                'invoice_id' => $invoice->id,
+                'customer_id' => $invoice->customer_id,
+                'amount' => $request->amount,
+                'payment_date' => now()
+            ]);
 
-        $invoice->paid_amount += $request->amount;
+            $invoice->paid_amount += $request->amount;
 
-        // ✅ hanya auto lunas kalau benar-benar full
-        if ($invoice->paid_amount >= $invoice->amount) {
-            $invoice->status = 'paid';
-        }
+            // ✅ hanya auto lunas kalau benar-benar full
+            if ($invoice->paid_amount >= $invoice->amount) {
+                $invoice->status = 'paid';
+            }
 
-        $invoice->save();
+            $invoice->save();
+        });
 
         return back()->with('success', 'Pembayaran berhasil');
     }

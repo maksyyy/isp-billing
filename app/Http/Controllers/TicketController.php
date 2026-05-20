@@ -12,18 +12,26 @@ class TicketController extends Controller
     // =========================
     // LIST TICKET
     // =========================
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
+        $search = $request->search;
+
+        $query = Ticket::whereNull('archived_at');
 
         if ($user->role == 'teknisi') {
-            $tickets = Ticket::where('assigned_to', $user->id)
-                ->whereNull('archived_at') // 🔥 hanya ticket aktif
-                ->get();
-        } else {
-            $tickets = Ticket::whereNull('archived_at') // 🔥 sembunyikan yg sudah diarsip
-                ->get();
+            $query->where('assigned_to', $user->id);
         }
+
+        $tickets = $query->when($search, function ($q) use ($search) {
+            $q->where(function ($sub) use ($search) {
+                $sub->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($cust) use ($search) {
+                        $cust->where('name', 'like', "%{$search}%");
+                    });
+            });
+        })->get();
 
         return view('tickets.index', compact('tickets'));
     }
@@ -47,7 +55,8 @@ class TicketController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'customer_id' => 'required',
-            'assigned_to' => 'required'
+            'assigned_to' => 'required',
+            'problem' => 'required|string|max:500' // 🔥 Pastikan problem tidak kosong dan wajar
         ]);
 
         Ticket::create([
@@ -85,7 +94,8 @@ class TicketController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'customer_id' => 'required',
-            'assigned_to' => 'required'
+            'assigned_to' => 'required',
+            'problem' => 'required|string|max:500'
         ]);
 
         $ticket->update([
@@ -115,6 +125,10 @@ class TicketController extends Controller
     public function selesai(Request $request, $id)
     {
         $ticket = Ticket::findOrFail($id);
+
+        $request->validate([
+            'bukti' => 'nullable|file|image|mimes:jpeg,png,jpg,webp|max:2048' // 🔥 Keamanan: wajib gambar, maks 2MB
+        ]);
 
         // upload bukti
         if ($request->hasFile('bukti')) {

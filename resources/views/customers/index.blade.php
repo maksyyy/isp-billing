@@ -3,17 +3,7 @@
 
     <h2 class="text-2xl font-bold mb-4 text-gray-800">Data Pelanggan</h2>
 
-    <!-- 🔍 SEARCH -->
-    <form method="GET" action="{{ route('customers.index') }}" class="mb-4 flex gap-2">
-        <input type="text" name="search"
-               value="{{ request('search') }}"
-               placeholder="Cari nama / ID / phone..."
-               class="border px-3 py-2 rounded w-64">
 
-        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 rounded">
-            Cari
-        </button>
-    </form>
 
     <!-- BUTTON -->
     @if(in_array(auth()->user()->role, ['admin','finance']))

@@ -11,17 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $currentUser = auth()->user();
-
-        if ($currentUser->role == 'master') {
-            $users = User::where('role', 'admin')->withCount('subUsers')->latest()->get();
-            $title = 'Daftar Admin Penyewa';
-        } else {
-            $users = User::where('parent_admin_id', $currentUser->id)->latest()->get();
-            $title = 'Sub User Admin';
-        }
-
-        return view('settings.users.index', compact('users', 'title'));
+        return redirect()->route('settings.index', ['tab' => 'staff']);
     }
 
     public function create()
@@ -73,7 +63,7 @@ class UserController extends Controller
             'parent_admin_id' => $currentUser->role == 'master' ? null : $currentUser->id,
         ]);
 
-        return redirect()->route('users.index')
+        return redirect()->route('settings.index', ['tab' => 'staff'])
             ->with('success', 'User berhasil dibuat');
     }
 
@@ -102,7 +92,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index')
+        return redirect()->route('settings.index', ['tab' => 'staff'])
             ->with('success', 'User berhasil diperbarui');
     }
 

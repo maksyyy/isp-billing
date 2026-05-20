@@ -1,26 +1,14 @@
 <x-app-layout>
 <div class="p-6">
 
-    <h2 class="text-xl font-bold mb-4">Data Tagihan</h2>
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Data Tagihan</h2>
 
     @php
         $role = auth()->user()->role;
     @endphp
 
-    <!-- 🔍 SEARCH -->
-    <form method="GET" action="{{ route('invoices.index') }}" class="mb-4 flex gap-2">
-        <input type="text" name="search" value="{{ request('search') }}"
-               placeholder="Cari pelanggan..."
-               class="border px-3 py-2 rounded w-64">
-
-        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-            🔍 Cari
-        </button>
-    </form>
-
     <!-- 🔥 ACTION BUTTON -->
     <div class="mb-4 flex gap-2 items-center">
-
         @if(in_array($role, ['admin','finance']))
             <a href="{{ route('invoices.generate.form') }}"
                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
@@ -32,7 +20,6 @@
                Cetak Semua
             </a>
         @endif
-
     </div>
 
     <!-- TABLE -->
@@ -41,7 +28,6 @@
 
             <thead class="bg-gray-200">
                 <tr>
-
                     @if(in_array($role, ['admin','finance']))
                     <th class="p-2 text-center">
                         <input type="checkbox" onclick="toggleAll(this)">
@@ -115,7 +101,7 @@
                         <!-- SELESAI -->
                         @if($i->status == 'unpaid' && in_array($role, ['admin','finance']))
                         <form action="{{ route('invoices.selesai', $i->id) }}" method="POST"
-                              onsubmit="return confirm('Tandai selesai?')">
+                               onsubmit="return confirm('Tandai selesai?')">
                             @csrf
                             <button class="bg-green-800 hover:bg-green-900 text-white px-2 rounded">
                                 Selesai
@@ -131,7 +117,7 @@
                         </a>
 
                         <form action="{{ route('invoices.destroy', $i->id) }}" method="POST"
-                              onsubmit="return confirm('Yakin ingin menghapus invoice ini?')">
+                               onsubmit="return confirm('Yakin ingin menghapus invoice ini?')">
                             @csrf
                             @method('DELETE')
                             <button class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded">

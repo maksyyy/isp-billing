@@ -7,9 +7,14 @@ use App\Models\Package;
 
 class PackageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $packages = Package::all();
+        $search = $request->search;
+        $packages = Package::when($search, function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('speed', 'like', "%{$search}%");
+        })->get();
+
         return view('packages.index', compact('packages'));
     }
 

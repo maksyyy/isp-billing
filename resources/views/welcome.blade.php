@@ -1,91 +1,734 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'ISP Billing') }}</title>
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
+    <title>{{ config('app.name', 'ISP Billing') }} - Intelligent Billing & Network Monitoring</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-blue-50 text-blue-950 antialiased">
-    <main class="min-h-screen">
-        <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-            <x-company-logo class="text-blue-950" />
 
-            @if (Route::has('login'))
-                <div class="flex items-center gap-3">
+    <style>
+        :root {
+            --color-space-bg: #030014;
+            --color-card-bg: rgba(10, 11, 25, 0.65);
+            --color-glass-border: rgba(255, 255, 255, 0.08);
+            --glow-indigo: rgba(99, 102, 241, 0.15);
+            --glow-cyan: rgba(6, 182, 212, 0.15);
+            --glow-purple: rgba(168, 85, 247, 0.15);
+        }
+
+        body {
+            background-color: var(--color-space-bg);
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: var(--color-card-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--color-glass-border);
+        }
+
+        /* Soft Hover Lift & Glow */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-6px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Grid Background Overlay */
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center;
+        }
+
+        /* Ambient Glowing Beams */
+        .glow-orb-indigo {
+            background: radial-gradient(circle, var(--glow-indigo) 0%, rgba(3, 0, 20, 0) 70%);
+            filter: blur(90px);
+        }
+        .glow-orb-cyan {
+            background: radial-gradient(circle, var(--glow-cyan) 0%, rgba(3, 0, 20, 0) 70%);
+            filter: blur(90px);
+        }
+        .glow-orb-purple {
+            background: radial-gradient(circle, var(--glow-purple) 0%, rgba(3, 0, 20, 0) 70%);
+            filter: blur(90px);
+        }
+
+        /* Heartbeat Radar Signal Pulse */
+        .ping-node {
+            position: relative;
+        }
+        .ping-node::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: currentColor;
+            border-radius: 50%;
+            animation: ping-ring 2.5s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+        }
+
+        @keyframes ping-ring {
+            0% { transform: scale(0.5); opacity: 1; }
+            80%, 100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* Gradient Highlight Border */
+        .gradient-border-wrap {
+            position: relative;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            padding: 1px;
+            border-radius: 16px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030014;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e1b4b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #312e81;
+        }
+    </style>
+</head>
+<body class="grid-bg min-h-screen antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Ambient Glowing Orbs Background -->
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] glow-orb-indigo pointer-events-none z-0"></div>
+    <div class="absolute top-[600px] right-1/4 w-[600px] h-[600px] glow-orb-cyan pointer-events-none z-0"></div>
+    <div class="absolute top-[1400px] left-1/3 w-[500px] h-[500px] glow-orb-purple pointer-events-none z-0"></div>
+    <div class="absolute bottom-[200px] right-10 w-[500px] h-[500px] glow-orb-indigo pointer-events-none z-0"></div>
+
+    <!-- 1. Floating Premium Navigation Bar -->
+    <header class="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-7xl">
+        <div class="glass-panel px-6 py-4 flex items-center justify-between rounded-2xl shadow-2xl backdrop-blur-md">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+                <x-company-logo class="text-white" :showText="true" markClass="h-10 w-10 text-white" textClass="text-lg text-white" />
+            </a>
+            
+            <!-- Quick Anchors -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+                <a href="#features" class="hover:text-cyan-400 transition-colors">Fitur Utama</a>
+                <a href="#monitoring" class="hover:text-cyan-400 transition-colors">PRTG Status</a>
+                <a href="#pricing" class="hover:text-cyan-400 transition-colors">Paket Harga</a>
+                <a href="#faq" class="hover:text-cyan-400 transition-colors">FAQ</a>
+            </nav>
+
+            <!-- Access CTA -->
+            <div class="flex items-center gap-3">
+                @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}"
-                           class="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700">
+                           class="rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:brightness-110 px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-indigo-500/20 transition-all">
                             Dashboard
                         </a>
                     @else
                         <a href="{{ route('login') }}"
-                           class="rounded px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-white">
-                            Login
+                           class="rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold text-slate-300 hover:text-white transition-colors">
+                            Masuk
                         </a>
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}"
-                               class="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700">
-                                Register
+                               class="rounded-xl bg-indigo-600 hover:bg-indigo-500 border border-indigo-500/40 px-5 py-2.5 text-xs sm:text-sm font-bold text-white transition-all shadow-md shadow-indigo-600/10">
+                                Daftar Admin
                             </a>
                         @endif
                     @endauth
-                </div>
-            @endif
-        </nav>
+                @endif
+            </div>
+        </div>
+    </header>
 
-        <section class="mx-auto grid max-w-7xl items-center gap-10 px-6 py-16 lg:grid-cols-[1.05fr_0.95fr]">
-            <div>
-                <p class="text-sm font-bold uppercase text-blue-600">ISP Billing Platform</p>
-                <h1 class="mt-4 max-w-3xl text-4xl font-extrabold leading-tight text-blue-950 md:text-6xl">
-                    Sistem billing ISP yang rapi untuk banyak admin dan tim operasional.
-                </h1>
-                <p class="mt-5 max-w-2xl text-lg leading-8 text-blue-800/80">
-                    Kelola pelanggan, invoice, pembayaran, ticket, NOC, finance, dan teknisi dari satu aplikasi
-                    dengan tampilan biru-putih yang bersih.
-                </p>
-
-                <div class="mt-8 flex flex-wrap gap-3">
-                    <a href="{{ route('login') }}"
-                       class="rounded bg-blue-600 px-5 py-3 font-semibold text-white shadow hover:bg-blue-700">
-                        Mulai Kelola Billing
-                    </a>
-                    <a href="{{ route('register') }}"
-                       class="rounded border border-blue-200 bg-white px-5 py-3 font-semibold text-blue-700 hover:border-blue-400">
-                        Daftar Admin
-                    </a>
-                </div>
+    <!-- 2. Cosmic Hero Section -->
+    <main class="relative z-10 pt-40 pb-20 px-6 max-w-7xl mx-auto">
+        <section class="text-center max-w-4xl mx-auto mb-20">
+            <!-- Modern Tech Pill -->
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-950/60 border border-indigo-800/40 text-xs font-semibold text-cyan-400 mb-8 shadow-inner shadow-cyan-400/5">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span>Automated ISP Core Billing & Live Monitoring</span>
             </div>
 
-            <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-xl">
-                <div class="rounded-lg bg-blue-600 p-5 text-white">
-                    <div class="flex items-center justify-between">
-                        <p class="font-semibold">Ringkasan Bulanan</p>
-                        <span class="rounded bg-white/20 px-3 py-1 text-xs">Live</span>
+            <!-- Main Punchline -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6">
+                Kelola Billing & Monitoring ISP 
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-cyan-400 to-purple-400">
+                    Satu Portal Cerdas.
+                </span>
+            </h1>
+
+            <p class="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Kelola ribuan pelanggan, otomatisasi invoice tagihan bulanan, sinkronisasi profil router, serta monitoring kualitas jaringan PRTG terpadu untuk tim Admin, Finance, NOC, dan Teknisi.
+            </p>
+
+            <!-- Action CTAs -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 font-bold hover:brightness-110 transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2">
+                    Mulai Kelola Billing <span class="text-lg leading-none">&rarr;</span>
+                </a>
+                <a href="#features" class="w-full sm:w-auto px-8 py-4 rounded-xl border border-slate-800 bg-slate-950/40 hover:bg-slate-900/50 font-semibold transition-all flex items-center justify-center">
+                    Pelajari Fitur
+                </a>
+            </div>
+        </section>
+
+        <!-- 3. Interactive Floating Dashboard Mockup -->
+        <section class="max-w-5xl mx-auto mb-32 relative">
+            <div class="gradient-border-wrap shadow-2xl">
+                <!-- Mockup App Frame -->
+                <div class="glass-panel rounded-[15px] overflow-hidden">
+                    
+                    <!-- App Frame Header -->
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800/80 bg-slate-950/60">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                            <span class="ml-4 text-xs font-semibold text-slate-400 tracking-wider uppercase">Live Dashboard Mockup</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-bold text-emerald-400">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 ping-node text-emerald-400"></span>
+                                Live System Active
+                            </span>
+                        </div>
                     </div>
-                    <div class="mt-6 grid grid-cols-2 gap-3">
-                        <div class="rounded bg-white p-4 text-blue-950">
-                            <p class="text-sm text-blue-700">Pelanggan</p>
-                            <p class="mt-2 text-3xl font-bold">1.248</p>
+
+                    <!-- Mockup App Content -->
+                    <div class="p-6 bg-slate-950/30">
+                        
+                        <!-- Grid 4 Stats Box (Replika Data Asli) -->
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <!-- Card 1 -->
+                            <div class="bg-[#0B0F19]/80 border border-slate-800/60 p-4 rounded-xl text-left">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Pelanggan Aktif</p>
+                                <div class="flex items-baseline justify-between mt-2">
+                                    <p class="text-2xl sm:text-3xl font-extrabold text-white">1.248</p>
+                                    <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded">+8.3%</span>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="bg-[#0B0F19]/80 border border-slate-800/60 p-4 rounded-xl text-left">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Invoice Bulan Ini</p>
+                                <div class="flex items-baseline justify-between mt-2">
+                                    <p class="text-2xl sm:text-3xl font-extrabold text-white">932</p>
+                                    <span class="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-1.5 py-0.5 rounded">99.8%</span>
+                                </div>
+                            </div>
+                            <!-- Card 3 -->
+                            <div class="bg-[#0B0F19]/80 border border-slate-800/60 p-4 rounded-xl text-left">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Uptime NOC</p>
+                                <div class="flex items-baseline justify-between mt-2">
+                                    <p class="text-2xl sm:text-3xl font-extrabold text-emerald-400">99.98%</p>
+                                    <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded">SLA</span>
+                                </div>
+                            </div>
+                            <!-- Card 4 -->
+                            <div class="bg-[#0B0F19]/80 border border-slate-800/60 p-4 rounded-xl text-left">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Tiket Terbuka</p>
+                                <div class="flex items-baseline justify-between mt-2">
+                                    <p class="text-2xl sm:text-3xl font-extrabold text-rose-400">18</p>
+                                    <span class="text-[10px] font-bold text-rose-400 bg-rose-500/10 border border-rose-500/20 px-1.5 py-0.5 rounded">Prioritas</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="rounded bg-white p-4 text-blue-950">
-                            <p class="text-sm text-blue-700">Invoice</p>
-                            <p class="mt-2 text-3xl font-bold">932</p>
+
+                        <!-- Sparkline Wave Graph (SVG) -->
+                        <div class="relative w-full h-[220px] bg-[#070913] border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between overflow-hidden">
+                            <!-- Background dashed grid lines -->
+                            <div class="absolute inset-0 flex flex-col justify-between py-6 px-4 opacity-10 pointer-events-none">
+                                <div class="border-b border-dashed border-slate-500 w-full"></div>
+                                <div class="border-b border-dashed border-slate-500 w-full"></div>
+                                <div class="border-b border-dashed border-slate-500 w-full"></div>
+                            </div>
+
+                            <!-- Real-time SVG Network Stream Graph -->
+                            <svg class="absolute bottom-4 left-0 w-full h-[150px] pointer-events-none" viewBox="0 0 1000 150" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="gradient-line" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#06b6d4" stop-opacity="1"/>
+                                        <stop offset="100%" stop-color="#6366f1" stop-opacity="0.3"/>
+                                    </linearGradient>
+                                    <linearGradient id="area-glow" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.12"/>
+                                        <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M0,150 L0,70 Q 120,40 250,90 T 500,60 T 750,110 L 900,45 L 1000,55 L 1000,150 Z" fill="url(#area-glow)" />
+                                <path d="M0,70 Q 120,40 250,90 T 500,60 T 750,110 L 900,45 L 1000,55" fill="none" stroke="url(#gradient-line)" stroke-width="4" />
+                                
+                                <circle cx="900" cy="45" r="5" fill="#06b6d4" />
+                                <circle cx="900" cy="45" r="12" fill="none" stroke="#06b6d4" stroke-width="1.5" class="animate-ping" style="transform-origin: 900px 45px;" />
+                            </svg>
+
+                            <div class="flex justify-between items-center text-xs text-slate-400 font-semibold z-10">
+                                <span>Main Uplink: Fiber Backbone 10 Gbps (Active Transit)</span>
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block animate-pulse"></span> RX/TX Syncing</span>
+                            </div>
+
+                            <div class="flex justify-between text-[10px] text-slate-500 font-bold z-10 pt-2 border-t border-slate-800/40">
+                                <span>09:00 WIB</span>
+                                <span>11:00 WIB</span>
+                                <span>13:00 WIB</span>
+                                <span>15:00 WIB (Current)</span>
+                            </div>
                         </div>
-                        <div class="rounded bg-white p-4 text-blue-950">
-                            <p class="text-sm text-blue-700">Device Online</p>
-                            <p class="mt-2 text-3xl font-bold">884</p>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Bento Box Feature Grid Section -->
+        <section id="features" class="py-20 border-t border-slate-900">
+            <div class="text-center mb-16">
+                <span class="text-xs text-indigo-400 font-bold uppercase tracking-widest">Sistem Multi-Role</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold mt-3 mb-4">Fitur Tangguh Tim Operasional</h2>
+                <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+                    Sistem dirancang dengan pembagian hak akses teratur sesuai fungsi kerja masing-masing divisi ISP.
+                </p>
+            </div>
+
+            <!-- Bento Layout Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Bento Box Card 1 (Wide Feature - Finance) -->
+                <div class="glass-panel p-8 rounded-2xl md:col-span-2 flex flex-col justify-between min-h-[320px] hover-lift">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 mb-6">
+                            <!-- Money / Invoice Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.536-.22-2.121-.659-1.171-.879-1.171-2.303 0-3.182 1.171-.879 3.07-.879 4.242 0M9.75 21.75H14.25m-6-19.5H16.5" />
+                            </svg>
                         </div>
-                        <div class="rounded bg-white p-4 text-blue-950">
-                            <p class="text-sm text-blue-700">Ticket Open</p>
-                            <p class="mt-2 text-3xl font-bold">18</p>
+                        <h3 class="text-2xl font-bold mb-3">Finance: Otomatisasi Tagihan</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed max-w-xl">
+                            Kelola pembuatan tagihan (Invoice) secara otomatis setiap bulannya. Lacak status pembayaran, rekapitulasi income kas masuk, cetak kuitansi massal, dan filter piutang secara instan.
+                        </p>
+                    </div>
+                    <div class="mt-8 flex items-center justify-between border-t border-slate-800/60 pt-4 text-xs text-slate-500">
+                        <span>Laporan Pembayaran Real-Time</span>
+                        <a href="{{ route('login') }}" class="font-bold text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1">Eksplorasi Modul &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Bento Box Card 2 (NOC / Monitoring) -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between min-h-[320px] hover-lift">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-6">
+                            <!-- Server / Graph Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">NOC: Integrasi PRTG</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Hubungkan sistem penagihan dengan software monitoring jaringan PRTG. Pantau status keaktifan perangkat OLT, core switch, dan router gateway langsung dari dasbor Anda.
+                        </p>
+                    </div>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="px-2 py-1 rounded bg-[#0B0F19] border border-slate-800 text-[10px] font-bold text-slate-400">Sensor Status</span>
+                        <span class="px-2 py-1 rounded bg-[#0B0F19] border border-slate-800 text-[10px] font-bold text-slate-400">Traffic Ingestion</span>
+                    </div>
+                </div>
+
+                <!-- Bento Box Card 3 (Teknisi / Support) -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between min-h-[320px] hover-lift">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 mb-6">
+                            <!-- Wrench Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.653 2.653 0 0 0 21 17.25l-5.83-5.83m0 0a2.906 2.906 0 1 1-3.701-3.701m3.701 3.701a2.903 2.903 0 0 1-3.701-3.7m0 0L5.67 3.67A2.653 2.653 0 0 0 3 7.25l5.83 5.83m0 0a2.906 2.906 0 1 1 3.701 3.701m-3.701-3.701a2.903 2.903 0 0 0 3.701 3.7" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Teknisi: Tiket & Work order</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Menerima disposisi aduan gangguan pelanggan langsung melalui aplikasi. Teknisi dapat memperbarui status perbaikan dari lapangan secara instan setelah masalah selesai teratasi.
+                        </p>
+                    </div>
+                    <div class="mt-6 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-xs text-slate-400">Response time terjamin</span>
+                    </div>
+                </div>
+
+                <!-- Bento Box Card 4 (Wide Feature - Admin) -->
+                <div class="glass-panel p-8 rounded-2xl md:col-span-2 flex flex-col justify-between min-h-[320px] hover-lift">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-6">
+                            <!-- Shield Check Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Admin: Kontrol Sentral & Branding</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed max-w-xl">
+                            Mengatur paket internet, memantau log aktivitas semua tim operasional, serta mengubah logo dan nama ISP secara dinamis untuk kustomisasi penuh (Branding Management).
+                        </p>
+                    </div>
+                    <div class="mt-8 flex items-center justify-between border-t border-slate-800/60 pt-4 text-xs text-slate-500">
+                        <span>Multi-Tenant & Multi-User</span>
+                        <a href="{{ route('register') }}" class="font-bold text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-1">Registrasi Admin Baru &rarr;</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. PRTG Network Live Monitoring Simulator Section -->
+        <section id="monitoring" class="py-20 border-t border-slate-900">
+            <div class="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] items-center gap-12">
+                <div>
+                    <span class="text-xs text-cyan-400 font-bold uppercase tracking-widest">Network Integrations</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold mt-3 mb-6">Integrasi PRTG Core Monitoring</h2>
+                    <p class="text-slate-400 text-sm sm:text-base leading-relaxed mb-6">
+                        ISP Billing terhubung langsung dengan sistem sensor monitoring jaringan PRTG. Anda bisa mendeteksi perangkat mati (offline) atau mengalami packet loss ekstrim sebelum pelanggan mengirimkan tiket keluhan.
+                    </p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs mt-0.5">&check;</span>
+                            <span class="text-sm text-slate-300"><b>Auto-Mapping:</b> Menghubungkan sensor port ke profil pelanggan.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs mt-0.5">&check;</span>
+                            <span class="text-sm text-slate-300"><b>Sub-second Alerts:</b> Notifikasi instan saat perangkat backbone down.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs mt-0.5">&check;</span>
+                            <span class="text-sm text-slate-300"><b>PRTG Sync APIs:</b> Mendukung endpoint kustom untuk visualisasi sensor.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Simulation Status Panel -->
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden bg-slate-950/40">
+                    <div class="absolute -top-12 -right-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl"></div>
+                    
+                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-6">
+                        <h4 class="font-bold text-sm">Simulasi PRTG Sensor Node</h4>
+                        <span class="text-[10px] text-slate-400 bg-slate-900 border border-slate-800 px-2 py-1 rounded">Update berkala (30s)</span>
+                    </div>
+
+                    <!-- Sensor Status List -->
+                    <div class="space-y-3">
+                        <!-- Sensor 1 -->
+                        <div class="flex items-center justify-between bg-[#0B0F19]/80 border border-slate-800/60 px-4 py-3 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 text-emerald-400 ping-node"></span>
+                                <div>
+                                    <p class="text-xs font-bold">CORE-ROUTER-SBY</p>
+                                    <p class="text-[9px] text-slate-500">Router Mikrotik CCR2116</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded">UP (0.9ms)</span>
+                        </div>
+                        <!-- Sensor 2 -->
+                        <div class="flex items-center justify-between bg-[#0B0F19]/80 border border-slate-800/60 px-4 py-3 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 text-emerald-400 ping-node"></span>
+                                <div>
+                                    <p class="text-xs font-bold">OLT-GPON-CENTRAL</p>
+                                    <p class="text-[9px] text-slate-500">OLT ZTE C320 - 16 Port</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded">UP (1.2ms)</span>
+                        </div>
+                        <!-- Sensor 3 -->
+                        <div class="flex items-center justify-between bg-[#0B0F19]/80 border border-slate-800/60 px-4 py-3 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-400 text-amber-400 ping-node"></span>
+                                <div>
+                                    <p class="text-xs font-bold">DIST-SWITCH-SDA</p>
+                                    <p class="text-[9px] text-slate-500">Switch Cisco Catalyst 3850</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded">WARN (42ms)</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- 6. Pricing Section (Interactive Billing Switcher) -->
+        <section id="pricing" class="py-20 border-t border-slate-900">
+            <div class="text-center mb-12">
+                <span class="text-xs text-indigo-400 font-bold uppercase tracking-widest">Paket Layanan</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold mt-3 mb-4">Investasi Terjangkau untuk Skala ISP Anda</h2>
+                <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base mb-8">
+                    Pilih paket yang paling sesuai dengan jumlah subscriber Anda. Tingkatkan kapasitas kapan saja seiring bertumbuhnya bisnis.
+                </p>
+
+                <!-- Billing Cycle Switch Toggle Button -->
+                <div class="inline-flex items-center gap-3 p-1 rounded-xl bg-slate-900 border border-slate-800">
+                    <button id="toggle-monthly" class="px-4 py-2 text-xs font-bold rounded-lg bg-indigo-600 text-white transition-all shadow-md">
+                        Bulanan
+                    </button>
+                    <button id="toggle-yearly" class="px-4 py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all">
+                        Tahunan (Hemat 20%)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pricing Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Plan 1 -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover-lift">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Startup ISP</span>
+                        <div class="mt-4 flex items-baseline gap-1">
+                            <span class="text-4xl font-extrabold" id="price-startup">Rp 299k</span>
+                            <span class="text-xs text-slate-500" id="period-startup">/ bulan</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed">Cocok untuk pengusaha RT/RW Net baru atau ISP berskala kecil.</p>
+                        
+                        <div class="border-t border-slate-800/60 my-6"></div>
+                        
+                        <ul class="space-y-3.5 text-xs text-slate-300">
+                            <li class="flex items-center gap-2"><span class="text-cyan-400 font-bold">&check;</span> Hingga 250 Pelanggan</li>
+                            <li class="flex items-center gap-2"><span class="text-cyan-400 font-bold">&check;</span> 2 Router Gateway</li>
+                            <li class="flex items-center gap-2"><span class="text-cyan-400 font-bold">&check;</span> Fitur Billing Otomatis</li>
+                            <li class="flex items-center gap-2"><span class="text-cyan-400 font-bold">&check;</span> Akun NOC & Teknisi Standar</li>
+                        </ul>
+                    </div>
+                    <a href="{{ route('register') }}" class="mt-8 w-full py-3 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800/80 text-center font-bold text-xs transition-colors">
+                        Mulai Sekarang
+                    </a>
+                </div>
+
+                <!-- Plan 2 (Featured) -->
+                <div class="relative glass-panel p-8 rounded-2xl flex flex-col justify-between hover-lift border-indigo-500/50 shadow-lg shadow-indigo-500/5">
+                    <!-- Ribbon Accent -->
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-indigo-600 to-cyan-500 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-md">
+                        Paling Populer
+                    </div>
+
+                    <div>
+                        <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Growth ISP</span>
+                        <div class="mt-4 flex items-baseline gap-1">
+                            <span class="text-4xl font-extrabold" id="price-growth">Rp 599k</span>
+                            <span class="text-xs text-slate-500" id="period-growth">/ bulan</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed">Solusi lengkap untuk ISP lokal berkembang dengan banyak tim operasional.</p>
+                        
+                        <div class="border-t border-slate-800/60 my-6"></div>
+                        
+                        <ul class="space-y-3.5 text-xs text-slate-300">
+                            <li class="flex items-center gap-2"><span class="text-indigo-400 font-bold">&check;</span> Hingga 1.000 Pelanggan</li>
+                            <li class="flex items-center gap-2"><span class="text-indigo-400 font-bold">&check;</span> 5 Router Gateway</li>
+                            <li class="flex items-center gap-2"><span class="text-indigo-400 font-bold">&check;</span> Integrasi Penuh Sensor PRTG</li>
+                            <li class="flex items-center gap-2"><span class="text-indigo-400 font-bold">&check;</span> Smart Helpdesk & Tiket Operasional</li>
+                            <li class="flex items-center gap-2"><span class="text-indigo-400 font-bold">&check;</span> Custom Branding Logo & Nama ISP</li>
+                        </ul>
+                    </div>
+                    <a href="{{ route('register') }}" class="mt-8 w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:brightness-110 text-center font-bold text-xs text-white transition-all shadow-md shadow-indigo-600/10">
+                        Coba Demo Gratis
+                    </a>
+                </div>
+
+                <!-- Plan 3 -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover-lift">
+                    <div>
+                        <span class="text-xs font-bold text-purple-400 uppercase tracking-widest">Enterprise ISP</span>
+                        <div class="mt-4 flex items-baseline gap-1">
+                            <span class="text-4xl font-extrabold" id="price-enterprise">Rp 999k</span>
+                            <span class="text-xs text-slate-500" id="period-enterprise">/ bulan</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed">Kapasitas tanpa batas untuk ISP besar skala regional / nasional.</p>
+                        
+                        <div class="border-t border-slate-800/60 my-6"></div>
+                        
+                        <ul class="space-y-3.5 text-xs text-slate-300">
+                            <li class="flex items-center gap-2"><span class="text-purple-400 font-bold">&check;</span> Pelanggan Tanpa Batas</li>
+                            <li class="flex items-center gap-2"><span class="text-purple-400 font-bold">&check;</span> Router Gateway Unlimited</li>
+                            <li class="flex items-center gap-2"><span class="text-purple-400 font-bold">&check;</span> Dukungan Premium 24/7 SLA</li>
+                            <li class="flex items-center gap-2"><span class="text-purple-400 font-bold">&check;</span> Skema Cluster High-Availability</li>
+                        </ul>
+                    </div>
+                    <a href="{{ route('register') }}" class="mt-8 w-full py-3 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800/80 text-center font-bold text-xs transition-colors">
+                        Hubungi Sales
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Interactive FAQ Accordion Section -->
+        <section id="faq" class="py-20 border-t border-slate-900 max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs text-cyan-400 font-bold uppercase tracking-widest">Bantuan</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold mt-3 mb-4">Pertanyaan yang Sering Diajukan</h2>
+            </div>
+
+            <!-- FAQ Accordion List -->
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-5 flex items-center justify-between text-left font-bold text-sm sm:text-base hover:bg-slate-900/40 transition-colors">
+                        <span>Bagaimana sistem billing otomatis bekerja untuk memutus pelanggan yang telat membayar?</span>
+                        <span class="faq-icon text-xl text-slate-400 leading-none transition-transform">&plus;</span>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-out px-6 bg-slate-950/20">
+                        <p class="py-5 text-xs sm:text-sm text-slate-400 leading-relaxed">
+                            Sistem secara rutin memeriksa jatuh tempo invoice setiap hari. Jika tagihan melewati tanggal jatuh tempo yang ditentukan (misalnya H+1), server penagihan akan mengirim API request ke AAA RADIUS / Mikrotik untuk mengubah profile profile profil speed pelanggan menjadi isolir atau nonaktif secara otomatis tanpa intervensi manual.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-5 flex items-center justify-between text-left font-bold text-sm sm:text-base hover:bg-slate-900/40 transition-colors">
+                        <span>Apakah saya bisa mencustomize logo kuitansi dan nama portal pelanggan?</span>
+                        <span class="faq-icon text-xl text-slate-400 leading-none transition-transform">&plus;</span>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-out px-6 bg-slate-950/20">
+                        <p class="py-5 text-xs sm:text-sm text-slate-400 leading-relaxed">
+                            Ya, tentu saja. Melalui menu Branding Management di akun Super Admin / Master Admin, Anda dapat mengunggah file logo perusahaan (.png) dan nama ISP Anda. Logo tersebut otomatis teraplikasikan di berkas invoice cetak, dashboard login, serta footer e-mail notifikasi ke pelanggan.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <button class="faq-toggle w-full px-6 py-5 flex items-center justify-between text-left font-bold text-sm sm:text-base hover:bg-slate-900/40 transition-colors">
+                        <span>Bagaimana integrasi dengan PRTG Network Monitoring berjalan?</span>
+                        <span class="faq-icon text-xl text-slate-400 leading-none transition-transform">&plus;</span>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-out px-6 bg-slate-950/20">
+                        <p class="py-5 text-xs sm:text-sm text-slate-400 leading-relaxed">
+                            Aplikasi kami menggunakan PRTG API token untuk menarik status sensor perangkat secara berkala. Dashboard NOC di dalam sistem billing Anda akan menampilkan metrik real-time seperti Ping RTT, Bandwidth In/Out, serta status keaktifan perangkat jaringan utama.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
+
+    <!-- 8. Premium Minimalist Footer -->
+    <footer class="relative z-10 border-t border-slate-900 bg-slate-950/80 backdrop-blur-md py-12 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+                <x-company-logo class="text-white" :showText="true" markClass="h-8 w-8 text-white" textClass="text-sm text-white" />
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-8 text-xs text-slate-500 font-semibold">
+                <a href="#features" class="hover:text-slate-300 transition-colors">Fitur</a>
+                <a href="#monitoring" class="hover:text-slate-300 transition-colors">PRTG</a>
+                <a href="#pricing" class="hover:text-slate-300 transition-colors">Harga</a>
+                <a href="{{ route('login') }}" class="hover:text-slate-300 transition-colors">Portal Admin</a>
+            </div>
+
+            <div class="text-xs text-slate-600">
+                &copy; {{ date('Y') }} {{ config('app.name', 'ISP Billing') }} Platform. Hak Cipta Dilindungi.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Pricing & FAQ Accordion Engine (Lightweight Vanilla JS) -->
+    <script>
+        // FAQ Accordion Handler
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('.faq-icon');
+                
+                // Close other open FAQ items if needed
+                document.querySelectorAll('.faq-content').forEach(item => {
+                    if(item !== content) {
+                        item.style.maxHeight = null;
+                        item.previousElementSibling.querySelector('.faq-icon').innerHTML = '&plus;';
+                        item.previousElementSibling.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
+                    }
+                });
+
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    icon.innerHTML = '&plus;';
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.innerHTML = '&minus;';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Pricing Switcher Handler
+        const toggleMonthlyBtn = document.getElementById('toggle-monthly');
+        const toggleYearlyBtn = document.getElementById('toggle-yearly');
+        
+        const priceStartup = document.getElementById('price-startup');
+        const priceGrowth = document.getElementById('price-growth');
+        const priceEnterprise = document.getElementById('price-enterprise');
+
+        const periodStartup = document.getElementById('period-startup');
+        const periodGrowth = document.getElementById('period-growth');
+        const periodEnterprise = document.getElementById('period-enterprise');
+
+        toggleMonthlyBtn.addEventListener('click', () => {
+            // UI Toggle States
+            toggleMonthlyBtn.classList.add('bg-indigo-600', 'text-white');
+            toggleMonthlyBtn.classList.remove('text-slate-400');
+            toggleYearlyBtn.classList.remove('bg-indigo-600', 'text-white');
+            toggleYearlyBtn.classList.add('text-slate-400');
+
+            // Values (Monthly)
+            priceStartup.innerText = 'Rp 299k';
+            priceGrowth.innerText = 'Rp 599k';
+            priceEnterprise.innerText = 'Rp 999k';
+
+            periodStartup.innerText = '/ bulan';
+            periodGrowth.innerText = '/ bulan';
+            periodEnterprise.innerText = '/ bulan';
+        });
+
+        toggleYearlyBtn.addEventListener('click', () => {
+            // UI Toggle States
+            toggleYearlyBtn.classList.add('bg-indigo-600', 'text-white');
+            toggleYearlyBtn.classList.remove('text-slate-400');
+            toggleMonthlyBtn.classList.remove('bg-indigo-600', 'text-white');
+            toggleMonthlyBtn.classList.add('text-slate-400');
+
+            // Values (Yearly with 20% discount applied: e.g. Rp 299k * 12 * 0.8 = Rp 2.87M, or show monthly equivalent: Rp 239k)
+            priceStartup.innerText = 'Rp 239k';
+            priceGrowth.innerText = 'Rp 479k';
+            priceEnterprise.innerText = 'Rp 799k';
+
+            periodStartup.innerText = '/ bulan (ditagih tahunan)';
+            periodGrowth.innerText = '/ bulan (ditagih tahunan)';
+            periodEnterprise.innerText = '/ bulan (ditagih tahunan)';
+        });
+    </script>
 </body>
 </html>
+

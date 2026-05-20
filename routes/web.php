@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\BrandingController;
+use App\Http\Controllers\SettingsController;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -19,14 +20,19 @@ use App\Models\Payment;
 use Illuminate\Support\Facades\Http;
 
 Route::get('/api/prtg', function () {
+    $user = auth()->user();
+    $adminUser = $user->parent_admin_id ? \App\Models\User::find($user->parent_admin_id) : $user;
+
+    $prtgUsername = $adminUser->prtg_username ?: env('PRTG_USER');
+    $prtgPassword = $adminUser->prtg_password ?: env('PRTG_PASSHASH');
 
     $response = Http::get(env('PRTG_URL').'/api/table.json', [
         'content' => 'sensors',
         'id' => 0,
         'output' => 'json',
         'columns' => 'device,status,message',
-        'username' => env('PRTG_USER'),
-        'passhash' => env('PRTG_PASSHASH'),
+        'username' => $prtgUsername,
+        'passhash' => $prtgPassword,
     ]);
 
     return response()->json($response->json());
@@ -190,9 +196,17 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['role:master,admin'])->group(function () {
+        // Unified Settings (Branding, Staf User, PRTG)
+        Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+        Route::post('/settings/branding', [SettingsController::class, 'updateBranding'])->name('settings.branding');
+        Route::post('/settings/prtg', [SettingsController::class, 'updatePrtg'])->name('settings.prtg');
+
+        // Keep resource routes for sub-users/staf, index is redirected in controller
         Route::resource('users', UserController::class)->except(['show']);
-        Route::get('/branding', [BrandingController::class, 'edit'])->name('branding.edit');
-        Route::post('/branding', [BrandingController::class, 'update'])->name('branding.update');
+        Route::get('/branding', function() {
+            return redirect()->route('settings.index', ['tab' => 'branding']);
+        })->name('branding.edit');
+        Route::post('/branding', [SettingsController::class, 'updateBranding'])->name('branding.update');
     });
 
     // =========================
