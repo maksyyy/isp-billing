@@ -6,6 +6,7 @@ function App({ role }) {
     const [data, setData] = useState(null);
     const [modal, setModal] = useState(null);
     const [prtg, setPrtg] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
     const canViewFinance = ["admin", "finance"].includes(role);
     const canViewDevices = ["admin", "noc"].includes(role);
     const canViewPublicApi = ["admin", "finance"].includes(role);
@@ -52,9 +53,12 @@ function App({ role }) {
 
     if (!data) return <p style={{ padding: "20px" }}>⏳ Loading...</p>;
 
-    // FILTER HANYA PELANGGAN (ID DIAWALI ANGKA)
+    // FILTER HANYA PELANGGAN (ID DIAWALI ANGKA) & FILTER BERDASARKAN SEARCH QUERY
     const isCustomer = (name) => /^\d+/.test(name);
-    const filtered = prtg.filter((d) => isCustomer(d.device));
+    const filtered = prtg.filter((d) => 
+        isCustomer(d.device) && 
+        (searchQuery ? d.device.toLowerCase().includes(searchQuery.toLowerCase()) : true)
+    );
 
     // STATUS (PAKAI status_raw kalau ada)
     const online = filtered.filter((d) => d.status_raw == 3).length;
@@ -71,7 +75,7 @@ function App({ role }) {
     ).length;
 
     return (
-        <div style={appContainer}>
+        <main style={appContainer}>
             <style>{`
                 body { margin: 0; background-color: #f8fafc; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
                 * { box-sizing: border-box; }
@@ -84,20 +88,53 @@ function App({ role }) {
                 ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
                 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
                 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+                /* Efek visual hover, shadow, dan transition untuk tombol */
+                .btn-hover {
+                    transition: all 0.2s ease-in-out !important;
+                }
+                .btn-hover:hover {
+                    transform: translateY(-2px) !important;
+                    filter: brightness(1.1) !important;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+                }
+                .btn-hover:active {
+                    transform: translateY(0) !important;
+                }
+
+                /* Efek visual hover, shadow, dan transition untuk gambar */
+                .img-hover {
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                }
+                .img-hover:hover {
+                    transform: scale(1.1) rotate(3deg) !important;
+                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+                    border-color: #3b82f6 !important;
+                }
             `}</style>
 
-            <div style={headerStyle}>
+            <header style={headerStyle}>
                 <h2 style={titleStyle}>✨ API Dashboard</h2>
 
-                {canViewFinance && (
+                {/* Form Pencarian & Filter menggunakan tag <form> dan berbagai <input type> */}
+                <form style={filterFormStyle} onSubmit={(e) => e.preventDefault()}>
+                    {canViewFinance && (
+                        <input
+                            type="month"
+                            value={month}
+                            onChange={(e) => setMonth(e.target.value)}
+                            style={{ ...inputStyle, marginRight: "10px" }}
+                        />
+                    )}
                     <input
-                        type="month"
-                        value={month}
-                        onChange={(e) => setMonth(e.target.value)}
-                        style={inputStyle}
+                        type="text"
+                        placeholder="Cari data..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        style={inputSearchStyle}
                     />
-                )}
-            </div>
+                </form>
+            </header>
 
             <div style={grid}>
                 <Card
@@ -229,7 +266,7 @@ function App({ role }) {
                 )}
             </div>
 
-            {canViewPublicApi && <PublicApiCustomers />}
+            {canViewPublicApi && <PublicApiCustomers searchQuery={searchQuery} />}
 
             {/* MODAL */}
             {modal && (
@@ -300,22 +337,30 @@ function App({ role }) {
 
                         <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
                             {modal.link && (
-                                <a href={modal.link} style={btnBlue}>
+                                <a href={modal.link} style={btnBlue} className="btn-hover">
                                     Lihat Semua
                                 </a>
                             )}
-                            <button style={btn} onClick={() => setModal(null)}>
+                            <button style={btn} onClick={() => setModal(null)} className="btn-hover">
                                 Tutup
                             </button>
                         </div>
                     </div>
                 </div>
             )}
-        </div>
+
+            {/* Semantic <footer> */}
+            <footer style={footerStyle}>
+                <p style={{ margin: 0 }}>&copy; {new Date().getFullYear()} ISP Billing API Dashboard. Semua Hak Cipta Dilindungi.</p>
+                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                    <span style={{ color: "#3b82f6", fontWeight: "bold" }}>Axios & React Portal</span>
+                </div>
+            </footer>
+        </main>
     );
 }
 
-function PublicApiCustomers() {
+function PublicApiCustomers({ searchQuery }) {
     const [customers, setCustomers] = useState([]);
     const [loadingCustomers, setLoadingCustomers] = useState(true);
     const [customersError, setCustomersError] = useState(null);
@@ -330,6 +375,16 @@ function PublicApiCustomers() {
             .catch(() => setCustomersError("Gagal mengambil data pelanggan dari Public API"))
             .finally(() => setLoadingCustomers(false));
     }, []);
+
+    const filteredCustomers = customers.filter((customer) => {
+        const query = searchQuery.toLowerCase();
+        return (
+            customer.name.toLowerCase().includes(query) ||
+            customer.email.toLowerCase().includes(query) ||
+            customer.phone.toLowerCase().includes(query) ||
+            (customer.company?.name && customer.company.name.toLowerCase().includes(query))
+        );
+    });
 
     return (
         <section style={publicApiSection}>
@@ -354,26 +409,49 @@ function PublicApiCustomers() {
 
             {!loadingCustomers && !customersError && (
                 <div style={postsGrid}>
-                    {customers.map((customer) => (
-                        <article key={customer.id} style={postCard}>
-                            <small style={{ color: "#64748b" }}>Customer #{customer.id}</small>
-                            <h4 style={{ margin: "8px 0", color: "#111827" }}>
-                                {customer.name}
-                            </h4>
-                            <p style={{ margin: "0 0 6px", color: "#4b5563" }}>
-                                {customer.email}
-                            </p>
-                            <p style={{ margin: "0 0 6px", color: "#4b5563" }}>
-                                {customer.phone}
-                            </p>
-                            <p style={{ margin: "0 0 6px", color: "#4b5563" }}>
-                                {customer.address.street}, {customer.address.city}
-                            </p>
-                            <strong style={{ color: "#374151" }}>
-                                {customer.company.name}
-                            </strong>
-                        </article>
-                    ))}
+                    {filteredCustomers.length === 0 ? (
+                        <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px", color: "#64748b" }}>
+                            🔍 Tidak ada hasil untuk "{searchQuery}"
+                        </div>
+                    ) : (
+                        filteredCustomers.map((customer) => (
+                            <article key={customer.id} style={postCard}>
+                                <div style={{ display: "flex", gap: "15px", alignItems: "center", marginBottom: "12px" }}>
+                                    <img 
+                                        src={`https://robohash.org/${customer.id}?set=set4&size=80x80`} 
+                                        alt={customer.name} 
+                                        className="img-hover"
+                                        style={{ 
+                                            width: "50px", 
+                                            height: "50px", 
+                                            borderRadius: "50%", 
+                                            border: "2px solid #e2e8f0", 
+                                            background: "#f1f5f9",
+                                            boxShadow: "0 2px 4px rgba(0,0,0,0.05)"
+                                        }} 
+                                    />
+                                    <div>
+                                        <small style={{ color: "#64748b" }}>Customer #{customer.id}</small>
+                                        <h4 style={{ margin: "2px 0 0", color: "#111827", fontSize: "16px" }}>
+                                            {customer.name}
+                                        </h4>
+                                    </div>
+                                </div>
+                                <p style={{ margin: "0 0 6px", color: "#4b5563", fontSize: "14px" }}>
+                                    📧 {customer.email}
+                                </p>
+                                <p style={{ margin: "0 0 6px", color: "#4b5563", fontSize: "14px" }}>
+                                    📞 {customer.phone}
+                                </p>
+                                <p style={{ margin: "0 0 6px", color: "#4b5563", fontSize: "14px" }}>
+                                    📍 {customer.address.street}, {customer.address.city}
+                                </p>
+                                <strong style={{ color: "#374151", fontSize: "14px" }}>
+                                    🏢 {customer.company.name}
+                                </strong>
+                            </article>
+                        ))
+                    )}
                 </div>
             )}
         </section>
@@ -577,6 +655,30 @@ const postCard = {
     padding: "20px",
     background: "#ffffff",
     boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)"
+};
+
+const filterFormStyle = {
+    margin: 0,
+    display: "flex",
+    alignItems: "center"
+};
+
+const inputSearchStyle = {
+    ...inputStyle,
+    paddingLeft: "12px",
+    width: "200px",
+    transition: "all 0.2s ease"
+};
+
+const footerStyle = {
+    marginTop: "50px",
+    paddingTop: "20px",
+    borderTop: "1px solid #e2e8f0",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    fontSize: "13px",
+    color: "#64748b"
 };
 
 const container = document.getElementById("app");
