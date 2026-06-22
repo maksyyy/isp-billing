@@ -2,7 +2,7 @@
 
 @php
     $user = auth()->user();
-    $companyName = 'ISP Billing';
+    $companyName = 'JARTS ISP MANAJEMENT';
     $logoFile = 'company-logo.png';
 
     if ($user) {

@@ -47,6 +47,19 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="phone" :value="__('Phone Number')" />
+            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" autocomplete="tel" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+        </div>
+
+        <div>
+            <x-input-label for="telegram_chat_id" :value="__('Telegram Chat ID')" />
+            <x-text-input id="telegram_chat_id" name="telegram_chat_id" type="text" class="mt-1 block w-full" :value="old('telegram_chat_id', $user->telegram_chat_id)" />
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Dapatkan Chat ID Anda dari bot seperti @userinfobot atau @GetMyChatID_Bot lalu tempel di sini agar dapat menerima notifikasi tiket.</p>
+            <x-input-error class="mt-2" :messages="$errors->get('telegram_chat_id')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

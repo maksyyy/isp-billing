@@ -118,6 +118,9 @@
             background: #312e81;
         }
     </style>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7137805859216450"
+         crossorigin="anonymous"></script>
 </head>
 <body class="grid-bg min-h-screen antialiased selection:bg-indigo-500 selection:text-white">
 

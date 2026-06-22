@@ -52,7 +52,7 @@
                         <input type="checkbox"
                                name="invoice_ids[]"
                                value="{{ $i->id }}"
-                               form="printForm">
+                               form="bulkForm">
                     </td>
                     @endif
 
@@ -141,14 +141,26 @@
         </table>
     </div>
 
-    <!-- CETAK TERPILIH -->
+    <!-- PAGINATION -->
+    <div class="mt-4">
+        {{ $invoices->links() }}
+    </div>
+
+    <!-- BULK ACTIONS -->
     @if(in_array($role, ['admin','finance']))
-    <form id="printForm" action="{{ route('invoices.print.selected') }}" method="POST">
+    <form id="bulkForm" method="POST" class="inline-flex gap-2 mt-4">
         @csrf
 
-        <button formnovalidate
-                class="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded mt-4 shadow">
+        <button formaction="{{ route('invoices.print.selected') }}"
+                formnovalidate
+                class="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded shadow">
             Cetak Terpilih
+        </button>
+
+        <button formaction="{{ route('invoices.destroy.selected') }}"
+                onclick="return confirm('Yakin ingin menghapus invoice yang terpilih?')"
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow">
+            Hapus Terpilih
         </button>
     </form>
     @endif

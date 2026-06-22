@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>ISP Billing - Complete Database ERD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --text-color: #f8fafc;
+      --accent-color: #38bdf8;
+      --card-bg: rgba(17, 24, 39, 0.9);
+      --border-color: rgba(255, 255, 255, 0.08);
+    }
+    body {
+      margin: 0;
+      padding: 40px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      background: linear-gradient(to right, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      margin-top: 0;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 1600px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .mermaid {
+      background: transparent;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        background: '#111827',
+        primaryColor: '#1f2937',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#374151',
+        lineColor: '#6366f1',
+        secondaryColor: '#1f2937',
+        tertiaryColor: '#111827'
+      },
+      er: {
+        useMaxWidth: false,
+        fontSize: 13
+      }
+    });
+  </script>
+</head>
+<body>
+  <h1>ISP BILLING DATABASE ERD</h1>
+  <p>Skema Lengkap Relasi Entitas (Kardinalitas 1:1, 1:N)</p>
+  <div class="container">
+<pre class="mermaid">erDiagram
+    users {
+        bigint id PK
+        string name "Nama Karyawan"
+        string email "Email Unique"
+        string phone "No Telepon Nullable"
+        string telegram_chat_id "Telegram Chat ID"
+        string password "Hashed Password"
+        string role "Role default admin"
+        integer customer_limit "Batas Pelanggan"
+        bigint parent_admin_id FK "Atasan Nullable"
+        string company_name "Nama Perusahaan"
+        string face_photo "Foto Wajah Nullable"
+        string timezone "Timezone Asia Jakarta"
+        string prtg_username "PRTG Username"
+        text prtg_password "PRTG Password Encrypted"
+        string prtg_url "PRTG API URL"
+        string mikrotik_host "IP Host Mikrotik"
+        string mikrotik_username "Username Mikrotik"
+        text mikrotik_password "Password Mikrotik"
+        integer mikrotik_port "Port API default 8728"
+        text telegram_bot_token "Telegram Bot Token"
+        timestamp email_verified_at "Email Verified At"
+        string remember_token "Remember Token"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    packages {
+        bigint id PK
+        bigint admin_id FK "Owner Admin"
+        string name "Nama Paket Internet"
+        integer price "Harga Paket"
+        string speed "Kecepatan Paket"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    customers {
+        bigint id PK
+        bigint admin_id FK "Owner Admin"
+        string customer_code "Kode Pelanggan Unique"
+        string name "Nama Pelanggan"
+        string phone "No Telepon Nullable"
+        string ip "Alamat IP Nullable"
+        boolean is_active "Status Keaktifan"
+        text address "Alamat Nullable"
+        bigint package_id FK "Relasi ke Packages"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    invoices {
+        bigint id PK
+        bigint admin_id FK "Owner Admin"
+        bigint customer_id FK "Relasi ke Customers"
+        integer amount "Total Tagihan"
+        integer paid_amount "Jumlah Dibayar"
+        date due_date "Jatuh Tempo"
+        string status "Status default unpaid"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    payments {
+        bigint id PK
+        bigint invoice_id FK "Relasi ke Invoices"
+        bigint customer_id FK "Relasi ke Customers"
+        integer amount "Jumlah Bayar"
+        date payment_date "Tanggal Pembayaran"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    tickets {
+        bigint id PK
+        bigint admin_id FK "Owner Admin"
+        string title "Judul Tiket"
+        date tanggal "Tanggal Tiket Dibuat"
+        bigint customer_id FK "Relasi ke Customers"
+        text description "Deskripsi Keluhan"
+        string foto_masalah "Foto Masalah Nullable"
+        bigint assigned_to FK "Staf Ditugaskan"
+        string status "Status default open"
+        string bukti "Foto Bukti Perbaikan"
+        dateTime tanggal_selesai "Tanggal Selesai"
+        timestamp archived_at "Tanggal Diarsipkan"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    presensis {
+        bigint id PK
+        bigint user_id FK "Relasi ke Users"
+        date tanggal "Tanggal Presensi"
+        time jam_masuk "Jam Masuk Kerja"
+        time jam_keluar "Jam Keluar Nullable"
+        string foto_masuk "Path Foto Masuk"
+        string foto_keluar "Path Foto Keluar"
+        string status "Status default Hadir"
+        integer lembur "Jam Lembur default 0"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    backbone_devices {
+        bigint id PK
+        bigint admin_id FK "Owner Admin"
+        string name "Nama Perangkat Backbone"
+        string ip "Alamat IP Perangkat"
+        string status "Status default up"
+        timestamp last_ping_at "Ping Terakhir"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    sessions {
+        string id PK
+        bigint user_id FK "Relasi ke Users"
+        string ip_address "IP Address Nullable"
+        text user_agent "User Agent Nullable"
+        text payload "Session Data"
+        integer last_activity "Timestamp Aktivitas"
+    }
+
+    users ||--o{ users : "supervises (1:N)"
+    users ||--o{ packages : "owns (1:N)"
+    users ||--o{ customers : "owns (1:N)"
+    users ||--o{ invoices : "owns (1:N)"
+    users ||--o{ tickets : "owns (1:N)"
+    users ||--o{ backbone_devices : "owns (1:N)"
+    users ||--o{ sessions : "has (1:N)"
+    packages ||--o{ customers : "has (1:N)"
+    customers ||--o{ invoices : "has (1:N)"
+    customers ||--o{ payments : "makes (1:N)"
+    customers ||--o{ tickets : "opens (1:N)"
+    invoices ||--o{ payments : "paid_by (1:N)"
+    users ||--o{ tickets : "assigned_to (1:N)"
+    users ||--o{ presensis : "has (1:N)"
+</pre>
+  </div>
+</body>
+</html>

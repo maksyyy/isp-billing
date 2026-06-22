@@ -85,14 +85,26 @@
 
                 <ul class="space-y-1.5">
 
-                    <!-- DASHBOARD DATA (API PAGE) -->
+                    <!-- DASHBOARD (Unified React) -->
                     @if($role == 'admin' || $role == 'finance' || $role == 'noc')
                     <li>
-                        <a href="{{ route('api.page') }}" class="{{ $baseClass }} {{ request()->routeIs('api.page') ? $activeClass : $inactiveClass }}">
+                        <a href="{{ route('dashboard') }}" class="{{ $baseClass }} {{ request()->routeIs('dashboard') ? $activeClass : $inactiveClass }}">
                             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                             </svg>
-                            <span>Dashboard Data</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    @endif
+
+                    <!-- BACKBONE MONITOR / ALERTS (ADMIN & NOC ONLY) -->
+                    @if($role == 'admin' || $role == 'noc')
+                    <li>
+                        <a href="{{ route('backbone.index') }}" class="{{ $baseClass }} {{ request()->routeIs('backbone.*') ? $activeClass : $inactiveClass }}">
+                            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <span>Sub-second Alerts</span>
                         </a>
                     </li>
                     @endif
@@ -222,11 +234,11 @@
                     <!-- NOC ONLY -->
                     @if($role == 'noc')
                     <li>
-                        <a href="/noc" class="{{ $baseClass }} {{ request()->is('noc*') ? $activeClass : $inactiveClass }}">
+                        <a href="{{ route('customers.index') }}" class="{{ $baseClass }} {{ request()->routeIs('customers.*') ? $activeClass : $inactiveClass }}">
                             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                            <span>Status Monitor</span>
+                            <span>Pelanggan</span>
                         </a>
                     </li>
 
@@ -236,6 +248,18 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                             </svg>
                             <span>Tiket Aduan</span>
+                        </a>
+                    </li>
+                    @endif
+
+                    <!-- PRESENSI MANDIRI (ADMIN & NOC ONLY) -->
+                    @if($role == 'admin' || $role == 'noc')
+                    <li>
+                        <a href="{{ route('presensi.index') }}" class="{{ $baseClass }} {{ request()->routeIs('presensi.*') ? $activeClass : $inactiveClass }}">
+                            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm-3.75 5.625c0-1.036.84-1.875 1.875-1.875h0c1.036 0 1.875.84 1.875 1.875v.375H7.125v-.375z" />
+                            </svg>
+                            <span>Presensi Mandiri</span>
                         </a>
                     </li>
                     @endif

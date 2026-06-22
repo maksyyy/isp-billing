@@ -58,7 +58,12 @@
             <tbody>
                 @forelse($users as $u)
                     <tr class="border-t hover:bg-gray-50">
-                        <td class="p-3 font-semibold">{{ $u->name }}</td>
+                        <td class="p-3 font-semibold">
+                            <div>{{ $u->name }}</div>
+                            @if($u->phone)
+                                <div class="text-xs text-gray-400 font-normal">HP: {{ $u->phone }}</div>
+                            @endif
+                        </td>
                         <td class="p-3">{{ $u->email }}</td>
                         <td class="p-3">
                             <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-semibold uppercase">

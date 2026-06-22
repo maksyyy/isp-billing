@@ -5,40 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Package;
 use App\Models\Invoice;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-          $role = auth()->user()->role;
+        $role = auth()->user()->role;
 
-    if ($role == 'admin') {
-        return view('dashboard.admin');
-    }
+        if (in_array($role, ['admin', 'finance', 'noc', 'teknisi'])) {
+            return view('dashboard.react');
+        }
 
-    if ($role == 'finance') {
-        return view('dashboard.finance');
-    }
+        if ($role == 'master') {
+            $search = $request->get('search');
+            $users = User::where('role', 'admin')
+                ->when($search, function ($q) use ($search) {
+                    $q->where(function ($sub) use ($search) {
+                        $sub->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    });
+                })
+                ->withCount('subUsers')
+                ->latest()
+                ->get();
+            return view('dashboard.master', compact('users'));
+        }
 
-    if ($role == 'teknisi') {
-        return view('dashboard.teknisi');
-    }
-
-    if ($role == 'noc') {
-        return view('dashboard.noc');
-    }
-
-    if ($role == 'master') {
-        return view('dashboard.master');
-    }
-
-    abort(403);
-        return view('dashboard', [
-            'totalCustomers' => Customer::count(),
-            'totalPackages' => Package::count(),
-            'totalInvoices' => Invoice::count(),
-            'paidInvoices' => Invoice::where('status', 'paid')->count(),
-        ]);
-        
+        abort(403);
     }
 }

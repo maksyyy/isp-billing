@@ -41,6 +41,18 @@
                            placeholder="08xxxxxxxxxx">
                 </div>
 
+                <!-- IP Address -->
+                <div class="mb-4">
+                    <label class="block font-semibold mb-1">IP Address</label>
+                    <input type="text"
+                           name="ip"
+                           class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400 @error('ip') border-red-500 @enderror"
+                           placeholder="Contoh: 192.168.1.100">
+                    @error('ip')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Alamat -->
                 <div class="mb-4">
                     <label class="block font-semibold mb-1">Alamat</label>

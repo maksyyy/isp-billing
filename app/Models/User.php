@@ -14,9 +14,18 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
+        'telegram_chat_id',
+        'telegram_bot_token',
         'password',
         'role',
         'parent_admin_id',
+        'face_photo',
+        'prtg_url',
+        'prtg_username',
+        'prtg_password',
+        'timezone',
+        'customer_limit',
     ];
 
     protected $hidden = [
@@ -29,6 +38,9 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'prtg_password' => 'encrypted',
+            'mikrotik_password' => 'encrypted',
+            'telegram_bot_token' => 'encrypted',
         ];
     }
 
@@ -45,5 +57,10 @@ class User extends Authenticatable
     public function subUsers()
     {
         return $this->hasMany(User::class, 'parent_admin_id');
+    }
+
+    public function presensis()
+    {
+        return $this->hasMany(Presensi::class);
     }
 }

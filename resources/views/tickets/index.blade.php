@@ -22,10 +22,12 @@
                 <tr>
                     <th class="p-3 text-left">Judul</th>
                     <th class="p-3 text-left">Customer</th>
+                    <th class="p-3 text-left">Alamat</th>
                     <th class="p-3 text-left">Teknisi</th>
                     <th class="p-3 text-left">Tanggal</th>
                     <th class="p-3 text-left">Selesai</th>
                     <th class="p-3 text-left">Status</th>
+                    <th class="p-3 text-left">Foto Masalah</th>
                     <th class="p-3 text-left">Bukti</th>
                     <th class="p-3 text-left">Aksi</th>
                 </tr>
@@ -39,7 +41,23 @@
                     <td class="p-3 font-semibold">{{ $t->title }}</td>
 
                     <!-- CUSTOMER -->
-                    <td class="p-3">{{ $t->customer->name ?? '-' }}</td>
+                    <td class="p-3">
+                        <div class="font-semibold text-gray-800">{{ $t->customer->name ?? '-' }}</div>
+                    </td>
+
+                    <!-- ALAMAT -->
+                    <td class="p-3">
+                        @if($t->customer && $t->customer->address)
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($t->customer->address) }}" 
+                               target="_blank" 
+                               class="inline-flex items-center text-blue-600 hover:text-blue-800 hover:underline gap-1 font-medium bg-blue-50 px-2 py-1 rounded text-xs transition border border-blue-100"
+                               title="Buka di Google Maps">
+                                📍 <span class="max-w-[180px] truncate block">{{ $t->customer->address }}</span>
+                            </a>
+                        @else
+                            <span class="text-gray-400">-</span>
+                        @endif
+                    </td>
 
                     <!-- TEKNISI -->
                     <td class="p-3">{{ $t->teknisi->name ?? '-' }}</td>
@@ -73,6 +91,18 @@
                         @endif
                     </td>
 
+                    <!-- FOTO MASALAH -->
+                    <td class="p-3">
+                        @if($t->foto_masalah)
+                            <a href="{{ asset('storage/'.$t->foto_masalah) }}" target="_blank">
+                                <img src="{{ asset('storage/'.$t->foto_masalah) }}"
+                                     class="w-12 h-12 object-cover rounded border hover:scale-110 transition">
+                            </a>
+                        @else
+                            <span class="text-gray-400 text-xs">-</span>
+                        @endif
+                    </td>
+ 
                     <!-- BUKTI FOTO -->
                     <td class="p-3">
                         @if($t->bukti)
@@ -132,13 +162,18 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="p-4 text-center text-gray-500">
+                    <td colspan="10" class="p-4 text-center text-gray-500">
                         Belum ada ticket
                     </td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="mt-4">
+        {{ $tickets->links() }}
     </div>
 
 </div>

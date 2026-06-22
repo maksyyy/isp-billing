@@ -43,6 +43,19 @@
                            class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400">
                 </div>
 
+                <!-- IP Address -->
+                <div class="mb-4">
+                    <label class="block font-semibold mb-1">IP Address</label>
+                    <input type="text"
+                           name="ip"
+                           value="{{ old('ip', $customer->ip) }}"
+                           class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400 @error('ip') border-red-500 @enderror"
+                           placeholder="Contoh: 192.168.1.100">
+                    @error('ip')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Address -->
                 <div class="mb-4">
                     <label class="block font-semibold mb-1">Alamat</label>

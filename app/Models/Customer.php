@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-   protected $fillable = [
-    'customer_code',
-    'name',
-    'phone',
-    'address',
-    'package_id'
-];
+    protected $fillable = [
+        'admin_id',
+        'customer_code',
+        'name',
+        'phone',
+        'ip',
+        'address',
+        'package_id',
+        'is_active'
+    ];
 
     public function package()
     {
@@ -22,5 +25,10 @@ class Customer extends Model
     public function invoices()
     {
         return $this->hasMany(\App\Models\Invoice::class);
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }
