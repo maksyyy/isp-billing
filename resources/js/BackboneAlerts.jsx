@@ -570,7 +570,8 @@ const appContainer = {
     padding: "30px",
     maxWidth: "1200px",
     margin: "0 auto",
-    color: "#334155"
+    color: "#111111",
+    fontFamily: "'Geist Sans', -apple-system, sans-serif"
 };
 
 const headerStyle = {
@@ -579,21 +580,23 @@ const headerStyle = {
     alignItems: "center",
     marginBottom: "30px",
     paddingBottom: "15px",
-    borderBottom: "1px solid #e2e8f0"
+    borderBottom: "1px solid #EAEAEA"
 };
 
 const titleStyle = {
     margin: 0,
-    fontSize: "24px",
-    fontWeight: "800",
-    color: "#0f172a"
+    fontSize: "36px",
+    fontWeight: "400",
+    fontFamily: "'Instrument Serif', serif",
+    fontStyle: "italic",
+    color: "#111111"
 };
 
 const livePulseDot = {
     width: "8px",
     height: "8px",
     borderRadius: "50%",
-    background: "#10b981",
+    background: "#346538",
     display: "inline-block"
 };
 
@@ -601,7 +604,7 @@ const statusPulseGreen = {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#10b981",
+    background: "#346538",
     display: "inline-block"
 };
 
@@ -609,7 +612,7 @@ const statusPulseRed = {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#ef4444",
+    background: "#9F2F2D",
     display: "inline-block"
 };
 
@@ -623,56 +626,58 @@ const toolbarStyle = {
 };
 
 const searchInputStyle = {
-    padding: "10px 15px",
+    padding: "8px 14px",
     borderRadius: "8px",
-    border: "1px solid #cbd5e1",
+    border: "1px solid #EAEAEA",
     fontSize: "14px",
     outline: "none",
     width: "300px",
     background: "#fff",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
+    color: "#111111"
 };
 
 const tableContainerStyle = {
     background: "#fff",
-    borderRadius: "16px",
-    border: "1px solid #e2e8f0",
+    borderRadius: "8px",
+    border: "1px solid #EAEAEA",
     overflow: "hidden",
-    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)",
     marginBottom: "30px"
 };
 
 const btnAdd = {
-    padding: "10px 18px",
-    background: "#2563eb",
+    padding: "8px 16px",
+    background: "#111111",
     color: "#fff",
     border: "none",
-    borderRadius: "10px",
+    borderRadius: "6px",
     cursor: "pointer",
-    fontWeight: "700",
-    fontSize: "13px"
+    fontWeight: "600",
+    fontSize: "13px",
+    transition: "all 0.15s ease"
 };
 
 const btnEdit = {
     padding: "6px 12px",
-    background: "#eff6ff",
-    color: "#1d4ed8",
-    border: "1px solid #bfdbfe",
-    borderRadius: "8px",
+    background: "white",
+    color: "#111111",
+    border: "1px solid #EAEAEA",
+    borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",
-    fontSize: "12px"
+    fontSize: "12px",
+    transition: "all 0.15s ease"
 };
 
 const btnDelete = {
     padding: "6px 12px",
-    background: "#fef2f2",
-    color: "#b91c1c",
-    border: "1px solid #fecaca",
-    borderRadius: "8px",
+    background: "white",
+    color: "#9F2F2D",
+    border: "1px solid #EAEAEA",
+    borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",
-    fontSize: "12px"
+    fontSize: "12px",
+    transition: "all 0.15s ease"
 };
 
 const overlay = {
@@ -681,8 +686,8 @@ const overlay = {
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(15, 23, 42, 0.6)",
-    backdropFilter: "blur(4px)",
+    background: "rgba(0, 0, 0, 0.2)",
+    backdropFilter: "blur(2px)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -692,57 +697,61 @@ const overlay = {
 const modalBox = {
     background: "#fff",
     padding: "25px",
-    borderRadius: "16px",
+    borderRadius: "8px",
+    border: "1px solid #EAEAEA",
     width: "90%",
     maxWidth: "450px",
-    boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
 };
 
 const labelStyle = {
-    fontSize: "12px",
+    fontSize: "11px",
     fontWeight: "700",
-    color: "#475569",
-    textTransform: "uppercase"
+    color: "#787774",
+    textTransform: "uppercase",
+    letterSpacing: "0.05em"
 };
 
 const modalInputStyle = {
-    padding: "10px 12px",
-    borderRadius: "8px",
-    border: "1px solid #cbd5e1",
+    padding: "8px 12px",
+    borderRadius: "6px",
+    border: "1px solid #EAEAEA",
     fontSize: "14px",
     outline: "none"
 };
 
 const btnCancel = {
-    padding: "10px 16px",
-    background: "#f1f5f9",
-    color: "#475569",
-    border: "1px solid #e2e8f0",
-    borderRadius: "8px",
+    padding: "8px 16px",
+    background: "white",
+    color: "#787774",
+    border: "1px solid #EAEAEA",
+    borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",
     flex: 1,
-    textAlign: "center"
+    textAlign: "center",
+    transition: "all 0.15s ease"
 };
 
 const btnSubmit = {
-    padding: "10px 16px",
-    background: "#2563eb",
+    padding: "8px 16px",
+    background: "#111111",
     color: "#fff",
     border: "none",
-    borderRadius: "8px",
+    borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",
     flex: 1,
-    textAlign: "center"
+    textAlign: "center",
+    transition: "all 0.15s ease"
 };
 
 const errorBoxStyle = {
     padding: "12px",
-    border: "1px solid #fecaca",
-    borderRadius: "8px",
-    background: "#fef2f2",
-    color: "#b91c1c",
+    border: "1px solid #FDEBEC",
+    borderRadius: "6px",
+    background: "#FDEBEC",
+    color: "#9F2F2D",
     fontSize: "13px",
     marginBottom: "15px"
 };

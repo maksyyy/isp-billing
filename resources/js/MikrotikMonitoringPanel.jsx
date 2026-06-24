@@ -189,10 +189,10 @@ export default function MikrotikMonitoringPanel({
             <div style={panelControlsRow}>
                 <div style={tabContainer}>
                     {[
-                        { key: "traffic", label: "📈 Traffic" },
-                        { key: "resources", label: "📊 Resources" },
-                        { key: "active_users", label: `👥 Active Users (${(active_users || []).length})` },
-                        { key: "address_lists", label: `📋 Address List (${(address_lists || []).length})` },
+                        { key: "traffic", label: "Traffic" },
+                        { key: "resources", label: "Resources" },
+                        { key: "active_users", label: `Active Users (${(active_users || []).length})` },
+                        { key: "address_lists", label: `Address List (${(address_lists || []).length})` },
                     ].map(({ key, label }) => (
                         <button
                             key={key}
@@ -200,10 +200,10 @@ export default function MikrotikMonitoringPanel({
                             onClick={() => setActiveSection(key)}
                             className="btn-hover"
                             style={{
-                                padding: "8px 16px", borderRadius: "8px", border: "none", cursor: "pointer",
-                                fontWeight: "600", fontSize: "13px", transition: "all 0.2s ease",
-                                background: activeSection === key ? "#8b5cf6" : "transparent",
-                                color: activeSection === key ? "#fff" : "#475569",
+                                padding: "6px 14px", borderRadius: "6px", border: "none", cursor: "pointer",
+                                fontWeight: "600", fontSize: "13px", transition: "all 0.15s ease",
+                                background: activeSection === key ? "#111111" : "transparent",
+                                color: activeSection === key ? "#fff" : "#787774",
                             }}
                         >
                             {label}
@@ -545,8 +545,8 @@ export default function MikrotikMonitoringPanel({
 const historySectionStyle = {
     marginTop: "30px",
     background: "#fff",
-    borderRadius: "16px",
-    boxShadow: "0 10px 15px -3px rgba(0,0,0,0.05)",
+    borderRadius: "8px",
+    border: "1px solid #EAEAEA",
     padding: "25px",
 };
 
@@ -555,26 +555,26 @@ const historyHeaderStyle = {
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: "20px",
-    borderBottom: "1px solid #f1f5f9",
+    borderBottom: "1px solid #EAEAEA",
     paddingBottom: "12px"
 };
 
 const historyBadgeStyle = {
-    background: "#f1f5f9",
-    color: "#475569",
+    background: "#F7F6F3",
+    color: "#111111",
     padding: "6px 12px",
-    borderRadius: "999px",
+    borderRadius: "6px",
     fontSize: "12px",
     fontWeight: "bold",
+    border: "1px solid #EAEAEA"
 };
 
 const livePulseDot = {
     width: "8px",
     height: "8px",
     borderRadius: "50%",
-    background: "#10b981",
-    display: "inline-block",
-    boxShadow: "0 0 0 0 rgba(16, 185, 129, 0.7)"
+    background: "#346538",
+    display: "inline-block"
 };
 
 const panelControlsRow = {
@@ -588,30 +588,31 @@ const panelControlsRow = {
 
 const tabContainer = {
     display: "flex",
-    gap: "6px",
-    background: "#f8fafc",
+    gap: "4px",
+    background: "#F7F6F3",
     padding: "4px",
-    borderRadius: "10px",
-    border: "1px solid #e2e8f0",
+    borderRadius: "8px",
+    border: "1px solid #EAEAEA",
     flexWrap: "wrap"
 };
 
 const btnBlue = {
-    padding: "10px 16px",
-    background: "#2563eb",
+    padding: "8px 14px",
+    background: "#111111",
     color: "#fff",
     border: "none",
-    borderRadius: "8px",
+    borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",
     textAlign: "center",
     textDecoration: "none",
+    transition: "all 0.15s ease"
 };
 
 const localSearchInput = {
     padding: "8px 12px",
-    borderRadius: "8px",
-    border: "1px solid #cbd5e1",
+    borderRadius: "6px",
+    border: "1px solid #EAEAEA",
     fontSize: "14px",
     outline: "none",
     background: "#fff",
@@ -619,9 +620,9 @@ const localSearchInput = {
 };
 
 const resourceCard = {
-    background: "#f8fafc",
-    border: "1px solid #e2e8f0",
-    borderRadius: "12px",
+    background: "#F7F6F3",
+    border: "1px solid #EAEAEA",
+    borderRadius: "8px",
     padding: "16px",
     display: "flex",
     flexDirection: "column",
@@ -631,8 +632,8 @@ const resourceCard = {
 };
 
 const cardLabel = {
-    fontSize: "12px",
-    color: "#64748b",
+    fontSize: "11px",
+    color: "#787774",
     fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: "0.05em",
@@ -645,19 +646,19 @@ const trafficHeaderRow = {
     flexWrap: "wrap",
     gap: "12px",
     padding: "14px 16px",
-    background: "#f8fafc",
-    borderRadius: "10px",
-    border: "1px solid #e2e8f0",
+    background: "#F7F6F3",
+    borderRadius: "8px",
+    border: "1px solid #EAEAEA",
 };
 
 const ifaceSelectStyle = {
     padding: "8px 14px",
-    borderRadius: "8px",
-    border: "1px solid #cbd5e1",
+    borderRadius: "6px",
+    border: "1px solid #EAEAEA",
     fontSize: "13px",
     fontWeight: "600",
     background: "#fff",
-    color: "#1e293b",
+    color: "#111111",
     outline: "none",
     cursor: "pointer",
     minWidth: "200px",
@@ -665,10 +666,11 @@ const ifaceSelectStyle = {
 
 const uptimeBadge = {
     fontSize: "12px",
-    color: "#6d28d9",
-    background: "#f5f3ff",
+    color: "#111111",
+    background: "#F7F6F3",
     padding: "4px 10px",
-    borderRadius: "999px",
+    borderRadius: "6px",
+    border: "1px solid #EAEAEA",
     fontWeight: "600",
 };
 
@@ -686,20 +688,19 @@ const emptyChartStyle = {
     justifyContent: "center",
     height: "100%",
     gap: "8px",
-    color: "#64748b",
+    color: "#787774",
     fontSize: "13px",
 };
 
 const userCardStyle = {
     background: "#ffffff",
-    border: "1px solid #e2e8f0",
-    borderRadius: "12px",
+    border: "1px solid #EAEAEA",
+    borderRadius: "8px",
     padding: "16px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)",
-    transition: "transform 0.2s ease, box-shadow 0.2s ease",
+    transition: "transform 0.15s ease, box-shadow 0.15s ease",
 };
 
 const userDetailGrid = {
@@ -713,12 +714,12 @@ const userDetailGrid = {
 };
 
 const detailLabel = {
-    color: "#64748b",
+    color: "#787774",
     fontWeight: "600",
 };
 
 const detailValue = {
-    color: "#1e293b",
+    color: "#111111",
     fontWeight: "500",
     wordBreak: "break-all",
 };
@@ -729,24 +730,24 @@ const linkBtnStyle = {
     justifyContent: "center",
     gap: "6px",
     padding: "8px 12px",
-    background: "#f1f5f9",
-    color: "#475569",
-    borderRadius: "8px",
+    background: "#white",
+    color: "#111111",
+    borderRadius: "6px",
     fontSize: "12px",
     fontWeight: "700",
     textDecoration: "none",
     textAlign: "center",
-    transition: "all 0.2s ease",
-    border: "1px solid #e2e8f0",
+    transition: "all 0.15s ease",
+    border: "1px solid #EAEAEA",
 };
 
 const emptyTabStyle = {
     padding: "40px",
     textAlign: "center",
-    color: "#94a3b8",
-    background: "#f8fafc",
-    borderRadius: "12px",
-    border: "1px dashed #cbd5e1",
+    color: "#787774",
+    background: "#FBFBFA",
+    borderRadius: "8px",
+    border: "1px dashed #EAEAEA",
     fontSize: "14px",
     fontWeight: "500",
 };

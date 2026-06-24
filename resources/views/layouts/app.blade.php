@@ -10,30 +10,32 @@
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Instrument+Serif:ital,wght@0,400;0,900;1,400;1,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #F8FAFC;
+            font-family: 'Geist Sans', 'Plus Jakarta Sans', sans-serif;
+            background-color: #FBFBFA;
         }
 
         h1, h2, h3, h4, .font-heading {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Geist Sans', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
         }
 
-        /* Sidebar styling with deep solid dark-navy & glass borders */
-        .sidebar-glass {
-            background: #090D1A;
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        /* Sidebar styling with clean warm off-white and EAEAEA borders */
+        .sidebar-minimalist {
+            background: #FFFFFF;
+            border-right: 1px solid #EAEAEA;
         }
 
         /* Nav link transitions */
         .nav-link-item {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.15s ease-in-out;
         }
 
         /* Custom scrollbar for sidebar navigation menu */
@@ -44,30 +46,30 @@
             background: transparent;
         }
         .sidebar-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
         }
         .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
 
-<body class="font-sans antialiased text-slate-800 bg-[#F8FAFC] h-full overflow-hidden">
+<body class="font-sans antialiased text-[#111111] bg-[#FBFBFA] h-full overflow-hidden">
 <div class="flex h-full min-h-screen overflow-hidden relative">
 
     <!-- BACKDROP OVERLAY FOR MOBILE SIDEBAR -->
-    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-30 hidden opacity-0 transition-opacity duration-300 ease-in-out lg:hidden"></div>
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/20 backdrop-blur-xs z-30 hidden opacity-0 transition-opacity duration-200 ease-in-out lg:hidden"></div>
 
     <!-- SIDEBAR -->
-    <aside id="sidebar-menu" class="w-64 sidebar-glass text-slate-300 h-full flex flex-col justify-between shadow-2xl fixed inset-y-0 left-0 -translate-x-full lg:translate-x-0 lg:static z-40 transition-transform duration-300 ease-in-out">
+    <aside id="sidebar-menu" class="w-64 sidebar-minimalist text-[#111111] h-full flex flex-col justify-between fixed inset-y-0 left-0 -translate-x-full lg:translate-x-0 lg:static z-40 transition-transform duration-200 ease-in-out">
         
         <!-- TOP MENU AREA -->
         <div class="flex-1 flex flex-col min-h-0">
             <!-- Sidebar Header / Branding -->
-            <div class="p-6 border-b border-white/[0.03]">
+            <div class="p-6 border-b border-[#EAEAEA]">
                 <a href="{{ route('dashboard') }}" class="block hover:opacity-90 transition-opacity">
-                    <x-company-logo class="text-white" mark-class="h-10 w-10 text-white" text-class="text-base text-white" />
+                    <x-company-logo class="text-[#111111]" mark-class="h-10 w-10 text-[#111111]" text-class="text-base text-[#111111] font-heading font-extrabold" />
                 </a>
             </div>
 
@@ -77,10 +79,10 @@
                     $user = auth()->user();
                     $role = $user->role;
                     
-                    // Style list menu navigasi menjadi pill/capsule premium
-                    $baseClass = "nav-link-item flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200";
-                    $activeClass = "bg-indigo-600 text-white shadow-lg shadow-indigo-600/25";
-                    $inactiveClass = "text-slate-400 hover:bg-white/5 hover:text-slate-200";
+                    // Style menu navigasi menjadi minimalist rounded-lg
+                    $baseClass = "nav-link-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150";
+                    $activeClass = "bg-[#111111] text-white";
+                    $inactiveClass = "text-[#787774] hover:bg-[#F5F5F4] hover:text-[#111111]";
                 @endphp
 
                 <ul class="space-y-1.5">
@@ -269,23 +271,23 @@
         </div>
 
         <!-- BOTTOM USER INFO -->
-        <div class="p-4 border-t border-slate-900/60 bg-[#060913]/30">
+        <div class="p-4 border-t border-[#EAEAEA] bg-[#FFFFFF]">
 
             <!-- Profile Info Card -->
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white rounded-xl flex items-center justify-center text-sm font-extrabold shadow-md">
+                <div class="w-10 h-10 bg-[#F5F5F4] border border-[#EAEAEA] text-[#111111] rounded-lg flex items-center justify-center text-sm font-extrabold">
                     {{ strtoupper(substr($user->name, 0, 1)) }}
                 </div>
                 <div class="min-w-0 flex-1">
-                    <p class="text-sm font-bold text-white leading-tight truncate">{{ $user->name }}</p>
-                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">{{ $user->role }}</p>
+                    <p class="text-sm font-bold text-[#111111] leading-tight truncate">{{ $user->name }}</p>
+                    <p class="text-[9px] text-[#787774] font-bold uppercase tracking-wider mt-0.5">{{ $user->role }}</p>
                 </div>
             </div>
 
             <!-- Logout Action -->
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0B0F19] border border-slate-800/80 hover:bg-rose-500/10 hover:border-rose-500/30 hover:text-rose-400 text-slate-400 rounded-xl transition-all duration-200 text-[11px] font-bold uppercase tracking-wider cursor-pointer">
+                <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-[#EAEAEA] hover:bg-[#FDEBEC] hover:border-[#FDEBEC] hover:text-[#9F2F2D] text-[#787774] rounded-lg transition-all duration-150 text-[11px] font-bold uppercase tracking-wider cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
@@ -301,11 +303,11 @@
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         
         <!-- TOP STICKY HEADER BAR -->
-        <header class="h-16 border-b border-slate-200/80 bg-white/80 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-20 shrink-0">
+        <header class="h-16 border-b border-[#EAEAEA] bg-white px-6 flex items-center justify-between sticky top-0 z-20 shrink-0">
             <!-- Left Header Section -->
             <div class="flex items-center gap-4 min-w-0">
                 <!-- Mobile Sidebar Toggle -->
-                <button id="sidebar-toggle" class="lg:hidden p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer" aria-label="Toggle Navigation Sidebar">
+                <button id="sidebar-toggle" class="lg:hidden p-2 text-[#787774] hover:text-[#111111] hover:bg-[#F5F5F4] rounded-lg transition-colors cursor-pointer" aria-label="Toggle Navigation Sidebar">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -316,7 +318,7 @@
                     @if (isset($header))
                         {{ $header }}
                     @else
-                        <h2 class="text-lg font-bold text-slate-800 leading-tight truncate">
+                        <h2 class="text-lg font-bold text-[#111111] leading-tight truncate">
                             {{ config('app.name', 'ISP Billing') }} Console
                         </h2>
                     @endif
@@ -337,36 +339,36 @@
                     @elseif($currentRoute === 'settings.index' || $currentRoute === 'users.index')
                         <input type="hidden" name="tab" value="staff">
                     @endif
-                    <input type="text" name="search" id="global-search-input" value="{{ request('search') }}" placeholder="Cari data..." class="w-full text-xs pl-8 pr-3 sm:pr-10 py-1.5 bg-slate-100/80 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500/30 rounded-xl text-slate-600 font-medium transition-all">
-                    <span class="absolute left-2.5 top-2 text-slate-400">
+                    <input type="text" name="search" id="global-search-input" value="{{ request('search') }}" placeholder="Cari data..." class="w-full text-xs pl-8 pr-3 sm:pr-10 py-1.5 bg-[#F7F6F3] border border-[#EAEAEA] focus:outline-none focus:ring-2 focus:ring-[#111111]/5 focus:border-[#111111]/30 rounded-lg text-[#111111] font-medium transition-all">
+                    <span class="absolute left-2.5 top-2 text-[#787774]">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </span>
-                    <span class="absolute right-2 top-1.5 px-1 py-0.5 bg-white border border-slate-200 text-[8px] text-slate-400 font-bold rounded-md hidden sm:block">
+                    <span class="absolute right-2 top-1.5 px-1 py-0.5 bg-white border border-[#EAEAEA] text-[8px] text-[#787774] font-bold rounded-md hidden sm:block">
                         ⌘ K
                     </span>
                 </form>
 
                 <!-- Network Status indicator -->
-                <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/5 border border-emerald-500/10 text-[10px] text-emerald-600 font-bold">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EDF3EC] border border-[#EDF3EC] text-[10px] text-[#346538] font-bold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#346538]"></span>
                     <span>GATEWAY LIVE</span>
                 </div>
 
                 <!-- Alert/Notifications Bell -->
                 <div class="relative">
-                    <button class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 border border-transparent hover:border-slate-200/80 rounded-xl transition-all cursor-pointer">
+                    <button class="p-2 text-[#787774] hover:text-[#111111] hover:bg-[#F5F5F4] border border-transparent hover:border-[#EAEAEA] rounded-lg transition-all cursor-pointer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        <span class="absolute top-1.5 right-1.5 w-1.8 h-1.8 bg-indigo-600 rounded-full border border-white"></span>
+                        <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#111111] rounded-full border border-white"></span>
                     </button>
                 </div>
                 
                 <!-- Quick Settings Link / Profile Avatar -->
-                <a href="{{ route('profile.edit') }}" class="p-1 bg-slate-50 border border-slate-200/80 hover:bg-slate-100 rounded-xl transition-all flex items-center justify-center gap-2">
-                    <div class="w-7 h-7 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-lg flex items-center justify-center">
+                <a href="{{ route('profile.edit') }}" class="p-1 bg-[#F5F5F4] border border-[#EAEAEA] hover:bg-[#EAEAEA] rounded-lg transition-all flex items-center justify-center gap-2">
+                    <div class="w-7 h-7 bg-[#FFFFFF] text-[#111111] text-xs font-bold rounded-md flex items-center justify-center">
                         {{ strtoupper(substr($user->name, 0, 1)) }}
                     </div>
                 </a>
@@ -381,12 +383,12 @@
             </main>
 
             <!-- Footer Section -->
-            <footer class="border-t border-slate-200 bg-white px-6 lg:px-8 py-4 text-xs text-slate-400 font-semibold flex items-center justify-between shrink-0">
+            <footer class="border-t border-[#EAEAEA] bg-white px-6 lg:px-8 py-4 text-xs text-[#787774] font-medium flex items-center justify-between shrink-0">
                 <div>
                     &copy; {{ date('Y') }} {{ config('app.name', 'ISP Billing') }} Portal. Semua Hak Cipta Dilindungi.
                 </div>
-                <div class="flex items-center gap-1.5 text-[10px] text-indigo-500 bg-indigo-500/5 px-2.5 py-1 rounded-lg border border-indigo-500/10">
-                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                <div class="flex items-center gap-1.5 text-[10px] text-[#111111] bg-[#F7F6F3] px-2.5 py-1 rounded-md border border-[#EAEAEA]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#111111]"></span>
                     Secure Console v2.6
                 </div>
             </footer>

@@ -4,26 +4,36 @@
 
 @layer base {
     body {
-        @apply bg-blue-50 text-blue-950;
+        @apply bg-[#FBFBFA] text-[#111111];
+        font-family: 'Geist Sans', 'Plus Jakarta Sans', -apple-system, sans-serif;
     }
 
     input,
     select,
     textarea {
-        @apply border-blue-200 focus:border-blue-500 focus:ring-blue-500;
+        @apply border-[#EAEAEA] focus:border-[#111111] focus:ring-[#111111] rounded-lg bg-[#FFFFFF] text-sm text-[#111111] transition-all;
     }
 }
 
 @layer components {
     .app-card {
-        @apply rounded-lg border border-blue-100 bg-white shadow-sm;
+        @apply rounded-xl border border-[#EAEAEA] bg-white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     }
 
     .app-table thead {
-        @apply bg-blue-50 text-blue-900;
+        @apply bg-[#F7F6F3] text-[#111111] border-b border-[#EAEAEA];
     }
 
     .app-table tr {
-        @apply border-blue-100;
+        @apply border-b border-[#EAEAEA];
+    }
+    
+    .btn-minimal {
+        @apply inline-flex items-center justify-center px-4 py-2 bg-[#111111] text-white border border-[#111111] rounded-lg text-sm font-medium transition-all duration-150 hover:bg-[#333333] active:scale-98 cursor-pointer;
+    }
+
+    .btn-minimal-secondary {
+        @apply inline-flex items-center justify-center px-4 py-2 bg-white text-[#111111] border border-[#EAEAEA] rounded-lg text-sm font-medium transition-all duration-150 hover:bg-[#F7F6F3] active:scale-98 cursor-pointer;
     }
 }

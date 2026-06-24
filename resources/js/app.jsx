@@ -1454,6 +1454,14 @@ function MikrotikMonitoringPanel({ data, loading }) {
 /* CARD */
 function Card({ title, value, subtitle, color, onClick }) {
     const [isHovered, setIsHovered] = useState(false);
+    
+    // Resolve clean background for subtle color indicators
+    let indicatorColor = "#787774";
+    if (color === "#10b981") indicatorColor = "#346538";
+    if (color === "#ef4444") indicatorColor = "#9F2F2D";
+    if (color === "#f59e0b") indicatorColor = "#956400";
+    if (color === "#3b82f6" || color === "#6366f1") indicatorColor = "#1F6C9F";
+
     return (
         <div
             onClick={onClick}
@@ -1461,21 +1469,23 @@ function Card({ title, value, subtitle, color, onClick }) {
             onMouseLeave={() => setIsHovered(false)}
             style={{
                 ...card,
-                borderTop: `5px solid ${color}`,
                 cursor: "pointer",
-                transform: isHovered ? "translateY(-5px)" : "translateY(0)",
+                transform: isHovered ? "translateY(-2px)" : "translateY(0)",
                 boxShadow: isHovered
-                    ? "0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)"
-                    : "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)",
+                    ? "0 2px 8px rgba(0,0,0,0.04)"
+                    : "0 1px 3px rgba(0,0,0,0.01)",
             }}
         >
-            <h4 style={{ color: "#64748b", margin: "0 0 10px 0", fontSize: "14px", textTransform: "uppercase", letterSpacing: "0.5px" }}>{title}</h4>
-            <p style={{ fontSize: "28px", fontWeight: "800", color, margin: 0 }}>{value}</p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+                <h4 style={{ color: "#787774", margin: 0, fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: "700" }}>{title}</h4>
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: indicatorColor, opacity: 0.6 }}></span>
+            </div>
+            <p style={{ fontSize: "24px", fontWeight: "700", color: "#111111", margin: 0, letterSpacing: "-0.02em" }}>{value}</p>
             {subtitle && (
-                <p style={{ color: "#4b5563", fontSize: "13px", fontWeight: "600", margin: "8px 0 0 0" }}>{subtitle}</p>
+                <p style={{ color: "#787774", fontSize: "12px", fontWeight: "500", margin: "6px 0 0 0" }}>{subtitle}</p>
             )}
-            <div style={{ marginTop: "15px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <small style={{ color: "#94a3b8", fontWeight: "500" }}>Klik untuk detail &rarr;</small>
+            <div style={{ marginTop: "14px", paddingTop: "10px", borderTop: "1px solid #F5F5F4", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <small style={{ color: "#787774", fontWeight: "500", fontSize: "11px" }}>Detail &rarr;</small>
             </div>
         </div>
     );
@@ -1486,7 +1496,8 @@ const appContainer = {
     padding: "30px",
     maxWidth: "1200px",
     margin: "0 auto",
-    color: "#334155"
+    color: "#111111",
+    fontFamily: "'Geist Sans', -apple-system, sans-serif"
 };
 
 const headerStyle = {
@@ -1495,38 +1506,41 @@ const headerStyle = {
     alignItems: "center",
     marginBottom: "30px",
     paddingBottom: "15px",
-    borderBottom: "1px solid #e2e8f0"
+    borderBottom: "1px solid #EAEAEA"
 };
 
 const titleStyle = {
     margin: 0,
-    fontSize: "26px",
-    fontWeight: "700",
-    color: "#0f172a"
+    fontSize: "36px",
+    fontWeight: "400",
+    fontFamily: "'Instrument Serif', serif",
+    fontStyle: "italic",
+    color: "#111111"
 };
 
 const inputStyle = {
-    padding: "10px 15px",
+    padding: "8px 14px",
     borderRadius: "8px",
-    border: "1px solid #cbd5e1",
-    fontSize: "15px",
+    border: "1px solid #EAEAEA",
+    fontSize: "14px",
     outline: "none",
     cursor: "pointer",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-    background: "#fff"
+    background: "#fff",
+    color: "#111111"
 };
 
 const grid = {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-    gap: "24px",
+    gap: "20px",
 };
 
 const card = {
     background: "#fff",
     padding: "24px",
-    borderRadius: "16px",
-    transition: "all 0.3s ease",
+    borderRadius: "8px",
+    border: "1px solid #EAEAEA",
+    transition: "all 0.15s ease-in-out",
 };
 
 const overlay = {
@@ -1535,8 +1549,8 @@ const overlay = {
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(15, 23, 42, 0.6)",
-    backdropFilter: "blur(4px)",
+    background: "rgba(0, 0, 0, 0.2)",
+    backdropFilter: "blur(2px)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -1546,10 +1560,11 @@ const overlay = {
 const modalBox = {
     background: "#fff",
     padding: "25px",
-    borderRadius: "16px",
+    borderRadius: "8px",
+    border: "1px solid #EAEAEA",
     width: "90%",
     maxWidth: "400px",
-    boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
 };
 
 const content = {
@@ -1560,37 +1575,39 @@ const content = {
 };
 
 const listItem = {
-    padding: "12px 16px",
-    marginBottom: "10px",
-    background: "#f8fafc",
-    borderRadius: "10px",
-    border: "1px solid #e2e8f0",
+    padding: "10px 14px",
+    marginBottom: "8px",
+    background: "#F7F6F3",
+    borderRadius: "6px",
+    border: "1px solid #EAEAEA",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    fontSize: "14px",
-    color: "#475569"
+    fontSize: "13px",
+    color: "#111111"
 };
 
 const btn = {
-    padding: "10px 16px",
-    background: "#ef4444",
+    padding: "8px 14px",
+    background: "#111111",
     color: "#fff",
     border: "none",
-    borderRadius: "8px",
+    borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",
+    fontSize: "13px",
     flex: 1,
-    textAlign: "center"
+    textAlign: "center",
+    transition: "all 0.15s ease"
 };
 
 const btnBlue = {
     ...btn,
-    background: "#2563eb",
+    background: "#111111",
+    color: "#fff",
+    border: "1px solid #111111",
     textDecoration: "none",
 };
-
-
 
 const filterFormStyle = {
     margin: 0,
@@ -1608,12 +1625,12 @@ const inputSearchStyle = {
 const footerStyle = {
     marginTop: "50px",
     paddingTop: "20px",
-    borderTop: "1px solid #e2e8f0",
+    borderTop: "1px solid #EAEAEA",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     fontSize: "13px",
-    color: "#64748b"
+    color: "#787774"
 };
 
 const chartGridStyle = {
@@ -1627,19 +1644,18 @@ const chartGridStyle = {
 const chartCardStyle = {
     background: "#fff",
     padding: "24px",
-    borderRadius: "16px",
-    boxShadow: "0 10px 15px -3px rgba(0,0,0,0.05)",
-    border: "1px solid #f1f5f9",
+    borderRadius: "8px",
+    border: "1px solid #EAEAEA",
     display: "flex",
     flexDirection: "column",
-    transition: "all 0.3s ease",
+    transition: "all 0.15s ease",
 };
 
 const chartCardTitleStyle = {
     margin: "0 0 4px 0",
     fontSize: "16px",
     fontWeight: "700",
-    color: "#0f172a",
+    color: "#111111",
 };
 
 const historySectionStyle = {
