@@ -34,11 +34,11 @@ export default function PrtgMonitoringPanel({ prtgCustomers = [], getDeviceStatu
             <div style={historyHeaderStyle}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700", display: "flex", alignItems: "center", gap: "8px" }}>
-                        📡 Monitoring Status Device (PRTG)
+                        Monitoring Status Device (PRTG)
                     </h3>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#f1f5f9", padding: "4px 10px", borderRadius: "12px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#FAF9F6", padding: "4px 10px", borderRadius: "6px", border: "1px solid #D1D1CB" }}>
                         <span style={livePulseDot} className="pulse-green"></span>
-                        <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Live</span>
+                        <span style={{ fontSize: "12px", color: "#787774", fontWeight: "600" }}>Live</span>
                     </div>
                 </div>
                 <span style={historyBadgeStyle}>{counts.all} Total Device</span>
@@ -52,11 +52,11 @@ export default function PrtgMonitoringPanel({ prtgCustomers = [], getDeviceStatu
             <div style={panelControlsRow}>
                 {/* Tabs */}
                 <div style={tabContainer}>
-                    <TabButton active={activeTab === "all"} onClick={() => setActiveTab("all")} label="Semua" count={counts.all} color="#3b82f6" />
-                    <TabButton active={activeTab === "online"} onClick={() => setActiveTab("online")} label="Online" count={counts.online} color="#10b981" />
-                    <TabButton active={activeTab === "down"} onClick={() => setActiveTab("down")} label="Down" count={counts.down} color="#ef4444" />
-                    <TabButton active={activeTab === "warning"} onClick={() => setActiveTab("warning")} label="Warning" count={counts.warning} color="#f59e0b" />
-                    <TabButton active={activeTab === "paused"} onClick={() => setActiveTab("paused")} label="Paused" count={counts.paused} color="#64748b" />
+                    <TabButton active={activeTab === "all"} onClick={() => setActiveTab("all")} label="Semua" count={counts.all} color="#111111" />
+                    <TabButton active={activeTab === "online"} onClick={() => setActiveTab("online")} label="Online" count={counts.online} color="#111111" />
+                    <TabButton active={activeTab === "down"} onClick={() => setActiveTab("down")} label="Down" count={counts.down} color="#111111" />
+                    <TabButton active={activeTab === "warning"} onClick={() => setActiveTab("warning")} label="Warning" count={counts.warning} color="#111111" />
+                    <TabButton active={activeTab === "paused"} onClick={() => setActiveTab("paused")} label="Paused" count={counts.paused} color="#111111" />
                 </div>
 
                 {/* Local Search */}
@@ -72,8 +72,8 @@ export default function PrtgMonitoringPanel({ prtgCustomers = [], getDeviceStatu
             {/* Device Grid */}
             <div style={deviceGridStyle}>
                 {filteredList.length === 0 ? (
-                    <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px", color: "#64748b", background: "#f8fafc", borderRadius: "12px", border: "1px dashed #cbd5e1" }}>
-                        🔍 Tidak ada device yang cocok dengan kriteria filter/pencarian.
+                    <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px", color: "#787774", background: "#FAF9F6", borderRadius: "6px", border: "1px dashed #D1D1CB" }}>
+                        Tidak ada device yang cocok dengan kriteria filter/pencarian.
                     </div>
                 ) : (
                     filteredList.map((d, index) => {
@@ -82,18 +82,17 @@ export default function PrtgMonitoringPanel({ prtgCustomers = [], getDeviceStatu
                         
                         // Theme styling berdasarkan status
                         const theme = {
-                            online: { bg: "#f0fdf4", border: "#bbf7d0", icon: "🟢", color: "#166534", badgeBg: "#d1fae5", badgeColor: "#065f46" },
-                            down: { bg: "#fef2f2", border: "#fecaca", icon: "🔴", color: "#991b1b", badgeBg: "#fee2e2", badgeColor: "#991b1b", pulse: true },
-                            warning: { bg: "#fffbeb", border: "#fef3c7", icon: "🟠", color: "#92400e", badgeBg: "#fef3c7", badgeColor: "#92400e", pulse: true },
-                            paused: { bg: "#f8fafc", border: "#e2e8f0", icon: "🟡", color: "#475569", badgeBg: "#e2e8f0", badgeColor: "#475569" },
-                            unknown: { bg: "#f8fafc", border: "#e2e8f0", icon: "⚪", color: "#64748b", badgeBg: "#f1f5f9", badgeColor: "#64748b" }
-                        }[status] || { bg: "#f8fafc", border: "#e2e8f0", icon: "⚪", color: "#64748b", badgeBg: "#f1f5f9", badgeColor: "#64748b" };
+                            online: { bg: "#EDF3EC", border: "#D1D1CB", color: "#346538", badgeBg: "#EDF3EC", badgeColor: "#346538" },
+                            down: { bg: "#FDEBEC", border: "#D1D1CB", color: "#9F2F2D", badgeBg: "#FDEBEC", badgeColor: "#9F2F2D", pulse: true },
+                            warning: { bg: "#FFF9E6", border: "#D1D1CB", color: "#8F6B00", badgeBg: "#FFF9E6", badgeColor: "#8F6B00", pulse: true },
+                            paused: { bg: "#FAF9F6", border: "#E5E5E0", color: "#787774", badgeBg: "#FAF9F6", badgeColor: "#787774" },
+                            unknown: { bg: "#FAF9F6", border: "#E5E5E0", color: "#787774", badgeBg: "#FAF9F6", badgeColor: "#787774" }
+                        }[status] || { bg: "#FAF9F6", border: "#E5E5E0", color: "#787774", badgeBg: "#FAF9F6", badgeColor: "#787774" };
 
                         return (
                             <div key={index} style={{ ...deviceCardStyle, backgroundColor: theme.bg, borderColor: theme.border }}>
                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
-                                    <div style={{ fontWeight: "700", color: "#1e293b", fontSize: "14px", display: "flex", alignItems: "center", gap: "6px" }}>
-                                        <span>📡</span>
+                                    <div style={{ fontWeight: "700", color: "#111111", fontSize: "14px", display: "flex", alignItems: "center", gap: "6px" }}>
                                         <span>{d.device}</span>
                                     </div>
                                     <span style={{ 
@@ -113,7 +112,6 @@ export default function PrtgMonitoringPanel({ prtgCustomers = [], getDeviceStatu
                                 </div>
 
                                 <div style={{ fontSize: "13px", color: "#475569", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
-                                    <span>🕒</span>
                                     <span>
                                         <strong>Durasi:</strong> {duration}
                                     </span>
@@ -189,8 +187,9 @@ function TabButton({ active, onClick, label, count, color }) {
 const historySectionStyle = {
     marginTop: "30px",
     background: "#fff",
-    borderRadius: "16px",
-    boxShadow: "0 10px 15px -3px rgba(0,0,0,0.05)",
+    borderRadius: "6px",
+    border: "1px solid #E5E5E0",
+    boxShadow: "none",
     padding: "25px",
 };
 
@@ -199,15 +198,16 @@ const historyHeaderStyle = {
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: "20px",
-    borderBottom: "1px solid #f1f5f9",
+    borderBottom: "1px solid #E5E5E0",
     paddingBottom: "12px"
 };
 
 const historyBadgeStyle = {
-    background: "#f1f5f9",
-    color: "#475569",
+    background: "#FAF9F6",
+    color: "#111111",
     padding: "6px 12px",
-    borderRadius: "999px",
+    borderRadius: "6px",
+    border: "1px solid #D1D1CB",
     fontSize: "12px",
     fontWeight: "bold",
 };
@@ -216,16 +216,15 @@ const livePulseDot = {
     width: "8px",
     height: "8px",
     borderRadius: "50%",
-    background: "#10b981",
-    display: "inline-block",
-    boxShadow: "0 0 0 0 rgba(16, 185, 129, 0.7)"
+    background: "#346538",
+    display: "inline-block"
 };
 
 const statusPulseRed = {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#ef4444",
+    background: "#9F2F2D",
     display: "inline-block"
 };
 
@@ -233,7 +232,7 @@ const statusPulseOrange = {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#f59e0b",
+    background: "#8F6B00",
     display: "inline-block"
 };
 
@@ -249,29 +248,26 @@ const panelControlsRow = {
 const tabContainer = {
     display: "flex",
     gap: "8px",
-    background: "#f8fafc",
+    background: "#FAF9F6",
     padding: "4px",
-    borderRadius: "10px",
-    border: "1px solid #e2e8f0",
+    borderRadius: "6px",
+    border: "1px solid #D1D1CB",
     flexWrap: "wrap"
 };
 
 const inputStyle = {
-    padding: "10px 15px",
-    borderRadius: "8px",
-    border: "1px solid #cbd5e1",
-    fontSize: "15px",
+    padding: "8px 12px",
+    borderRadius: "6px",
+    border: "1px solid #D1D1CB",
+    fontSize: "13px",
     outline: "none",
     cursor: "pointer",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-    background: "#fff"
+    background: "#FAF9F6"
 };
 
 const localSearchInput = {
     ...inputStyle,
-    width: "250px",
-    fontSize: "14px",
-    padding: "8px 12px"
+    width: "250px"
 };
 
 const deviceGridStyle = {
@@ -286,10 +282,10 @@ const deviceGridStyle = {
 
 const deviceCardStyle = {
     border: "1px solid",
-    borderRadius: "12px",
+    borderRadius: "6px",
     padding: "16px",
     transition: "all 0.2s ease",
     display: "flex",
     flexDirection: "column",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.02)"
+    boxShadow: "none"
 };

@@ -448,7 +448,7 @@ function App({ role }) {
             `}</style>
 
             <header style={headerStyle}>
-                <h2 style={titleStyle}>📊 Dashboard Utama</h2>
+                <h2 style={titleStyle}>Dashboard Utama</h2>
 
                 {/* Form Pencarian & Filter menggunakan tag <form> dan berbagai <input type> */}
                 <form style={filterFormStyle} onSubmit={(e) => e.preventDefault()}>
@@ -582,8 +582,8 @@ function App({ role }) {
                     <>
                 <Card
                     title="Device Online"
-                    value={`🟢 ${online}`}
-                    color="#10b981"
+                    value={online}
+                    color="#346538"
                     onClick={() =>
                         setModal({
                             title: "Daftar Device Online",
@@ -595,8 +595,8 @@ function App({ role }) {
 
                 <Card
                     title="Device Down"
-                    value={`🔴 ${down}`}
-                    color="#ef4444"
+                    value={down}
+                    color="#9F2F2D"
                     onClick={() =>
                         setModal({
                             title: "Daftar Device Down (Offline)",
@@ -608,8 +608,8 @@ function App({ role }) {
 
                 <Card
                     title="Device Warning"
-                    value={`🟠 ${warning}`}
-                    color="#f59e0b"
+                    value={warning}
+                    color="#956400"
                     onClick={() =>
                         setModal({
                             title: "Daftar Device Warning",
@@ -621,8 +621,8 @@ function App({ role }) {
 
                 <Card
                     title="Device Paused"
-                    value={`🟡 ${paused}`}
-                    color="#64748b"
+                    value={paused}
+                    color="#787774"
                     onClick={() =>
                         setModal({
                             title: "Daftar Device Paused",
@@ -639,8 +639,8 @@ function App({ role }) {
             <div style={chartGridStyle}>
                 {/* 1. Bar Chart: Riwayat Tiket Bulanan */}
                 <div style={chartCardStyle}>
-                    <h3 style={chartCardTitleStyle}>📅 Statistik Tiket Bulanan (6 Bulan Terakhir)</h3>
-                    <p style={{ margin: "0 0 15px 0", color: "#64748b", fontSize: "12px" }}>
+                    <h3 style={chartCardTitleStyle}>Statistik Tiket Bulanan</h3>
+                    <p style={{ margin: "0 0 15px 0", color: "#787774", fontSize: "11px" }}>
                         Jumlah tiket terbuka vs diselesaikan selama 6 bulan terakhir.
                     </p>
                     <div style={{ height: "230px", position: "relative" }}>
@@ -648,24 +648,23 @@ function App({ role }) {
                     </div>
                     <div style={{ marginTop: "15px", display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center" }}>
                         {(data.monthly_ticket_history || []).map((h, i) => (
-                            <button
-                                key={i}
-                                type="button"
-                                className="btn-hover"
-                                onClick={() => fetchMonthlyTickets(h.month, h.label)}
-                                style={{
-                                    padding: "5px 10px",
-                                    fontSize: "11px",
-                                    fontWeight: "700",
-                                    color: "#3b82f6",
-                                    background: "#eff6ff",
-                                    border: "1px solid #bfdbfe",
-                                    borderRadius: "8px",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                📋 {h.label.split(' ')[0]} ({h.total})
-                            </button>
+                             <button
+                                 key={i}
+                                 type="button"
+                                 onClick={() => fetchMonthlyTickets(h.month, h.label)}
+                                 style={{
+                                     padding: "4px 8px",
+                                     fontSize: "10px",
+                                     fontWeight: "700",
+                                     color: "#111111",
+                                     background: "#FAF9F6",
+                                     border: "1px solid #D1D1CB",
+                                     borderRadius: "4px",
+                                     cursor: "pointer",
+                                 }}
+                             >
+                                 {h.label.split(' ')[0]} ({h.total})
+                             </button>
                         ))}
                     </div>
                 </div>
@@ -673,8 +672,8 @@ function App({ role }) {
                 {/* 2. Doughnut Chart: Ringkasan Pemasukan & Tunggakan */}
                 {canViewFinance && (
                     <div style={chartCardStyle}>
-                        <h3 style={chartCardTitleStyle}>💰 Ringkasan Keuangan ({data.month || month})</h3>
-                        <p style={{ margin: "0 0 15px 0", color: "#64748b", fontSize: "12px" }}>
+                        <h3 style={chartCardTitleStyle}>Ringkasan Keuangan ({data.month || month})</h3>
+                        <p style={{ margin: "0 0 15px 0", color: "#787774", fontSize: "11px" }}>
                             Perbandingan antara realisasi pemasukan dengan sisa piutang tagihan.
                         </p>
                         <div style={{ height: "230px", position: "relative" }}>
@@ -702,18 +701,18 @@ function App({ role }) {
                 {/* 3. Doughnut Chart: Status Koneksi Jaringan */}
                 {canViewDevices && (
                     <div style={chartCardStyle}>
-                        <h3 style={chartCardTitleStyle}>📡 Status Jaringan Device</h3>
-                        <p style={{ margin: "0 0 15px 0", color: "#64748b", fontSize: "12px" }}>
+                        <h3 style={chartCardTitleStyle}>Status Jaringan Device</h3>
+                        <p style={{ margin: "0 0 15px 0", color: "#787774", fontSize: "11px" }}>
                             Status kesehatan koneksi perangkat pelanggan (PRTG Monitoring).
                         </p>
                         <div style={{ height: "230px", position: "relative" }}>
                             <Doughnut data={deviceChartData} options={deviceChartOptions} />
                         </div>
-                        <div style={{ marginTop: "15px", padding: "10px", background: "#f8fafc", borderRadius: "10px", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-around", fontSize: "11px", fontWeight: "bold" }}>
-                            <span style={{ color: "#10b981" }}>🟢 {online} Online</span>
-                            <span style={{ color: "#ef4444" }}>🔴 {down} Down</span>
-                            <span style={{ color: "#f59e0b" }}>🟠 {warning} Warn</span>
-                            <span style={{ color: "#64748b" }}>🟡 {paused} Pause</span>
+                        <div style={{ marginTop: "15px", padding: "10px", background: "#FAF9F6", borderRadius: "6px", border: "1px solid #E5E5E0", display: "flex", justifyContent: "space-around", fontSize: "10px", fontWeight: "bold" }}>
+                            <span style={{ color: "#346538" }}>Online: {online}</span>
+                            <span style={{ color: "#9F2F2D" }}>Down: {down}</span>
+                            <span style={{ color: "#956400" }}>Warn: {warning}</span>
+                            <span style={{ color: "#787774" }}>Pause: {paused}</span>
                         </div>
                     </div>
                 )}
@@ -1168,23 +1167,23 @@ function MikrotikMonitoringPanel({ data, loading }) {
     if (loading && !data) {
         return (
             <div style={historySectionStyle}>
-                <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700" }}>🔌 Router MikroTik Monitor</h3>
-                <p style={{ color: "#64748b", margin: "10px 0" }}>⏳ Menghubungi router MikroTik...</p>
+                <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700" }}>Router MikroTik Monitor</h3>
+                <p style={{ color: "#787774", margin: "10px 0" }}>Menghubungi router MikroTik...</p>
             </div>
         );
     }
 
     if (!data || !data.connected) {
         return (
-            <div style={{ ...historySectionStyle, borderLeft: "5px solid #ef4444" }}>
+            <div style={{ ...historySectionStyle, borderLeft: "5px solid #9F2F2D" }}>
                 <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700", display: "flex", alignItems: "center", gap: "8px" }}>
-                    🔌 Router MikroTik Monitor <span style={{ fontSize: "11px", background: "#fee2e2", color: "#b91c1c", padding: "2px 8px", borderRadius: "8px" }}>Disconnected</span>
+                    Router MikroTik Monitor <span style={{ fontSize: "11px", background: "#FDEBEC", color: "#9F2F2D", padding: "2px 8px", borderRadius: "4px" }}>Disconnected</span>
                 </h3>
-                <p style={{ color: "#64748b", fontSize: "14px", marginTop: "10px" }}>
+                <p style={{ color: "#787774", fontSize: "14px", marginTop: "10px" }}>
                     {data?.message || "Koneksi ke MikroTik belum dikonfigurasi. Silakan masuk ke Pengaturan Sistem untuk menghubungkan router."}
                 </p>
                 <a href="/settings?tab=mikrotik" style={{ ...btnBlue, display: "inline-block", marginTop: "10px", textDecoration: "none", fontSize: "12px", width: "auto", flex: "none", padding: "8px 16px" }} className="btn-hover">
-                    ⚙️ Konfigurasi MikroTik
+                    Konfigurasi MikroTik
                 </a>
             </div>
         );
@@ -1215,24 +1214,24 @@ function MikrotikMonitoringPanel({ data, loading }) {
     const ramUsedPercent = ramTotalMb > 0 ? Math.round((ramUsedMb / ramTotalMb) * 100) : 0;
 
     return (
-        <section style={{ ...historySectionStyle, borderLeft: "5px solid #8b5cf6" }}>
+        <section style={{ ...historySectionStyle, borderLeft: "5px solid #111111" }}>
             {/* Header */}
             <div style={historyHeaderStyle}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700", display: "flex", alignItems: "center", gap: "8px" }}>
-                        🔌 Router MikroTik Monitor
+                        Router MikroTik Monitor
                     </h3>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#f5f3ff", padding: "4px 10px", borderRadius: "12px" }}>
-                        <span style={livePulseDot} className="pulse-green"></span>
-                        <span style={{ fontSize: "12px", color: "#6d28d9", fontWeight: "600" }}>Connected</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#EDF3EC", padding: "4px 10px", borderRadius: "4px", border: "1px solid #EDF3EC" }}>
+                        <span style={livePulseDot}></span>
+                        <span style={{ fontSize: "12px", color: "#346538", fontWeight: "600" }}>Connected</span>
                     </div>
                 </div>
-                <span style={{ ...historyBadgeStyle, background: "#f5f3ff", color: "#6d28d9" }}>
+                <span style={{ ...historyBadgeStyle, background: "#FAF9F6", color: "#111111" }}>
                     {resources.board_name}
                 </span>
             </div>
 
-            <p style={{ margin: "0 0 20px 0", color: "#64748b", fontSize: "14px" }}>
+            <p style={{ margin: "0 0 20px 0", color: "#787774", fontSize: "13px" }}>
                 Status real-time, spesifikasi beban kerja CPU, RAM, serta pemetaan firewall address-list pelanggan MikroTik.
             </p>
 
@@ -1242,41 +1241,38 @@ function MikrotikMonitoringPanel({ data, loading }) {
                     <button 
                         type="button"
                         onClick={() => setActiveSection("resources")} 
-                        className="btn-hover"
                         style={{
-                            padding: "8px 16px", borderRadius: "8px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "13px",
-                            background: activeSection === "resources" ? "#8b5cf6" : "transparent",
-                            color: activeSection === "resources" ? "#fff" : "#475569",
-                            transition: "all 0.2s ease"
+                            padding: "6px 12px", borderRadius: "4px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "12px",
+                            background: activeSection === "resources" ? "#111111" : "transparent",
+                            color: activeSection === "resources" ? "#FAF9F6" : "#787774",
+                            transition: "all 0.15s ease"
                         }}
                     >
-                        📊 Resources
+                        Resources
                     </button>
                     <button 
                         type="button"
                         onClick={() => setActiveSection("active_users")} 
-                        className="btn-hover"
                         style={{
-                            padding: "8px 16px", borderRadius: "8px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "13px",
-                            background: activeSection === "active_users" ? "#8b5cf6" : "transparent",
-                            color: activeSection === "active_users" ? "#fff" : "#475569",
-                            transition: "all 0.2s ease"
+                            padding: "6px 12px", borderRadius: "4px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "12px",
+                            background: activeSection === "active_users" ? "#111111" : "transparent",
+                            color: activeSection === "active_users" ? "#FAF9F6" : "#787774",
+                            transition: "all 0.15s ease"
                         }}
                     >
-                        👥 Active Users ({active_users.length})
+                        Active Users ({active_users.length})
                     </button>
                     <button 
                         type="button"
                         onClick={() => setActiveSection("address_lists")} 
-                        className="btn-hover"
                         style={{
-                            padding: "8px 16px", borderRadius: "8px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "13px",
-                            background: activeSection === "address_lists" ? "#8b5cf6" : "transparent",
-                            color: activeSection === "address_lists" ? "#fff" : "#475569",
-                            transition: "all 0.2s ease"
+                            padding: "6px 12px", borderRadius: "4px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "12px",
+                            background: activeSection === "address_lists" ? "#111111" : "transparent",
+                            color: activeSection === "address_lists" ? "#FAF9F6" : "#787774",
+                            transition: "all 0.15s ease"
                         }}
                     >
-                        📋 Address List Pelanggan ({address_lists.length})
+                        Address List Pelanggan ({address_lists.length})
                     </button>
                 </div>
 
@@ -1299,36 +1295,36 @@ function MikrotikMonitoringPanel({ data, loading }) {
                         <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "700", textTransform: "uppercase", marginBottom: "10px" }}>CPU Load</span>
                         <div style={{ position: "relative", width: "90px", height: "90px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <svg width="90" height="90" viewBox="0 0 36 36">
-                                <path stroke="#e2e8f0" strokeWidth="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path stroke="#8b5cf6" strokeWidth="3" strokeDasharray={`${resources.cpu_load}, 100`} fill="none" strokeLinecap="round" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path stroke="#E5E5E0" strokeWidth="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path stroke="#111111" strokeWidth="3" strokeDasharray={`${resources.cpu_load}, 100`} fill="none" strokeLinecap="round" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                             </svg>
-                            <span style={{ position: "absolute", fontSize: "18px", fontWeight: "800", color: "#1e293b" }}>{resources.cpu_load}%</span>
+                            <span style={{ position: "absolute", fontSize: "16px", fontWeight: "800", color: "#111111", fontFamily: "monospace" }}>{resources.cpu_load}%</span>
                         </div>
                     </div>
 
                     {/* RAM CARD */}
-                    <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "150px" }}>
+                    <div style={{ background: "#FAF9F6", border: "1px solid #E5E5E0", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "150px" }}>
                         <div>
-                            <span style={{ display: "block", fontSize: "12px", color: "#64748b", fontWeight: "700", textTransform: "uppercase", marginBottom: "12px" }}>Memory / RAM Usage</span>
-                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: "bold", color: "#1e293b", marginBottom: "6px" }}>
+                            <span style={{ display: "block", fontSize: "11px", color: "#787774", fontWeight: "700", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" }}>Memory / RAM Usage</span>
+                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", fontWeight: "bold", color: "#111111", marginBottom: "6px" }}>
                                 <span>Terpakai: {ramUsedMb} MB</span>
-                                <span style={{ color: "#64748b" }}>Total: {ramTotalMb} MB</span>
+                                <span style={{ color: "#787774" }}>Total: {ramTotalMb} MB</span>
                             </div>
-                            <div style={{ height: "12px", background: "#e2e8f0", borderRadius: "6px", overflow: "hidden" }}>
-                                <div style={{ height: "100%", width: `${ramUsedPercent}%`, background: "linear-gradient(90deg, #8b5cf6, #3b82f6)", borderRadius: "6px" }}></div>
+                            <div style={{ height: "8px", background: "#E5E5E0", borderRadius: "4px", overflow: "hidden" }}>
+                                <div style={{ height: "100%", width: `${ramUsedPercent}%`, background: "#111111", borderRadius: "4px" }}></div>
                             </div>
                         </div>
-                        <span style={{ fontSize: "11px", color: "#94a3b8" }}>Bebas: {ramFreeMb} MB ({100 - ramUsedPercent}%)</span>
+                        <span style={{ fontSize: "10px", color: "#787774", fontFamily: "monospace" }}>Bebas: {ramFreeMb} MB ({100 - ramUsedPercent}%)</span>
                     </div>
 
                     {/* SYSTEM INFO */}
-                    <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "16px", display: "flex", flexDirection: "column", gap: "10px", minHeight: "150px" }}>
-                        <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "700", textTransform: "uppercase" }}>System Details</span>
-                        <div style={{ fontSize: "13px", color: "#475569" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #f1f5f9" }}>
+                    <div style={{ background: "#FAF9F6", border: "1px solid #E5E5E0", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", gap: "10px", minHeight: "150px" }}>
+                        <span style={{ fontSize: "11px", color: "#787774", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>System Details</span>
+                        <div style={{ fontSize: "12px", color: "#111111" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #E5E5E0" }}>
                                 <strong>Uptime:</strong> <span>{resources.uptime}</span>
                             </div>
-                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #f1f5f9" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #E5E5E0" }}>
                                 <strong>Version:</strong> <span>v{resources.version}</span>
                             </div>
                             <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
@@ -1341,40 +1337,39 @@ function MikrotikMonitoringPanel({ data, loading }) {
 
             {/* SECTION 2: ACTIVE USERS */}
             {activeSection === "active_users" && (
-                <div style={{ overflowX: "auto", marginTop: "10px" }}>
-                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
+                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#E5E5E0] rounded-md">
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", textAlign: "left" }} className="app-table">
                         <thead>
-                            <tr style={{ background: "#f1f5f9", borderBottom: "2px solid #cbd5e1" }}>
-                                <th style={{ padding: "10px", color: "#475569" }}>Username</th>
-                                <th style={{ padding: "10px", color: "#475569" }}>IP Address</th>
-                                <th style={{ padding: "10px", color: "#475569" }}>Service</th>
-                                <th style={{ padding: "10px", color: "#475569" }}>Uptime</th>
-                                <th style={{ padding: "10px", color: "#475569" }}>MAC / Caller ID</th>
+                            <tr>
+                                <th style={{ padding: "10px" }}>Username</th>
+                                <th style={{ padding: "10px" }}>IP Address</th>
+                                <th style={{ padding: "10px" }}>Service</th>
+                                <th style={{ padding: "10px" }}>Uptime</th>
+                                <th style={{ padding: "10px" }}>MAC / Caller ID</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredActive.length === 0 ? (
                                 <tr>
-                                    <td colSpan="5" style={{ padding: "30px", textAlign: "center", color: "#64748b" }}>
-                                        🔍 Tidak ada pengguna aktif yang cocok.
+                                    <td colSpan="5" style={{ padding: "30px", textAlign: "center", color: "#787774", fontFamily: "monospace" }}>
+                                        [Tidak ada pengguna aktif yang cocok]
                                     </td>
                                 </tr>
                             ) : (
                                 filteredActive.map((user, i) => (
-                                    <tr key={i} style={{ borderBottom: "1px solid #e2e8f0" }}>
-                                        <td style={{ padding: "12px 10px", fontWeight: "600", color: "#1e293b" }}>👤 {user.name}</td>
-                                        <td style={{ padding: "12px 10px", color: "#334155" }}>{user.address}</td>
+                                    <tr key={i}>
+                                        <td style={{ padding: "12px 10px", fontWeight: "600", color: "#111111" }}>{user.name}</td>
+                                        <td style={{ padding: "12px 10px", color: "#121212" }}>{user.address}</td>
                                         <td style={{ padding: "12px 10px" }}>
                                             <span style={{
                                                 fontSize: "10px", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold",
-                                                background: user.service === "PPPoE" ? "#dbeafe" : "#ffedd5",
-                                                color: user.service === "PPPoE" ? "#1e40af" : "#9a3412"
+                                                background: "#FAF9F6", color: "#111111", border: "1px solid #D1D1CB"
                                             }}>
                                                 {user.service}
                                             </span>
                                         </td>
-                                        <td style={{ padding: "12px 10px", color: "#475569" }}>🕒 {user.uptime}</td>
-                                        <td style={{ padding: "12px 10px", color: "#64748b", fontFamily: "monospace" }}>{user.caller_id}</td>
+                                        <td style={{ padding: "12px 10px", color: "#787774", fontFamily: "monospace" }}>{user.uptime}</td>
+                                        <td style={{ padding: "12px 10px", color: "#787774", fontFamily: "monospace" }}>{user.caller_id}</td>
                                     </tr>
                                 ))
                             )}
@@ -1385,23 +1380,23 @@ function MikrotikMonitoringPanel({ data, loading }) {
 
             {/* SECTION 3: ADDRESS LIST CUSTOMERS */}
             {activeSection === "address_lists" && (
-                <div style={{ overflowX: "auto", marginTop: "10px" }}>
-                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
+                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#E5E5E0] rounded-md">
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", textAlign: "left" }} className="app-table">
                         <thead>
-                            <tr style={{ background: "#f1f5f9", borderBottom: "2px solid #cbd5e1" }}>
-                                <th style={{ padding: "10px", color: "#475569" }}>Pelanggan</th>
-                                <th style={{ padding: "10px", color: "#475569" }}>IP Address</th>
-                                <th style={{ padding: "10px", color: "#475569" }}>Address List</th>
-                                <th style={{ padding: "10px", color: "#475569" }}>Paket</th>
-                                <th style={{ padding: "10px", color: "#475569" }}>Keterangan / Comment</th>
-                                <th style={{ padding: "10px", color: "#475569", textAlign: "center" }}>Status</th>
+                            <tr>
+                                <th style={{ padding: "10px" }}>Pelanggan</th>
+                                <th style={{ padding: "10px" }}>IP Address</th>
+                                <th style={{ padding: "10px" }}>Address List</th>
+                                <th style={{ padding: "10px" }}>Paket</th>
+                                <th style={{ padding: "10px" }}>Keterangan / Comment</th>
+                                <th style={{ padding: "10px", textAlign: "center" }}>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredAddresses.length === 0 ? (
                                 <tr>
-                                    <td colSpan="6" style={{ padding: "30px", textAlign: "center", color: "#64748b" }}>
-                                        🔍 Tidak ada data address list pelanggan yang cocok.
+                                    <td colSpan="6" style={{ padding: "30px", textAlign: "center", color: "#787774", fontFamily: "monospace" }}>
+                                        [Tidak ada data address list pelanggan yang cocok]
                                     </td>
                                 </tr>
                             ) : (
@@ -1410,31 +1405,31 @@ function MikrotikMonitoringPanel({ data, loading }) {
                                                        entry.list.toLowerCase().includes("block") ||
                                                        entry.comment.toLowerCase().includes("isolir");
                                     return (
-                                        <tr key={i} style={{ borderBottom: "1px solid #e2e8f0" }}>
+                                        <tr key={i}>
                                             <td style={{ padding: "12px 10px" }}>
-                                                <div style={{ fontWeight: "700", color: "#1e293b" }}>📡 {entry.customer_name}</div>
-                                                <small style={{ color: "#94a3b8" }}>Kode: <strong>{entry.customer_code}</strong></small>
+                                                <div style={{ fontWeight: "700", color: "#111111" }}>{entry.customer_name}</div>
+                                                <small style={{ color: "#787774", fontFamily: "monospace" }}>Kode: <strong>{entry.customer_code}</strong></small>
                                             </td>
-                                            <td style={{ padding: "12px 10px", color: "#334155", fontWeight: "600" }}>{entry.address}</td>
+                                            <td style={{ padding: "12px 10px", color: "#121212", fontWeight: "600", fontFamily: "monospace" }}>{entry.address}</td>
                                             <td style={{ padding: "12px 10px" }}>
                                                 <span style={{
-                                                    fontSize: "11px", padding: "4px 8px", borderRadius: "999px", fontWeight: "bold",
-                                                    background: isIsolated ? "#fee2e2" : "#d1fae5",
-                                                    color: isIsolated ? "#991b1b" : "#065f46"
+                                                    fontSize: "10px", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold",
+                                                    background: isIsolated ? "#FDEBEC" : "#EDF3EC",
+                                                    color: isIsolated ? "#9F2F2D" : "#346538"
                                                 }}>
                                                     {entry.list}
                                                 </span>
                                             </td>
-                                            <td style={{ padding: "12px 10px", color: "#475569" }}>📦 {entry.package_name}</td>
-                                            <td style={{ padding: "12px 10px", color: "#64748b", fontSize: "12px" }}>{entry.comment || "-"}</td>
+                                            <td style={{ padding: "12px 10px", color: "#787774" }}>{entry.package_name}</td>
+                                            <td style={{ padding: "12px 10px", color: "#787774", fontSize: "11px" }}>{entry.comment || "-"}</td>
                                             <td style={{ padding: "12px 10px", textAlign: "center" }}>
                                                 <span style={{
-                                                    fontSize: "11px", padding: "3px 8px", borderRadius: "6px", fontWeight: "bold",
-                                                    background: isIsolated ? "#fef2f2" : "#f0fdf4",
-                                                    color: isIsolated ? "#ef4444" : "#10b981",
-                                                    border: `1px solid ${isIsolated ? '#fecaca' : '#bbf7d0'}`
+                                                    fontSize: "10px", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold",
+                                                    background: isIsolated ? "#FDEBEC" : "#EDF3EC",
+                                                    color: isIsolated ? "#9F2F2D" : "#346538",
+                                                    border: `1px solid ${isIsolated ? '#FAF3DB' : '#EDF3EC'}`
                                                 }}>
-                                                    {isIsolated ? "🚫 TERISOLIR" : "✅ AKTIF"}
+                                                    {isIsolated ? "TERISOLIR" : "AKTIF"}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1493,10 +1488,10 @@ function Card({ title, value, subtitle, color, onClick }) {
 
 /* STYLE */
 const appContainer = {
-    padding: "30px",
-    maxWidth: "1200px",
+    padding: "0px",
+    maxWidth: "100%",
     margin: "0 auto",
-    color: "#111111",
+    color: "#121212",
     fontFamily: "'Geist Sans', -apple-system, sans-serif"
 };
 
@@ -1506,7 +1501,7 @@ const headerStyle = {
     alignItems: "center",
     marginBottom: "30px",
     paddingBottom: "15px",
-    borderBottom: "1px solid #EAEAEA"
+    borderBottom: "1px solid #E5E5E0"
 };
 
 const titleStyle = {
@@ -1519,13 +1514,13 @@ const titleStyle = {
 };
 
 const inputStyle = {
-    padding: "8px 14px",
-    borderRadius: "8px",
-    border: "1px solid #EAEAEA",
-    fontSize: "14px",
+    padding: "6px 12px",
+    borderRadius: "6px",
+    border: "1px solid #D1D1CB",
+    fontSize: "12px",
     outline: "none",
     cursor: "pointer",
-    background: "#fff",
+    background: "#FAF9F6",
     color: "#111111"
 };
 
@@ -1538,8 +1533,8 @@ const grid = {
 const card = {
     background: "#fff",
     padding: "24px",
-    borderRadius: "8px",
-    border: "1px solid #EAEAEA",
+    borderRadius: "6px",
+    border: "1px solid #E5E5E0",
     transition: "all 0.15s ease-in-out",
 };
 
@@ -1549,8 +1544,7 @@ const overlay = {
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(0, 0, 0, 0.2)",
-    backdropFilter: "blur(2px)",
+    background: "rgba(0, 0, 0, 0.3)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -1560,11 +1554,11 @@ const overlay = {
 const modalBox = {
     background: "#fff",
     padding: "25px",
-    borderRadius: "8px",
-    border: "1px solid #EAEAEA",
+    borderRadius: "6px",
+    border: "1px solid #E5E5E0",
     width: "90%",
     maxWidth: "400px",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
+    boxShadow: "none",
 };
 
 const content = {
@@ -1577,9 +1571,9 @@ const content = {
 const listItem = {
     padding: "10px 14px",
     marginBottom: "8px",
-    background: "#F7F6F3",
+    background: "#FAF9F6",
     borderRadius: "6px",
-    border: "1px solid #EAEAEA",
+    border: "1px solid #E5E5E0",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -1604,7 +1598,7 @@ const btn = {
 const btnBlue = {
     ...btn,
     background: "#111111",
-    color: "#fff",
+    color: "#FAF9F6",
     border: "1px solid #111111",
     textDecoration: "none",
 };
@@ -1625,7 +1619,7 @@ const inputSearchStyle = {
 const footerStyle = {
     marginTop: "50px",
     paddingTop: "20px",
-    borderTop: "1px solid #EAEAEA",
+    borderTop: "1px solid #E5E5E0",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -1644,8 +1638,8 @@ const chartGridStyle = {
 const chartCardStyle = {
     background: "#fff",
     padding: "24px",
-    borderRadius: "8px",
-    border: "1px solid #EAEAEA",
+    borderRadius: "6px",
+    border: "1px solid #E5E5E0",
     display: "flex",
     flexDirection: "column",
     transition: "all 0.15s ease",
@@ -1661,8 +1655,9 @@ const chartCardTitleStyle = {
 const historySectionStyle = {
     marginTop: "30px",
     background: "#fff",
-    borderRadius: "16px",
-    boxShadow: "0 10px 15px -3px rgba(0,0,0,0.05)",
+    borderRadius: "6px",
+    border: "1px solid #E5E5E0",
+    boxShadow: "none",
     padding: "25px",
 };
 
@@ -1671,17 +1666,19 @@ const historyHeaderStyle = {
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: "20px",
-    borderBottom: "1px solid #f1f5f9",
+    borderBottom: "1px solid #E5E5E0",
     paddingBottom: "12px"
 };
 
 const historyBadgeStyle = {
-    background: "#f1f5f9",
-    color: "#475569",
-    padding: "6px 12px",
-    borderRadius: "999px",
-    fontSize: "12px",
+    background: "#FAF9F6",
+    color: "#111111",
+    padding: "4px 10px",
+    borderRadius: "4px",
+    border: "1px solid #E5E5E0",
+    fontSize: "11px",
     fontWeight: "bold",
+    fontFamily: "monospace"
 };
 
 const historyGridStyle = {
@@ -1691,9 +1688,9 @@ const historyGridStyle = {
 };
 
 const historyCardStyle = {
-    background: "#f8fafc",
-    border: "1px solid #e2e8f0",
-    borderRadius: "12px",
+    background: "#FAF9F6",
+    border: "1px solid #E5E5E0",
+    borderRadius: "6px",
     padding: "16px",
     transition: "all 0.2s ease",
 };
@@ -1702,16 +1699,15 @@ const livePulseDot = {
     width: "8px",
     height: "8px",
     borderRadius: "50%",
-    background: "#10b981",
+    background: "#346538",
     display: "inline-block",
-    boxShadow: "0 0 0 0 rgba(16, 185, 129, 0.7)"
 };
 
 const statusPulseRed = {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#ef4444",
+    background: "#9F2F2D",
     display: "inline-block"
 };
 
@@ -1719,7 +1715,7 @@ const statusPulseOrange = {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#f59e0b",
+    background: "#956400",
     display: "inline-block"
 };
 

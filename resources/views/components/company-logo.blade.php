@@ -29,9 +29,9 @@
     @if($hasLogo)
         <img src="{{ asset($logoFile) }}?v={{ filemtime($logoPath) }}"
              alt="{{ $companyName }}"
-             class="{{ $markClass }} object-contain rounded-xl bg-white p-1 shadow-sm border border-slate-100">
+             class="{{ $markClass }} object-contain rounded-md bg-white p-1 border border-[#E5E5E0]">
     @else
-        <div class="{{ $markClass }} rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white flex items-center justify-center font-extrabold shadow-md">
+        <div class="{{ $markClass }} rounded-md bg-[#111111] text-white flex items-center justify-center font-bold text-xs border border-[#2D2D30]">
             ISP
         </div>
     @endif
@@ -39,7 +39,7 @@
     @if($showText)
         <div class="min-w-0">
             <p class="{{ $textClass }} font-bold text-inherit leading-tight truncate">{{ $companyName }}</p>
-            <p class="text-[10px] uppercase font-bold tracking-wider opacity-60">Billing & Network</p>
+            <p class="text-[9px] uppercase font-bold tracking-wider opacity-60">Control Console</p>
         </div>
     @endif
 </div>

@@ -1,143 +1,137 @@
 <x-app-layout>
 <div class="p-6">
 
-    <h2 class="text-xl font-bold mb-4 text-gray-800">Data Tagihan</h2>
+    <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#111111] mb-6">Data Tagihan</h2>
 
     @php
         $role = auth()->user()->role;
     @endphp
 
-    <!-- 🔥 ACTION BUTTON -->
-    <div class="mb-4 flex gap-2 items-center">
+    <!-- ACTION BUTTONS -->
+    <div class="mb-6 flex gap-2 items-center">
         @if(in_array($role, ['admin','finance']))
-            <a href="{{ route('invoices.generate.form') }}"
-               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
+            <a href="{{ route('invoices.generate.form') }}" class="btn-minimal">
                Generate Tagihan
             </a>
 
-            <a href="{{ route('invoices.printAll') }}"
-               class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow">
+            <a href="{{ route('invoices.printAll') }}" class="btn-minimal-secondary">
                Cetak Semua
             </a>
         @endif
     </div>
 
     <!-- TABLE -->
-    <div class="bg-white shadow rounded overflow-hidden">
-        <table class="w-full border text-sm">
-
-            <thead class="bg-gray-200">
+    <div class="border border-[#E5E5E0] rounded-md overflow-hidden bg-white">
+        <table class="app-table">
+            <thead>
                 <tr>
                     @if(in_array($role, ['admin','finance']))
-                    <th class="p-2 text-center">
-                        <input type="checkbox" onclick="toggleAll(this)">
+                    <th class="p-3 text-center w-12">
+                        <input type="checkbox" onclick="toggleAll(this)" class="rounded border-[#D1D1CB] text-[#111111] focus:ring-0">
                     </th>
                     @endif
 
-                    <th class="p-2 text-left">Customer</th>
-                    <th class="p-2 text-left">Jumlah</th>
-                    <th class="p-2 text-left">Dibayar</th>
-                    <th class="p-2 text-left">Jatuh Tempo</th>
-                    <th class="p-2 text-left">Status</th>
-                    <th class="p-2 text-center">Aksi</th>
+                    <th class="p-3 text-left">Customer</th>
+                    <th class="p-3 text-left">Jumlah</th>
+                    <th class="p-3 text-left">Dibayar</th>
+                    <th class="p-3 text-left">Jatuh Tempo</th>
+                    <th class="p-3 text-left">Status</th>
+                    <th class="p-3 text-center w-[320px]">Aksi</th>
                 </tr>
             </thead>
 
             <tbody>
                 @forelse($invoices as $i)
-                <tr class="border hover:bg-gray-50">
-
+                <tr>
                     @if(in_array($role, ['admin','finance']))
-                    <td class="text-center">
+                    <td class="p-3 text-center">
                         <input type="checkbox"
                                name="invoice_ids[]"
                                value="{{ $i->id }}"
-                               form="bulkForm">
+                               form="bulkForm"
+                               class="rounded border-[#D1D1CB] text-[#111111] focus:ring-0">
                     </td>
                     @endif
 
-                    <td class="p-2">
+                    <td class="p-3 font-semibold text-[#111111]">
                         {{ $i->customer->name }}
                     </td>
 
-                    <td class="p-2">
+                    <td class="p-3 font-mono text-xs text-[#111111]">
                         Rp {{ number_format($i->amount) }}
                     </td>
 
-                    <td class="p-2">
+                    <td class="p-3 font-mono text-xs text-[#787774]">
                         Rp {{ number_format($i->paid_amount ?? 0) }}
                     </td>
 
-                    <td class="p-2">
+                    <td class="p-3 text-xs text-[#787774] font-mono">
                         {{ $i->due_date }}
                     </td>
 
-                    <td class="p-2">
+                    <td class="p-3 text-xs">
                         @if($i->status == 'paid')
-                            <span class="text-green-600 font-bold">Lunas</span>
+                            <span class="inline-flex px-2 py-0.5 bg-[#EDF3EC] text-[#346538] border border-[#EDF3EC] rounded text-[10px] font-bold uppercase tracking-wider">Lunas</span>
                         @elseif($i->paid_amount > 0)
-                            <span class="text-yellow-600">Cicilan</span>
+                            <span class="inline-flex px-2 py-0.5 bg-[#FAF3DB] text-[#956400] border border-[#FAF3DB] rounded text-[10px] font-bold uppercase tracking-wider">Cicilan</span>
                         @else
-                            <span class="text-red-600">Belum Bayar</span>
+                            <span class="inline-flex px-2 py-0.5 bg-[#FDEBEC] text-[#9F2F2D] border border-[#FDEBEC] rounded text-[10px] font-bold uppercase tracking-wider">Belum Bayar</span>
                         @endif
                     </td>
 
-                    <td class="p-2 flex gap-2 items-center justify-center">
+                    <td class="p-3 text-center">
+                        <div class="inline-flex items-center gap-1.5 justify-center flex-wrap">
+                            <!-- BAYAR -->
+                            @if($i->status == 'unpaid')
+                            <form action="{{ route('invoices.pay', $i->id) }}" method="POST" class="inline-flex gap-1 items-center">
+                                @csrf
+                                <input type="number" name="amount"
+                                       class="border border-[#D1D1CB] px-2 py-1 text-xs w-20 rounded bg-[#FAF9F6] focus:border-[#111111] focus:ring-0 text-xs font-mono"
+                                       placeholder="Nominal" required>
+                                <button class="btn-minimal px-2 py-1 text-[10px]">
+                                    Bayar
+                                </button>
+                            </form>
+                            @endif
 
-                        <!-- BAYAR -->
-                        @if($i->status == 'unpaid')
-                        <form action="{{ route('invoices.pay', $i->id) }}" method="POST" class="flex gap-1">
-                            @csrf
-                            <input type="number" name="amount"
-                                   class="border p-1 w-20 rounded"
-                                   placeholder="Nominal" required>
+                            <!-- SELESAI -->
+                            @if($i->status == 'unpaid' && in_array($role, ['admin','finance']))
+                            <form action="{{ route('invoices.selesai', $i->id) }}" method="POST"
+                                   onsubmit="return confirm('Tandai selesai?')" class="inline">
+                                @csrf
+                                <button class="btn-minimal px-2.5 py-1 text-[10px] bg-[#111111]">
+                                    Selesai
+                                </button>
+                            </form>
+                            @endif
 
-                            <button class="bg-green-600 hover:bg-green-700 text-white px-2 rounded">
-                                Bayar
-                            </button>
-                        </form>
-                        @endif
+                            <!-- CETAK -->
+                            @if(in_array($role, ['admin','finance']))
+                            <a href="{{ route('invoices.print', $i->id) }}" class="btn-minimal-secondary px-2.5 py-1 text-[10px]">
+                                Cetak
+                            </a>
 
-                        <!-- SELESAI -->
-                        @if($i->status == 'unpaid' && in_array($role, ['admin','finance']))
-                        <form action="{{ route('invoices.selesai', $i->id) }}" method="POST"
-                               onsubmit="return confirm('Tandai selesai?')">
-                            @csrf
-                            <button class="bg-green-800 hover:bg-green-900 text-white px-2 rounded">
-                                Selesai
-                            </button>
-                        </form>
-                        @endif
-
-                        <!-- CETAK -->
-                        @if(in_array($role, ['admin','finance']))
-                        <a href="{{ route('invoices.print', $i->id) }}"
-                           class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded">
-                            Cetak
-                        </a>
-
-                        <form action="{{ route('invoices.destroy', $i->id) }}" method="POST"
-                               onsubmit="return confirm('Yakin ingin menghapus invoice ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded">
-                                Hapus
-                            </button>
-                        </form>
-                        @endif
-
+                            <form action="{{ route('invoices.destroy', $i->id) }}" method="POST"
+                                   onsubmit="return confirm('Yakin ingin menghapus invoice ini?')" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button class="inline-flex items-center justify-center px-2.5 py-1 bg-[#FDEBEC] hover:bg-[#9F2F2D] hover:text-white text-[#9F2F2D] border border-[#FDEBEC] rounded-md text-[10px] font-bold transition-all cursor-pointer">
+                                    Hapus
+                                </button>
+                            </form>
+                            @endif
+                        </div>
                     </td>
 
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center p-4">
-                        Belum ada data invoice
+                    <td colspan="7" class="text-center p-8 text-[#787774] font-mono text-xs">
+                        [Belum ada data invoice]
                     </td>
                 </tr>
                 @endforelse
             </tbody>
-
         </table>
     </div>
 
@@ -148,18 +142,18 @@
 
     <!-- BULK ACTIONS -->
     @if(in_array($role, ['admin','finance']))
-    <form id="bulkForm" method="POST" class="inline-flex gap-2 mt-4">
+    <form id="bulkForm" method="POST" class="inline-flex gap-2 mt-6">
         @csrf
 
         <button formaction="{{ route('invoices.print.selected') }}"
                 formnovalidate
-                class="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded shadow">
+                class="btn-minimal-secondary">
             Cetak Terpilih
         </button>
 
         <button formaction="{{ route('invoices.destroy.selected') }}"
                 onclick="return confirm('Yakin ingin menghapus invoice yang terpilih?')"
-                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow">
+                class="inline-flex items-center justify-center px-4 py-2.5 bg-[#FDEBEC] hover:bg-[#9F2F2D] hover:text-white text-[#9F2F2D] border border-[#FDEBEC] rounded-md text-xs font-semibold uppercase tracking-wider transition-all duration-150 cursor-pointer">
             Hapus Terpilih
         </button>
     </form>

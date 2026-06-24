@@ -355,16 +355,16 @@ export default function BackboneAlerts({ role }) {
             {/* Header Area */}
             <header style={headerStyle}>
                 <div>
-                    <h2 style={titleStyle}>🚨 Sub-second Alerts (Backbone Monitor)</h2>
+                    <h2 style={titleStyle}>Sub-second Alerts (Backbone Monitor)</h2>
                     <p style={{ margin: "5px 0 0", color: "#64748b", fontSize: "14px" }}>
                         Pantau status perangkat backbone secara real-time. Notifikasi instan akan dikirimkan ke Telegram saat status berubah.
                     </p>
                 </div>
 
                 <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#f1f5f9", padding: "6px 12px", borderRadius: "10px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#FAF9F6", padding: "6px 12px", borderRadius: "6px", border: "1px solid #D1D1CB" }}>
                         <span style={livePulseDot} className="pulse-green"></span>
-                        <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Live Checking</span>
+                        <span style={{ fontSize: "12px", color: "#787774", fontWeight: "600" }}>Live Checking</span>
                     </div>
                     
                     <button 
@@ -373,7 +373,7 @@ export default function BackboneAlerts({ role }) {
                         style={btnAdd}
                         className="btn-hover"
                     >
-                        ➕ Tambah Perangkat
+                        Tambah Perangkat
                     </button>
                 </div>
             </header>
@@ -395,49 +395,37 @@ export default function BackboneAlerts({ role }) {
             {/* Table Area */}
             <div style={tableContainerStyle}>
                 {loading ? (
-                    <div style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>
-                        ⏳ Memuat data perangkat backbone...
+                    <div style={{ padding: "40px", textAlign: "center", color: "#787774" }}>
+                        Memuat data perangkat backbone...
                     </div>
                 ) : filteredDevices.length === 0 ? (
-                    <div style={{ padding: "50px", textAlign: "center", color: "#64748b", background: "#fff", borderRadius: "16px", border: "1px dashed #cbd5e1" }}>
-                        🖥️ Belum ada perangkat backbone yang terdaftar atau cocok dengan pencarian.
+                    <div style={{ padding: "50px", textAlign: "center", color: "#787774", background: "#fff", borderRadius: "6px", border: "1px dashed #D1D1CB" }}>
+                        Belum ada perangkat backbone yang terdaftar atau cocok dengan pencarian.
                     </div>
                 ) : (
-                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px", textAlign: "left" }}>
+                    <table className="app-table">
                         <thead>
-                            <tr style={{ background: "#f1f5f9", borderBottom: "2px solid #cbd5e1" }}>
-                                <th style={{ padding: "12px 16px", color: "#475569" }}>Nama Perangkat</th>
-                                <th style={{ padding: "12px 16px", color: "#475569" }}>IP Address</th>
-                                <th style={{ padding: "12px 16px", color: "#475569" }}>Status</th>
-                                <th style={{ padding: "12px 16px", color: "#475569" }}>Waktu Cek Terakhir</th>
-                                <th style={{ padding: "12px 16px", color: "#475569", textAlign: "right" }}>Aksi</th>
+                            <tr>
+                                <th>Nama Perangkat</th>
+                                <th>IP Address</th>
+                                <th>Status</th>
+                                <th>Waktu Cek Terakhir</th>
+                                <th style={{ textAlign: "right" }}>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredDevices.map(d => {
                                 const isUp = d.status === "up";
-                                const badgeStyle = {
-                                    fontSize: "11px",
-                                    padding: "4px 10px",
-                                    borderRadius: "999px",
-                                    fontWeight: "bold",
-                                    display: "inline-flex",
-                                    alignItems: "center",
-                                    gap: "6px",
-                                    background: isUp ? "#d1fae5" : "#fee2e2",
-                                    color: isUp ? "#065f46" : "#991b1b"
-                                };
-
                                 return (
-                                    <tr key={d.id} style={{ borderBottom: "1px solid #e2e8f0", background: "#fff" }}>
-                                        <td style={{ padding: "16px", fontWeight: "600", color: "#1e293b" }}>
-                                            🖥️ {d.name}
+                                    <tr key={d.id}>
+                                        <td style={{ fontWeight: "600" }}>
+                                            {d.name}
                                         </td>
-                                        <td style={{ padding: "16px", fontFamily: "monospace", color: "#334155" }}>
+                                        <td style={{ fontFamily: "monospace" }}>
                                             {d.ip}
                                         </td>
-                                        <td style={{ padding: "16px" }}>
-                                            <span style={badgeStyle}>
+                                        <td>
+                                            <span className={isUp ? "status-badge-active" : "status-badge-inactive"}>
                                                 <span 
                                                     style={isUp ? statusPulseGreen : statusPulseRed} 
                                                     className={isUp ? "pulse-green" : "pulse-red"}
@@ -445,12 +433,12 @@ export default function BackboneAlerts({ role }) {
                                                 {d.status.toUpperCase()}
                                             </span>
                                         </td>
-                                        <td style={{ padding: "16px", color: "#64748b" }}>
-                                            🕒 {d.last_ping_at 
+                                        <td>
+                                            {d.last_ping_at 
                                                 ? new Date(d.last_ping_at).toLocaleString("id-ID")
                                                 : "Belum pernah dicek"}
                                         </td>
-                                        <td style={{ padding: "16px", textAlign: "right" }}>
+                                        <td style={{ textAlign: "right" }}>
                                             <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
                                                 <button 
                                                     type="button" 
@@ -458,7 +446,7 @@ export default function BackboneAlerts({ role }) {
                                                     style={btnEdit}
                                                     className="btn-hover"
                                                 >
-                                                    ✏️ Edit
+                                                    Edit
                                                 </button>
                                                 <button 
                                                     type="button" 
@@ -466,7 +454,7 @@ export default function BackboneAlerts({ role }) {
                                                     style={btnDelete}
                                                     className="btn-hover"
                                                 >
-                                                    🗑️ Hapus
+                                                    Hapus
                                                 </button>
                                             </div>
                                         </td>
@@ -507,12 +495,12 @@ export default function BackboneAlerts({ role }) {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <h3 style={{ margin: "0 0 15px 0", fontSize: "18px", fontWeight: "700" }}>
-                            {editingDevice ? "✏️ Edit Perangkat Backbone" : "➕ Tambah Perangkat Backbone"}
+                            {editingDevice ? "Edit Perangkat Backbone" : "Tambah Perangkat Backbone"}
                         </h3>
 
                         {formError && (
                             <div style={errorBoxStyle}>
-                                ⚠️ {formError}
+                                {formError}
                             </div>
                         )}
 
@@ -626,20 +614,20 @@ const toolbarStyle = {
 };
 
 const searchInputStyle = {
-    padding: "8px 14px",
-    borderRadius: "8px",
-    border: "1px solid #EAEAEA",
-    fontSize: "14px",
+    padding: "6px 12px",
+    borderRadius: "6px",
+    border: "1px solid #D1D1CB",
+    fontSize: "12px",
     outline: "none",
     width: "300px",
-    background: "#fff",
+    background: "#FAF9F6",
     color: "#111111"
 };
 
 const tableContainerStyle = {
     background: "#fff",
-    borderRadius: "8px",
-    border: "1px solid #EAEAEA",
+    borderRadius: "6px",
+    border: "1px solid #E5E5E0",
     overflow: "hidden",
     marginBottom: "30px"
 };
@@ -660,7 +648,7 @@ const btnEdit = {
     padding: "6px 12px",
     background: "white",
     color: "#111111",
-    border: "1px solid #EAEAEA",
+    border: "1px solid #D1D1CB",
     borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",
@@ -672,7 +660,7 @@ const btnDelete = {
     padding: "6px 12px",
     background: "white",
     color: "#9F2F2D",
-    border: "1px solid #EAEAEA",
+    border: "1px solid #D1D1CB",
     borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",
@@ -686,8 +674,7 @@ const overlay = {
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(0, 0, 0, 0.2)",
-    backdropFilter: "blur(2px)",
+    background: "rgba(0, 0, 0, 0.3)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -697,11 +684,11 @@ const overlay = {
 const modalBox = {
     background: "#fff",
     padding: "25px",
-    borderRadius: "8px",
-    border: "1px solid #EAEAEA",
+    borderRadius: "6px",
+    border: "1px solid #E5E5E0",
     width: "90%",
     maxWidth: "450px",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
+    boxShadow: "none",
 };
 
 const labelStyle = {
@@ -715,8 +702,9 @@ const labelStyle = {
 const modalInputStyle = {
     padding: "8px 12px",
     borderRadius: "6px",
-    border: "1px solid #EAEAEA",
+    border: "1px solid #D1D1CB",
     fontSize: "14px",
+    background: "#FAF9F6",
     outline: "none"
 };
 
@@ -724,7 +712,7 @@ const btnCancel = {
     padding: "8px 16px",
     background: "white",
     color: "#787774",
-    border: "1px solid #EAEAEA",
+    border: "1px solid #D1D1CB",
     borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "600",

@@ -1,65 +1,61 @@
 <x-app-layout>
     <div class="p-6">
 
-        <h2 class="text-xl font-bold mb-4">Data Paket</h2>
+        <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#111111] mb-6">Data Paket</h2>
 
         <!-- Tombol Tambah -->
-        <a href="{{ route('packages.create') }}"
-           class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 mb-4 inline-block">
-           + Tambah Paket
-        </a>
+        <div class="mb-6">
+            <a href="{{ route('packages.create') }}" class="btn-minimal">
+               + Tambah Paket
+            </a>
+        </div>
 
         <!-- TABLE -->
-        <div class="bg-white shadow rounded overflow-hidden">
-            <table class="w-full border-collapse">
-
-                <thead class="bg-gray-200">
+        <div class="border border-[#E5E5E0] rounded-md overflow-hidden bg-white">
+            <table class="app-table">
+                <thead>
                     <tr>
-                        <th class="p-2 text-left">No</th>
-                        <th class="p-2 text-left">Nama</th>
-                        <th class="p-2 text-left">Harga</th>
-                        <th class="p-2 text-left">Speed</th>
-                        <th class="p-2 text-left">Aksi</th>
+                        <th class="p-3 w-16 text-center">No</th>
+                        <th class="p-3">Nama</th>
+                        <th class="p-3">Harga</th>
+                        <th class="p-3">Speed</th>
+                        <th class="p-3 text-center w-48">Aksi</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @foreach($packages as $index => $p)
-                    <tr class="border-t">
-                        <td class="p-2">{{ $index + 1 }}</td>
-                        <td class="p-2">{{ $p->name }}</td>
-                        <td class="p-2">
+                    <tr>
+                        <td class="p-3 text-center font-mono text-xs">{{ $index + 1 }}</td>
+                        <td class="p-3 font-semibold text-[#111111]">{{ $p->name }}</td>
+                        <td class="p-3 font-mono text-xs text-[#111111]">
                             Rp {{ number_format($p->price, 0, ',', '.') }}
                         </td>
-                        <td class="p-2">{{ $p->speed }}</td>
+                        <td class="p-3 font-mono text-xs text-[#787774]">{{ $p->speed }}</td>
 
-                        <td class="p-2">
+                        <td class="p-3 text-center">
+                            <div class="inline-flex items-center gap-1.5 justify-center">
+                                <!-- EDIT -->
+                                <a href="{{ route('packages.edit', $p->id) }}" class="btn-minimal-secondary px-2.5 py-1 text-[10px] font-bold">
+                                    Edit
+                                </a>
 
-                            <!-- EDIT -->
-                            <a href="{{ route('packages.edit', $p->id) }}"
-                               class="bg-yellow-400 px-2 py-1 rounded text-white">
-                                Edit
-                            </a>
-
-                            <!-- DELETE -->
-                            <form action="{{ route('packages.destroy', $p->id) }}"
-                                  method="POST"
-                                  style="display:inline;"
-                                  onsubmit="return confirm('Yakin mau hapus paket ini?')">
-
-                                @csrf
-                                @method('DELETE')
-
-                                <button class="bg-red-500 px-2 py-1 rounded text-white">
-                                    Hapus
-                                </button>
-                            </form>
-
+                                <!-- DELETE -->
+                                <form action="{{ route('packages.destroy', $p->id) }}"
+                                      method="POST"
+                                      class="inline"
+                                      onsubmit="return confirm('Yakin mau hapus paket ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="inline-flex items-center justify-center px-2.5 py-1 bg-[#FDEBEC] hover:bg-[#9F2F2D] hover:text-white text-[#9F2F2D] border border-[#FDEBEC] rounded-md text-[10px] font-bold transition-all cursor-pointer">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
-
             </table>
         </div>
 
