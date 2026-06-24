@@ -289,18 +289,19 @@ function App({ role }) {
                 position: "top",
                 labels: {
                     font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: "bold" },
-                    color: "#475569",
+                    color: "#8E8E90",
                 },
             },
         },
         scales: {
             x: {
-                grid: { display: false },
-                ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 10, weight: "600" }, color: "#64748b" },
+                grid: { color: "rgba(255, 255, 255, 0.05)" },
+                ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 10, weight: "600" }, color: "#8E8E90" },
             },
             y: {
                 beginAtZero: true,
-                ticks: { precision: 0, font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 }, color: "#64748b" },
+                grid: { color: "rgba(255, 255, 255, 0.05)" },
+                ticks: { precision: 0, font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 }, color: "#8E8E90" },
             },
         },
     };
@@ -310,7 +311,7 @@ function App({ role }) {
         datasets: [
             {
                 data: [data.total_income || 0, data.unpaid_total_amount || 0],
-                backgroundColor: ["rgba(16, 185, 129, 0.85)", "rgba(239, 68, 68, 0.85)"],
+                backgroundColor: ["rgba(16, 185, 129, 0.8)", "rgba(239, 68, 68, 0.8)"],
                 borderColor: ["#10b981", "#ef4444"],
                 borderWidth: 1.5,
             },
@@ -325,7 +326,7 @@ function App({ role }) {
                 position: "bottom",
                 labels: {
                     font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: "bold" },
-                    color: "#475569",
+                    color: "#8E8E90",
                 },
             },
             tooltip: {
@@ -354,10 +355,10 @@ function App({ role }) {
             {
                 data: [online, down, warning, paused],
                 backgroundColor: [
-                    "rgba(16, 185, 129, 0.85)",
-                    "rgba(239, 68, 68, 0.85)",
-                    "rgba(245, 158, 11, 0.85)",
-                    "rgba(100, 116, 139, 0.85)",
+                    "rgba(16, 185, 129, 0.8)",
+                    "rgba(239, 68, 68, 0.8)",
+                    "rgba(245, 158, 11, 0.8)",
+                    "rgba(100, 116, 139, 0.8)",
                 ],
                 borderColor: ["#10b981", "#ef4444", "#f59e0b", "#64748b"],
                 borderWidth: 1.5,
@@ -373,7 +374,7 @@ function App({ role }) {
                 position: "bottom",
                 labels: {
                     font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: "bold" },
-                    color: "#475569",
+                    color: "#8E8E90",
                 },
             },
         },
@@ -383,7 +384,7 @@ function App({ role }) {
     return (
         <main style={appContainer}>
             <style>{`
-                body { margin: 0; background-color: #f8fafc; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+                body { margin: 0; background-color: transparent; }
                 * { box-sizing: border-box; }
                 .modal-anim { animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
                 @keyframes modalFadeIn {
@@ -391,9 +392,9 @@ function App({ role }) {
                     to { opacity: 1; transform: translateY(0) scale(1); }
                 }
                 ::-webkit-scrollbar { width: 8px; }
-                ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-                ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-                ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+                ::-webkit-scrollbar-track { background: #0B0B0D; border-radius: 4px; }
+                ::-webkit-scrollbar-thumb { background: #222226; border-radius: 4px; }
+                ::-webkit-scrollbar-thumb:hover { background: #333339; }
 
                 /* Efek visual hover, shadow, dan transition untuk tombol */
                 .btn-hover {
@@ -656,9 +657,9 @@ function App({ role }) {
                                      padding: "4px 8px",
                                      fontSize: "10px",
                                      fontWeight: "700",
-                                     color: "#111111",
-                                     background: "#FAF9F6",
-                                     border: "1px solid #D1D1CB",
+                                     color: "#FAF9F6",
+                                     background: "#0B0B0D",
+                                     border: "1px solid #222226",
                                      borderRadius: "4px",
                                      cursor: "pointer",
                                  }}
@@ -673,24 +674,24 @@ function App({ role }) {
                 {canViewFinance && (
                     <div style={chartCardStyle}>
                         <h3 style={chartCardTitleStyle}>Ringkasan Keuangan ({data.month || month})</h3>
-                        <p style={{ margin: "0 0 15px 0", color: "#787774", fontSize: "11px" }}>
+                        <p style={{ margin: "0 0 15px 0", color: "#8E8E90", fontSize: "11px" }}>
                             Perbandingan antara realisasi pemasukan dengan sisa piutang tagihan.
                         </p>
                         <div style={{ height: "230px", position: "relative" }}>
                             <Doughnut data={financeChartData} options={financeChartOptions} />
                         </div>
-                        <div style={{ marginTop: "15px", padding: "10px", background: "#f8fafc", borderRadius: "10px", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", fontSize: "11px" }}>
+                        <div style={{ marginTop: "15px", padding: "10px", background: "#0B0B0D", borderRadius: "6px", border: "1px solid #222226", display: "flex", justifyContent: "space-between", fontSize: "11px" }}>
                             <div>
-                                <span style={{ color: "#64748b" }}>Efisiensi Penagihan:</span>
-                                <strong style={{ display: "block", color: "#10b981", fontSize: "14px" }}>
+                                <span style={{ color: "#8E8E90" }}>Efisiensi Penagihan:</span>
+                                <strong style={{ display: "block", color: "#10B981", fontSize: "14px" }}>
                                     {((data.total_income || 0) + (data.unpaid_total_amount || 0)) > 0 
                                         ? Math.round((data.total_income / ((data.total_income || 0) + (data.unpaid_total_amount || 0))) * 100) 
                                         : 0}%
                                 </strong>
                             </div>
                             <div style={{ textAlign: "right" }}>
-                                <span style={{ color: "#64748b" }}>Total Tagihan Terbit:</span>
-                                <strong style={{ display: "block", color: "#1e293b", fontSize: "14px" }}>
+                                <span style={{ color: "#8E8E90" }}>Total Tagihan Terbit:</span>
+                                <strong style={{ display: "block", color: "#FAF9F6", fontSize: "14px" }}>
                                     Rp {Number((data.total_income || 0) + (data.unpaid_total_amount || 0)).toLocaleString("id-ID")}
                                 </strong>
                             </div>
@@ -698,21 +699,21 @@ function App({ role }) {
                     </div>
                 )}
 
-                {/* 3. Doughnut Chart: Status Koneksi Jaringan */}
+                {/* 3. Doughnut Chart: Status Jaringan Device */}
                 {canViewDevices && (
                     <div style={chartCardStyle}>
                         <h3 style={chartCardTitleStyle}>Status Jaringan Device</h3>
-                        <p style={{ margin: "0 0 15px 0", color: "#787774", fontSize: "11px" }}>
+                        <p style={{ margin: "0 0 15px 0", color: "#8E8E90", fontSize: "11px" }}>
                             Status kesehatan koneksi perangkat pelanggan (PRTG Monitoring).
                         </p>
                         <div style={{ height: "230px", position: "relative" }}>
                             <Doughnut data={deviceChartData} options={deviceChartOptions} />
                         </div>
-                        <div style={{ marginTop: "15px", padding: "10px", background: "#FAF9F6", borderRadius: "6px", border: "1px solid #E5E5E0", display: "flex", justifyContent: "space-around", fontSize: "10px", fontWeight: "bold" }}>
-                            <span style={{ color: "#346538" }}>Online: {online}</span>
-                            <span style={{ color: "#9F2F2D" }}>Down: {down}</span>
-                            <span style={{ color: "#956400" }}>Warn: {warning}</span>
-                            <span style={{ color: "#787774" }}>Pause: {paused}</span>
+                        <div style={{ marginTop: "15px", padding: "10px", background: "#0B0B0D", borderRadius: "6px", border: "1px solid #222226", display: "flex", justifyContent: "space-around", fontSize: "10px", fontWeight: "bold" }}>
+                            <span style={{ color: "#10B981" }}>Online: {online}</span>
+                            <span style={{ color: "#EF4444" }}>Down: {down}</span>
+                            <span style={{ color: "#F59E0B" }}>Warn: {warning}</span>
+                            <span style={{ color: "#8E8E90" }}>Pause: {paused}</span>
                         </div>
                     </div>
                 )}
@@ -1291,40 +1292,40 @@ function MikrotikMonitoringPanel({ data, loading }) {
             {activeSection === "resources" && (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginTop: "10px" }}>
                     {/* CPU CARD */}
-                    <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "150px" }}>
-                        <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "700", textTransform: "uppercase", marginBottom: "10px" }}>CPU Load</span>
+                    <div style={{ background: "rgba(12, 12, 14, 0.5)", border: "1px solid #222226", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "150px" }}>
+                        <span style={{ fontSize: "12px", color: "#8E8E90", fontWeight: "700", textTransform: "uppercase", marginBottom: "10px" }}>CPU Load</span>
                         <div style={{ position: "relative", width: "90px", height: "90px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <svg width="90" height="90" viewBox="0 0 36 36">
-                                <path stroke="#E5E5E0" strokeWidth="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path stroke="#111111" strokeWidth="3" strokeDasharray={`${resources.cpu_load}, 100`} fill="none" strokeLinecap="round" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path stroke="#222226" strokeWidth="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path stroke="#FAF9F6" strokeWidth="3" strokeDasharray={`${resources.cpu_load}, 100`} fill="none" strokeLinecap="round" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                             </svg>
-                            <span style={{ position: "absolute", fontSize: "16px", fontWeight: "800", color: "#111111", fontFamily: "monospace" }}>{resources.cpu_load}%</span>
+                            <span style={{ position: "absolute", fontSize: "16px", fontWeight: "800", color: "#FAF9F6", fontFamily: "monospace" }}>{resources.cpu_load}%</span>
                         </div>
                     </div>
 
                     {/* RAM CARD */}
-                    <div style={{ background: "#FAF9F6", border: "1px solid #E5E5E0", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "150px" }}>
+                    <div style={{ background: "rgba(12, 12, 14, 0.5)", border: "1px solid #222226", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "150px" }}>
                         <div>
-                            <span style={{ display: "block", fontSize: "11px", color: "#787774", fontWeight: "700", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" }}>Memory / RAM Usage</span>
-                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", fontWeight: "bold", color: "#111111", marginBottom: "6px" }}>
+                            <span style={{ display: "block", fontSize: "11px", color: "#8E8E90", fontWeight: "700", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" }}>Memory / RAM Usage</span>
+                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", fontWeight: "bold", color: "#FAF9F6", marginBottom: "6px" }}>
                                 <span>Terpakai: {ramUsedMb} MB</span>
-                                <span style={{ color: "#787774" }}>Total: {ramTotalMb} MB</span>
+                                <span style={{ color: "#8E8E90" }}>Total: {ramTotalMb} MB</span>
                             </div>
-                            <div style={{ height: "8px", background: "#E5E5E0", borderRadius: "4px", overflow: "hidden" }}>
-                                <div style={{ height: "100%", width: `${ramUsedPercent}%`, background: "#111111", borderRadius: "4px" }}></div>
+                            <div style={{ height: "8px", background: "#222226", borderRadius: "4px", overflow: "hidden" }}>
+                                <div style={{ height: "100%", width: `${ramUsedPercent}%`, background: "#FAF9F6", borderRadius: "4px" }}></div>
                             </div>
                         </div>
-                        <span style={{ fontSize: "10px", color: "#787774", fontFamily: "monospace" }}>Bebas: {ramFreeMb} MB ({100 - ramUsedPercent}%)</span>
+                        <span style={{ fontSize: "10px", color: "#8E8E90", fontFamily: "monospace" }}>Bebas: {ramFreeMb} MB ({100 - ramUsedPercent}%)</span>
                     </div>
 
                     {/* SYSTEM INFO */}
-                    <div style={{ background: "#FAF9F6", border: "1px solid #E5E5E0", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", gap: "10px", minHeight: "150px" }}>
-                        <span style={{ fontSize: "11px", color: "#787774", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>System Details</span>
-                        <div style={{ fontSize: "12px", color: "#111111" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #E5E5E0" }}>
+                    <div style={{ background: "rgba(12, 12, 14, 0.5)", border: "1px solid #222226", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", gap: "10px", minHeight: "150px" }}>
+                        <span style={{ fontSize: "11px", color: "#8E8E90", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>System Details</span>
+                        <div style={{ fontSize: "12px", color: "#E4E4E7" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #222226" }}>
                                 <strong>Uptime:</strong> <span>{resources.uptime}</span>
                             </div>
-                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #E5E5E0" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #222226" }}>
                                 <strong>Version:</strong> <span>v{resources.version}</span>
                             </div>
                             <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
@@ -1337,7 +1338,7 @@ function MikrotikMonitoringPanel({ data, loading }) {
 
             {/* SECTION 2: ACTIVE USERS */}
             {activeSection === "active_users" && (
-                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#E5E5E0] rounded-md">
+                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#222226] rounded-md">
                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", textAlign: "left" }} className="app-table">
                         <thead>
                             <tr>
@@ -1351,25 +1352,30 @@ function MikrotikMonitoringPanel({ data, loading }) {
                         <tbody>
                             {filteredActive.length === 0 ? (
                                 <tr>
-                                    <td colSpan="5" style={{ padding: "30px", textAlign: "center", color: "#787774", fontFamily: "monospace" }}>
+                                    <td colSpan="5" style={{ padding: "30px", textAlign: "center", color: "#8E8E90", fontFamily: "monospace" }}>
                                         [Tidak ada pengguna aktif yang cocok]
                                     </td>
                                 </tr>
                             ) : (
                                 filteredActive.map((user, i) => (
                                     <tr key={i}>
-                                        <td style={{ padding: "12px 10px", fontWeight: "600", color: "#111111" }}>{user.name}</td>
-                                        <td style={{ padding: "12px 10px", color: "#121212" }}>{user.address}</td>
                                         <td style={{ padding: "12px 10px" }}>
-                                            <span style={{
-                                                fontSize: "10px", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold",
-                                                background: "#FAF9F6", color: "#111111", border: "1px solid #D1D1CB"
-                                            }}>
-                                                {user.service}
-                                            </span>
+                                            <div style={{ fontWeight: "700", color: "#FAF9F6" }}>{user.customer_name || user.name}</div>
+                                            {user.customer_name && <small style={{ color: "#8E8E90", fontFamily: "monospace" }}>PPPoE: <code>{user.name}</code></small>}
                                         </td>
-                                        <td style={{ padding: "12px 10px", color: "#787774", fontFamily: "monospace" }}>{user.uptime}</td>
-                                        <td style={{ padding: "12px 10px", color: "#787774", fontFamily: "monospace" }}>{user.caller_id}</td>
+                                        <td style={{ padding: "12px 10px", color: "#FAF9F6", fontWeight: "600", fontFamily: "monospace" }}>{user.address}</td>
+                                        <td style={{ padding: "12px 10px" }}>
+                                            <span style={{ 
+                                                fontSize: "10px", 
+                                                padding: "2px 6px", 
+                                                borderRadius: "4px", 
+                                                fontWeight: "bold",
+                                                background: user.service === "PPPoE" ? "rgba(16, 185, 129, 0.15)" : "rgba(245, 158, 11, 0.15)",
+                                                color: user.service === "PPPoE" ? "#10B981" : "#F59E0B"
+                                            }}>{user.service}</span>
+                                        </td>
+                                        <td style={{ padding: "12px 10px", color: "#8E8E90", fontFamily: "monospace" }}>{user.uptime}</td>
+                                        <td style={{ padding: "12px 10px", color: "#8E8E90", fontFamily: "monospace" }}>{user.caller_id}</td>
                                     </tr>
                                 ))
                             )}
@@ -1380,7 +1386,7 @@ function MikrotikMonitoringPanel({ data, loading }) {
 
             {/* SECTION 3: ADDRESS LIST CUSTOMERS */}
             {activeSection === "address_lists" && (
-                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#E5E5E0] rounded-md">
+                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#222226] rounded-md">
                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", textAlign: "left" }} className="app-table">
                         <thead>
                             <tr>
@@ -1388,14 +1394,14 @@ function MikrotikMonitoringPanel({ data, loading }) {
                                 <th style={{ padding: "10px" }}>IP Address</th>
                                 <th style={{ padding: "10px" }}>Address List</th>
                                 <th style={{ padding: "10px" }}>Paket</th>
-                                <th style={{ padding: "10px" }}>Keterangan / Comment</th>
+                                <th style={{ padding: "10px", minWidth: "150px" }}>Keterangan / Comment</th>
                                 <th style={{ padding: "10px", textAlign: "center" }}>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredAddresses.length === 0 ? (
                                 <tr>
-                                    <td colSpan="6" style={{ padding: "30px", textAlign: "center", color: "#787774", fontFamily: "monospace" }}>
+                                    <td colSpan="6" style={{ padding: "30px", textAlign: "center", color: "#8E8E90", fontFamily: "monospace" }}>
                                         [Tidak ada data address list pelanggan yang cocok]
                                     </td>
                                 </tr>
@@ -1407,27 +1413,27 @@ function MikrotikMonitoringPanel({ data, loading }) {
                                     return (
                                         <tr key={i}>
                                             <td style={{ padding: "12px 10px" }}>
-                                                <div style={{ fontWeight: "700", color: "#111111" }}>{entry.customer_name}</div>
-                                                <small style={{ color: "#787774", fontFamily: "monospace" }}>Kode: <strong>{entry.customer_code}</strong></small>
+                                                <div style={{ fontWeight: "700", color: "#FAF9F6" }}>{entry.customer_name}</div>
+                                                <small style={{ color: "#8E8E90", fontFamily: "monospace" }}>Kode: <strong>{entry.customer_code}</strong></small>
                                             </td>
-                                            <td style={{ padding: "12px 10px", color: "#121212", fontWeight: "600", fontFamily: "monospace" }}>{entry.address}</td>
+                                            <td style={{ padding: "12px 10px", color: "#FAF9F6", fontWeight: "600", fontFamily: "monospace" }}>{entry.address}</td>
                                             <td style={{ padding: "12px 10px" }}>
                                                 <span style={{
                                                     fontSize: "10px", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold",
-                                                    background: isIsolated ? "#FDEBEC" : "#EDF3EC",
-                                                    color: isIsolated ? "#9F2F2D" : "#346538"
+                                                    background: isIsolated ? "rgba(239, 68, 68, 0.15)" : "rgba(16, 185, 129, 0.15)",
+                                                    color: isIsolated ? "#EF4444" : "#10B981"
                                                 }}>
                                                     {entry.list}
                                                 </span>
                                             </td>
-                                            <td style={{ padding: "12px 10px", color: "#787774" }}>{entry.package_name}</td>
-                                            <td style={{ padding: "12px 10px", color: "#787774", fontSize: "11px" }}>{entry.comment || "-"}</td>
+                                            <td style={{ padding: "12px 10px", color: "#8E8E90" }}>{entry.package_name}</td>
+                                            <td style={{ padding: "12px 10px", color: "#8E8E90", fontSize: "11px" }}>{entry.comment || "-"}</td>
                                             <td style={{ padding: "12px 10px", textAlign: "center" }}>
                                                 <span style={{
                                                     fontSize: "10px", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold",
-                                                    background: isIsolated ? "#FDEBEC" : "#EDF3EC",
-                                                    color: isIsolated ? "#9F2F2D" : "#346538",
-                                                    border: `1px solid ${isIsolated ? '#FAF3DB' : '#EDF3EC'}`
+                                                    background: isIsolated ? "rgba(239, 68, 68, 0.15)" : "rgba(16, 185, 129, 0.15)",
+                                                    color: isIsolated ? "#EF4444" : "#10B981",
+                                                    border: `1px solid ${isIsolated ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)'}`
                                                 }}>
                                                     {isIsolated ? "TERISOLIR" : "AKTIF"}
                                                 </span>
@@ -1443,7 +1449,6 @@ function MikrotikMonitoringPanel({ data, loading }) {
         </section>
     );
 }
-
 
 
 /* CARD */

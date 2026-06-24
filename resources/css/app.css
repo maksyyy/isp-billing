@@ -4,7 +4,7 @@
 
 @layer base {
     body {
-        @apply bg-[#F5F4F0] text-[#121212];
+        @apply bg-[#050505] text-[#FAF9F6];
         font-family: 'Geist Sans', 'Plus Jakarta Sans', -apple-system, sans-serif;
     }
 
@@ -16,35 +16,38 @@
     input[type="date"],
     select,
     textarea {
-        @apply border-[#D1D1CB] focus:border-[#111111] focus:ring-0 rounded-md bg-[#FAF9F6] text-sm text-[#111111] transition-all shadow-none;
+        @apply border-[#222226] focus:border-[#FAF9F6]/40 focus:ring-0 rounded-md bg-[#0B0B0D] text-sm text-[#FAF9F6] transition-all shadow-none;
     }
 }
 
 @layer components {
+    /* Double-Bezel Ethereal Glass Card */
     .app-card {
-        @apply rounded-md border border-[#E5E5E0] bg-white shadow-none;
+        @apply rounded-md border border-[#222226] bg-[#0C0C0E]/50;
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.03), 0 4px 30px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(12px);
     }
 
-    /* Two-tone editorial table layout */
+    /* Glassmorphic table layout */
     .app-table {
         @apply w-full border-collapse text-left;
     }
 
     .app-table thead th {
-        @apply bg-[#111111] text-[#FAF9F6] font-medium text-xs uppercase tracking-wider p-3 border-b border-[#111111];
+        @apply bg-[#0B0B0D] text-[#FAF9F6] font-semibold text-[10px] uppercase tracking-wider p-3 border-b border-[#222226];
     }
 
     .app-table tbody td {
-        @apply p-3 border-b border-[#E5E5E0] bg-white text-sm text-[#121212];
+        @apply p-3 border-b border-[#1C1C1F] bg-[#070709]/40 text-sm text-[#E4E4E7];
     }
 
     .app-table tbody tr {
-        @apply transition-colors hover:bg-[#FAF9F6];
+        @apply transition-colors hover:bg-[#121216]/50;
     }
 
     /* Buttons */
     .btn-minimal {
-        @apply inline-flex items-center justify-center px-4 py-2.5 bg-[#111111] text-white border border-[#111111] rounded-md text-xs font-semibold uppercase tracking-wider transition-all duration-150 hover:bg-[#2A2A2A] cursor-pointer;
+        @apply inline-flex items-center justify-center px-4 py-2.5 bg-[#FAF9F6] text-[#0C0C0D] border border-[#FAF9F6] rounded-md text-xs font-semibold uppercase tracking-wider transition-all duration-150 hover:bg-[#EAEAEA] cursor-pointer;
         transition: transform 0.15s ease, background-color 0.15s ease;
     }
     .btn-minimal:active {
@@ -52,7 +55,7 @@
     }
 
     .btn-minimal-secondary {
-        @apply inline-flex items-center justify-center px-4 py-2.5 bg-white text-[#111111] border border-[#D1D1CB] rounded-md text-xs font-semibold uppercase tracking-wider transition-all duration-150 hover:bg-[#FAF9F6] cursor-pointer;
+        @apply inline-flex items-center justify-center px-4 py-2.5 bg-transparent text-[#FAF9F6] border border-[#222226] rounded-md text-xs font-semibold uppercase tracking-wider transition-all duration-150 hover:bg-[#121216] cursor-pointer;
         transition: transform 0.15s ease, background-color 0.15s ease;
     }
     .btn-minimal-secondary:active {
@@ -77,9 +80,9 @@
         position: absolute;
         cursor: pointer;
         top: 0; left: 0; right: 0; bottom: 0;
-        background-color: #E5E5E0;
+        background-color: #222226;
         transition: .2s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid #D1D1CB;
+        border: 1px solid #2D2D30;
         border-radius: 9999px;
     }
 
@@ -90,14 +93,14 @@
         width: 12px;
         left: 3px;
         bottom: 3px;
-        background-color: #111111;
+        background-color: #787774;
         transition: .2s cubic-bezier(0.4, 0, 0.2, 1);
         border-radius: 50%;
     }
 
     .two-tone-switch input:checked + .two-tone-slider {
-        background-color: #111111;
-        border-color: #111111;
+        background-color: #10B981;
+        border-color: #10B981;
     }
 
     .two-tone-switch input:checked + .two-tone-slider:before {
@@ -107,11 +110,10 @@
 
     /* Status Tags (Washed-out desaturated pastels) */
     .status-badge-active {
-        @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#EDF3EC] text-[#346538] border border-[#EDF3EC];
+        @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#0C2D1F]/50 text-[#10B981] border border-[#10B981]/20;
     }
 
     .status-badge-inactive {
-        @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FDEBEC] text-[#9F2F2D] border border-[#FDEBEC];
+        @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#2F1517]/50 text-[#EF4444] border border-[#EF4444]/20;
     }
 }
-

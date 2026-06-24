@@ -1,7 +1,7 @@
 <x-app-layout>
 <div class="p-6">
 
-    <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#111111] mb-6">Data Tagihan</h2>
+    <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#FAF9F6] mb-6">Data Tagihan</h2>
 
     @php
         $role = auth()->user()->role;
@@ -21,13 +21,13 @@
     </div>
 
     <!-- TABLE -->
-    <div class="border border-[#E5E5E0] rounded-md overflow-hidden bg-white">
+    <div class="app-card overflow-hidden">
         <table class="app-table">
             <thead>
                 <tr>
                     @if(in_array($role, ['admin','finance']))
                     <th class="p-3 text-center w-12">
-                        <input type="checkbox" onclick="toggleAll(this)" class="rounded border-[#D1D1CB] text-[#111111] focus:ring-0">
+                        <input type="checkbox" onclick="toggleAll(this)" class="rounded border-[#222226] text-[#FAF9F6] bg-[#0B0B0D] focus:ring-0">
                     </th>
                     @endif
 
@@ -49,33 +49,33 @@
                                name="invoice_ids[]"
                                value="{{ $i->id }}"
                                form="bulkForm"
-                               class="rounded border-[#D1D1CB] text-[#111111] focus:ring-0">
+                               class="rounded border-[#222226] text-[#FAF9F6] bg-[#0B0B0D] focus:ring-0">
                     </td>
                     @endif
 
-                    <td class="p-3 font-semibold text-[#111111]">
+                    <td class="p-3 font-semibold text-[#FAF9F6]">
                         {{ $i->customer->name }}
                     </td>
 
-                    <td class="p-3 font-mono text-xs text-[#111111]">
+                    <td class="p-3 font-mono text-xs text-[#FAF9F6]">
                         Rp {{ number_format($i->amount) }}
                     </td>
 
-                    <td class="p-3 font-mono text-xs text-[#787774]">
+                    <td class="p-3 font-mono text-xs text-[#8E8E90]">
                         Rp {{ number_format($i->paid_amount ?? 0) }}
                     </td>
 
-                    <td class="p-3 text-xs text-[#787774] font-mono">
+                    <td class="p-3 text-xs text-[#8E8E90] font-mono">
                         {{ $i->due_date }}
                     </td>
 
                     <td class="p-3 text-xs">
                         @if($i->status == 'paid')
-                            <span class="inline-flex px-2 py-0.5 bg-[#EDF3EC] text-[#346538] border border-[#EDF3EC] rounded text-[10px] font-bold uppercase tracking-wider">Lunas</span>
+                            <span class="inline-flex px-2 py-0.5 bg-[#0C2D1F]/50 text-[#10B981] border border-[#10B981]/20 rounded text-[10px] font-bold uppercase tracking-wider">Lunas</span>
                         @elseif($i->paid_amount > 0)
-                            <span class="inline-flex px-2 py-0.5 bg-[#FAF3DB] text-[#956400] border border-[#FAF3DB] rounded text-[10px] font-bold uppercase tracking-wider">Cicilan</span>
+                            <span class="inline-flex px-2 py-0.5 bg-[#2E200C]/50 text-[#F59E0B] border border-[#F59E0B]/20 rounded text-[10px] font-bold uppercase tracking-wider">Cicilan</span>
                         @else
-                            <span class="inline-flex px-2 py-0.5 bg-[#FDEBEC] text-[#9F2F2D] border border-[#FDEBEC] rounded text-[10px] font-bold uppercase tracking-wider">Belum Bayar</span>
+                            <span class="inline-flex px-2 py-0.5 bg-[#2F1517]/50 text-[#EF4444] border border-[#EF4444]/20 rounded text-[10px] font-bold uppercase tracking-wider">Belum Bayar</span>
                         @endif
                     </td>
 
@@ -86,7 +86,7 @@
                             <form action="{{ route('invoices.pay', $i->id) }}" method="POST" class="inline-flex gap-1 items-center">
                                 @csrf
                                 <input type="number" name="amount"
-                                       class="border border-[#D1D1CB] px-2 py-1 text-xs w-20 rounded bg-[#FAF9F6] focus:border-[#111111] focus:ring-0 text-xs font-mono"
+                                       class="border border-[#222226] px-2 py-1 text-xs w-20 rounded bg-[#0B0B0D] focus:border-[#FAF9F6]/40 focus:ring-0 text-xs font-mono text-[#FAF9F6]"
                                        placeholder="Nominal" required>
                                 <button class="btn-minimal px-2 py-1 text-[10px]">
                                     Bayar
@@ -99,7 +99,7 @@
                             <form action="{{ route('invoices.selesai', $i->id) }}" method="POST"
                                    onsubmit="return confirm('Tandai selesai?')" class="inline">
                                 @csrf
-                                <button class="btn-minimal px-2.5 py-1 text-[10px] bg-[#111111]">
+                                <button class="btn-minimal px-2.5 py-1 text-[10px]">
                                     Selesai
                                 </button>
                             </form>
@@ -115,7 +115,7 @@
                                    onsubmit="return confirm('Yakin ingin menghapus invoice ini?')" class="inline">
                                 @csrf
                                 @method('DELETE')
-                                <button class="inline-flex items-center justify-center px-2.5 py-1 bg-[#FDEBEC] hover:bg-[#9F2F2D] hover:text-white text-[#9F2F2D] border border-[#FDEBEC] rounded-md text-[10px] font-bold transition-all cursor-pointer">
+                                <button class="inline-flex items-center justify-center px-2.5 py-1 btn-minimal-secondary border-[#EF4444]/30 hover:bg-[#EF4444]/10 hover:border-[#EF4444] text-[#EF4444] rounded-md text-[10px] font-bold transition-all cursor-pointer">
                                     Hapus
                                 </button>
                             </form>
@@ -126,7 +126,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center p-8 text-[#787774] font-mono text-xs">
+                    <td colspan="7" class="text-center p-8 text-[#8E8E90] font-mono text-xs">
                         [Belum ada data invoice]
                     </td>
                 </tr>
@@ -153,7 +153,7 @@
 
         <button formaction="{{ route('invoices.destroy.selected') }}"
                 onclick="return confirm('Yakin ingin menghapus invoice yang terpilih?')"
-                class="inline-flex items-center justify-center px-4 py-2.5 bg-[#FDEBEC] hover:bg-[#9F2F2D] hover:text-white text-[#9F2F2D] border border-[#FDEBEC] rounded-md text-xs font-semibold uppercase tracking-wider transition-all duration-150 cursor-pointer">
+                class="inline-flex items-center justify-center px-4 py-2.5 btn-minimal-secondary border-[#EF4444]/30 hover:bg-[#EF4444]/10 hover:border-[#EF4444] text-[#EF4444] rounded-md text-xs font-semibold uppercase tracking-wider transition-all duration-150 cursor-pointer">
             Hapus Terpilih
         </button>
     </form>

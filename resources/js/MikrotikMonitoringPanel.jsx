@@ -28,23 +28,29 @@ export default function MikrotikMonitoringPanel({
 
     if (loading && !data) {
         return (
-            <div style={historySectionStyle}>
-                <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700" }}>Router MikroTik Monitor</h3>
-                <p style={{ color: "#787774", margin: "10px 0" }}>Menghubungi router MikroTik...</p>
+            <div className="app-card p-6 rounded-md mb-6 border-l-4 border-l-[#FAF9F6]">
+                <h3 className="m-0 text-lg font-bold text-[#FAF9F6]">Router MikroTik Monitor</h3>
+                <p className="text-[#8E8E90] text-sm mt-2">Menghubungi router MikroTik...</p>
             </div>
         );
     }
 
     if (!data || !data.connected) {
         return (
-            <div style={{ ...historySectionStyle, borderLeft: "5px solid #9F2F2D" }}>
-                <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700", display: "flex", alignItems: "center", gap: "8px" }}>
-                    Router MikroTik Monitor <span style={{ fontSize: "11.5px", background: "#FDEBEC", color: "#9F2F2D", padding: "2px 8px", borderRadius: "6px" }}>Disconnected</span>
+            <div className="app-card p-6 rounded-md mb-6 border-l-4 border-l-[#EF4444]">
+                <h3 className="m-0 text-lg font-bold text-[#FAF9F6] flex items-center gap-2">
+                    Router MikroTik Monitor 
+                    <span className="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/20 tracking-wider">
+                        Disconnected
+                    </span>
                 </h3>
-                <p style={{ color: "#787774", fontSize: "14px", marginTop: "10px" }}>
+                <p className="text-[#8E8E90] text-sm mt-3">
                     {data?.message || "Koneksi ke MikroTik belum dikonfigurasi. Silakan masuk ke Pengaturan Sistem untuk menghubungkan router."}
                 </p>
-                <a href="/settings?tab=mikrotik" style={{ ...btnBlue, display: "inline-block", marginTop: "10px", textDecoration: "none", fontSize: "12px", width: "auto", flex: "none", padding: "8px 16px" }} className="btn-hover">
+                <a 
+                    href="/settings?tab=mikrotik" 
+                    className="btn-minimal px-4 py-2 text-xs font-semibold inline-block mt-3"
+                >
                     Konfigurasi MikroTik
                 </a>
             </div>
@@ -93,37 +99,37 @@ export default function MikrotikMonitoringPanel({
             {
                 label: "Download (RX)",
                 data: trafficHistory.rx,
-                borderColor: "#111111",
+                borderColor: "#00E5FF",
                 backgroundColor: (ctx) => {
                     const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, 220);
-                    gradient.addColorStop(0, "rgba(17,17,17,0.15)");
-                    gradient.addColorStop(1, "rgba(17,17,17,0)");
+                    gradient.addColorStop(0, "rgba(0, 229, 255, 0.15)");
+                    gradient.addColorStop(1, "rgba(0, 229, 255, 0)");
                     return gradient;
                 },
                 fill: true,
                 tension: 0.4,
                 borderWidth: 2,
                 pointRadius: (ctx) => ctx.dataIndex === ctx.dataset.data.length - 1 ? 5 : 0,
-                pointBackgroundColor: "#111111",
-                pointBorderColor: "#fff",
+                pointBackgroundColor: "#00E5FF",
+                pointBorderColor: "#050505",
                 pointBorderWidth: 2,
             },
             {
                 label: "Upload (TX)",
                 data: trafficHistory.tx,
-                borderColor: "#787774",
+                borderColor: "#8B5CF6",
                 backgroundColor: (ctx) => {
                     const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, 220);
-                    gradient.addColorStop(0, "rgba(120,119,116,0.10)");
-                    gradient.addColorStop(1, "rgba(120,119,116,0)");
+                    gradient.addColorStop(0, "rgba(139, 92, 246, 0.10)");
+                    gradient.addColorStop(1, "rgba(139, 92, 246, 0)");
                     return gradient;
                 },
                 fill: true,
                 tension: 0.4,
                 borderWidth: 1.5,
                 pointRadius: (ctx) => ctx.dataIndex === ctx.dataset.data.length - 1 ? 4 : 0,
-                pointBackgroundColor: "#787774",
-                pointBorderColor: "#fff",
+                pointBackgroundColor: "#8B5CF6",
+                pointBorderColor: "#050505",
                 pointBorderWidth: 1.5,
             }
         ]
@@ -135,12 +141,14 @@ export default function MikrotikMonitoringPanel({
         plugins: {
             legend: {
                 position: "top",
-                labels: { color: "#475569", font: { size: 11, weight: "bold" } }
+                labels: { color: "#FAF9F6", font: { size: 11, weight: "bold" } }
             },
             tooltip: {
-                backgroundColor: "#1e293b",
-                titleColor: "#f1f5f9",
-                bodyColor: "#94a3b8",
+                backgroundColor: "#0C0C0E",
+                borderColor: "#222226",
+                borderWidth: 1,
+                titleColor: "#FAF9F6",
+                bodyColor: "#E4E4E7",
                 callbacks: {
                     label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(2)} Mbps`
                 }
@@ -149,13 +157,13 @@ export default function MikrotikMonitoringPanel({
         scales: {
             x: {
                 grid: { display: false },
-                ticks: { color: "#94a3b8", font: { size: 10 } }
+                ticks: { color: "#8E8E90", font: { size: 10 } }
             },
             y: {
                 beginAtZero: true,
-                grid: { color: "rgba(0,0,0,0.04)" },
+                grid: { color: "rgba(255, 255, 255, 0.05)" },
                 ticks: {
-                    color: "#94a3b8",
+                    color: "#8E8E90",
                     font: { size: 10 },
                     callback: (v) => `${v} M`
                 }
@@ -164,30 +172,30 @@ export default function MikrotikMonitoringPanel({
     };
 
     return (
-        <section style={{ ...historySectionStyle, borderLeft: "5px solid #111111" }}>
+        <section className="app-card p-6 rounded-md mb-6 border-l-4 border-l-[#FAF9F6]">
             {/* Header */}
-            <div style={historyHeaderStyle}>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700" }}>
+            <div className="flex justify-between items-center mb-5 pb-3 border-b border-[#222226] flex-wrap gap-3">
+                <div className="flex items-center gap-2.5">
+                    <h3 className="m-0 text-lg font-bold text-[#FAF9F6]">
                         Router MikroTik Monitor
                     </h3>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#EDF3EC", padding: "4px 10px", borderRadius: "6px", border: "1px solid #D1D1CB" }}>
-                        <span style={livePulseDot} className="pulse-green"></span>
-                        <span style={{ fontSize: "12px", color: "#346538", fontWeight: "600" }}>Connected</span>
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#0C2D1F]/50 border border-[#10B981]/20 text-[10px] text-[#10B981] font-bold uppercase tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] pulse-green"></span>
+                        <span>Connected</span>
                     </div>
                 </div>
-                <span style={{ ...historyBadgeStyle, background: "#FAF9F6", color: "#111111" }}>
+                <span className="bg-[#0B0B0D] border border-[#222226] text-[#FAF9F6] px-3 py-1.5 rounded-md text-xs font-bold font-mono">
                     {resources?.board_name || "Device"}
                 </span>
             </div>
 
-            <p style={{ margin: "0 0 20px 0", color: "#787774", fontSize: "14px" }}>
+            <p className="m-0 mb-5 text-[#8E8E90] text-sm">
                 Status real-time, spesifikasi beban kerja CPU, RAM, serta pemetaan firewall address-list pelanggan MikroTik.
             </p>
 
             {/* Navigation Tabs */}
-            <div style={panelControlsRow}>
-                <div style={tabContainer}>
+            <div className="flex justify-between items-center gap-4 flex-wrap mb-5">
+                <div className="flex gap-1 bg-[#0B0B0D] p-1 rounded-md border border-[#222226] flex-wrap">
                     {[
                         { key: "traffic", label: "Traffic" },
                         { key: "resources", label: "Resources" },
@@ -198,13 +206,11 @@ export default function MikrotikMonitoringPanel({
                             key={key}
                             type="button"
                             onClick={() => setActiveSection(key)}
-                            className="btn-hover"
-                            style={{
-                                padding: "6px 14px", borderRadius: "6px", border: "none", cursor: "pointer",
-                                fontWeight: "600", fontSize: "13px", transition: "all 0.15s ease",
-                                background: activeSection === key ? "#111111" : "transparent",
-                                color: activeSection === key ? "#fff" : "#787774",
-                            }}
+                            className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                                activeSection === key 
+                                    ? "bg-[#FAF9F6] text-[#0C0C0D]" 
+                                    : "text-[#8E8E90] hover:bg-[#121216] hover:text-[#FAF9F6]"
+                            }`}
                         >
                             {label}
                         </button>
@@ -217,7 +223,7 @@ export default function MikrotikMonitoringPanel({
                         placeholder="Cari..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        style={localSearchInput}
+                        className="px-3 py-1.5 rounded-md border border-[#222226] text-xs bg-[#0B0B0D] text-[#FAF9F6] focus:border-[#FAF9F6]/40 focus:ring-0 w-56 transition-all"
                     />
                 )}
             </div>
@@ -226,8 +232,8 @@ export default function MikrotikMonitoringPanel({
             {activeSection === "traffic" && (
                 <div>
                     {/* Interface selector + speed strip */}
-                    <div style={trafficHeaderRow}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+                    <div className="flex justify-between items-center flex-wrap gap-3.5 p-4 bg-[#09090B]/50 rounded-md border border-[#222226] mb-4">
+                        <div className="flex items-center gap-3 flex-wrap">
                             {/* Dropdown interface */}
                             {interfaces.length > 0 ? (
                                 <select
@@ -236,7 +242,7 @@ export default function MikrotikMonitoringPanel({
                                         const match = interfaces.find(i => i.name === e.target.value);
                                         if (match && onSelectInterface) onSelectInterface(match);
                                     }}
-                                    style={ifaceSelectStyle}
+                                    className="px-3 py-1.5 rounded-md border border-[#222226] text-xs font-semibold bg-[#0B0B0D] text-[#FAF9F6] focus:border-[#FAF9F6]/40 focus:ring-0 cursor-pointer min-w-[200px]"
                                 >
                                     {interfaces.map(i => (
                                         <option key={i.id || i.name} value={i.name}>
@@ -245,38 +251,40 @@ export default function MikrotikMonitoringPanel({
                                     ))}
                                 </select>
                             ) : (
-                                <span style={{ fontSize: "13px", color: "#787774" }}>Mendeteksi interface...</span>
+                                <span className="text-xs text-[#8E8E90]">Mendeteksi interface...</span>
                             )}
 
                             {/* Uptime badge */}
                             {resources?.uptime && (
-                                <span style={uptimeBadge}>Uptime: {resources.uptime}</span>
+                                <span className="text-xs text-[#FAF9F6] bg-[#0B0B0D] px-3 py-1.5 rounded-md border border-[#222226] font-semibold">
+                                    Uptime: {resources.uptime}
+                                </span>
                             )}
                         </div>
 
                         {/* Live RX/TX speeds */}
-                        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-                            <div style={speedItemCard}>
-                                <span style={{ fontSize: "11px", color: "#787774", fontWeight: "700", textTransform: "uppercase" }}>Download RX</span>
-                                <strong style={{ fontSize: "18px", color: "#111111" }}>{formatSpeed(currentRxSpeed)}</strong>
+                        <div className="flex gap-5 items-center flex-wrap">
+                            <div className="flex flex-col text-right">
+                                <span className="text-[10px] text-[#8E8E90] font-bold uppercase tracking-wider">Download RX</span>
+                                <strong className="text-base text-[#00E5FF] font-mono">{formatSpeed(currentRxSpeed)}</strong>
                             </div>
-                            <div style={speedItemCard}>
-                                <span style={{ fontSize: "11px", color: "#787774", fontWeight: "700", textTransform: "uppercase" }}>Upload TX</span>
-                                <strong style={{ fontSize: "18px", color: "#111111" }}>{formatSpeed(currentTxSpeed)}</strong>
+                            <div className="flex flex-col text-right">
+                                <span className="text-[10px] text-[#8E8E90] font-bold uppercase tracking-wider">Upload TX</span>
+                                <strong className="text-base text-[#8B5CF6] font-mono">{formatSpeed(currentTxSpeed)}</strong>
                             </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                                <span style={livePulseDot} className="pulse-green"></span>
-                                <span style={{ fontSize: "11px", color: "#111111", fontWeight: "700" }}>Live</span>
+                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#0C2D1F]/50 border border-[#10B981]/20 text-[9px] text-[#10B981] font-bold uppercase tracking-wider">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] pulse-green"></span>
+                                <span>Live</span>
                             </div>
                         </div>
                     </div>
 
                     {/* Chart */}
-                    <div style={{ height: "260px", marginTop: "16px", position: "relative" }}>
+                    <div className="h-[260px] mt-4 relative">
                         {trafficHistory.times.length === 0 ? (
-                            <div style={emptyChartStyle}>
-                                <span>Menunggu polling data traffic pertama...</span>
-                                <small style={{ color: "#787774" }}>Data akan muncul dalam ~5 detik setelah interface dipilih</small>
+                            <div className="flex flex-col items-center justify-center h-full gap-2 text-[#8E8E90] text-xs bg-[#09090B]/40 border border-[#222226] rounded-md border-dashed p-6">
+                                <span className="font-semibold">Menunggu polling data traffic pertama...</span>
+                                <small className="text-[#8E8E90]">Data akan muncul dalam ~5 detik setelah interface dipilih</small>
                             </div>
                         ) : (
                             <Line data={chartData} options={chartOptions} />
@@ -287,43 +295,44 @@ export default function MikrotikMonitoringPanel({
 
             {/* ===== TAB: RESOURCES ===== */}
             {activeSection === "resources" && resources && (
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginTop: "10px" }}>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-2.5">
                     {/* CPU */}
-                    <div style={resourceCard}>
-                        <span style={cardLabel}>CPU Load</span>
-                        <div style={{ position: "relative", width: "90px", height: "90px", display: "flex", alignItems: "center", justifyContent: "center", margin: "auto" }}>
-                            <svg width="90" height="90" viewBox="0 0 36 36">
-                                <path stroke="#FAF9F6" strokeWidth="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path stroke="#111111" strokeWidth="3" strokeDasharray={`${resources.cpu_load || 0}, 100`} fill="none" strokeLinecap="round" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <div className="app-card p-5 flex flex-col justify-between min-h-[160px]">
+                        <span className="text-[10px] text-[#8E8E90] font-bold uppercase tracking-wider">CPU Load</span>
+                        <div className="relative w-20 h-20 flex items-center justify-center mx-auto my-2">
+                            <svg width="80" height="80" viewBox="0 0 36 36" className="transform -rotate-90">
+                                <path stroke="#1C1C1F" strokeWidth="3.5" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path stroke="#00E5FF" strokeWidth="3.5" strokeDasharray={`${resources.cpu_load || 0}, 100`} fill="none" strokeLinecap="round" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                             </svg>
-                            <span style={{ position: "absolute", fontSize: "18px", fontWeight: "800", color: "#111111" }}>{resources.cpu_load || 0}%</span>
+                            <span className="absolute text-lg font-bold text-[#FAF9F6] font-mono">{resources.cpu_load || 0}%</span>
                         </div>
                     </div>
 
                     {/* RAM */}
-                    <div style={resourceCard}>
-                        <span style={cardLabel}>Memory / RAM Usage</span>
-                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", fontWeight: "bold", color: "#111111", marginBottom: "6px" }}>
-                            <span>Terpakai: {ramUsedMb} MB</span>
-                            <span style={{ color: "#787774" }}>Total: {ramTotalMb} MB</span>
+                    <div className="app-card p-5 flex flex-col justify-between min-h-[160px]">
+                        <span className="text-[10px] text-[#8E8E90] font-bold uppercase tracking-wider">Memory / RAM Usage</span>
+                        <div className="flex justify-between text-xs font-semibold text-[#FAF9F6] mb-1.5">
+                            <span>Terpakai: <span className="font-mono">{ramUsedMb} MB</span></span>
+                            <span className="text-[#8E8E90]">Total: <span className="font-mono">{ramTotalMb} MB</span></span>
                         </div>
-                        <div style={{ height: "12px", background: "#FAF9F6", borderRadius: "6px", border: "1px solid #D1D1CB", overflow: "hidden" }}>
-                            <div style={{ height: "100%", width: `${ramUsedPercent}%`, background: "#111111", borderRadius: "6px" }}></div>
+                        <div className="h-2.5 bg-[#1C1C1F] rounded-full border border-[#222226] overflow-hidden">
+                            <div className="h-full bg-[#FAF9F6] rounded-full" style={{ width: `${ramUsedPercent}%` }}></div>
                         </div>
-                        <span style={{ fontSize: "11px", color: "#787774", display: "block", marginTop: "8px" }}>Bebas: {ramFreeMb} MB ({100 - ramUsedPercent}%)</span>
+                        <span className="text-[10px] text-[#8E8E90] mt-2 block">Bebas: <span className="font-mono">{ramFreeMb} MB</span> ({100 - ramUsedPercent}%)</span>
                     </div>
 
                     {/* System Info */}
-                    <div style={resourceCard}>
-                        <span style={cardLabel}>System Details</span>
-                        <div style={{ fontSize: "13px", color: "#475569", display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <div className="app-card p-5 flex flex-col justify-between min-h-[160px]">
+                        <span className="text-[10px] text-[#8E8E90] font-bold uppercase tracking-wider">System Details</span>
+                        <div className="text-xs text-[#E4E4E7] flex flex-col gap-2">
                             {[
                                 ["Uptime", resources.uptime],
                                 ["Version", `v${resources.version}`],
                                 ["CPU Freq", `${resources.cpu_frequency} MHz`],
                             ].map(([k, v]) => (
-                                <div key={k} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #f1f5f9", paddingBottom: "4px" }}>
-                                    <strong>{k}:</strong><span>{v || "Unknown"}</span>
+                                <div key={k} className="flex justify-between border-b border-[#222226] pb-1 font-semibold">
+                                    <span className="text-[#8E8E90]">{k}:</span>
+                                    <span>{v || "Unknown"}</span>
                                 </div>
                             ))}
                         </div>
@@ -333,38 +342,38 @@ export default function MikrotikMonitoringPanel({
 
             {/* ===== TAB: ACTIVE USERS ===== */}
             {activeSection === "active_users" && (
-                <div style={{ marginTop: "10px" }}>
+                <div className="mt-2.5">
                     {filteredActive.length === 0 ? (
-                        <div style={emptyTabStyle}>Tidak ada pengguna aktif yang ditemukan.</div>
+                        <div className="p-10 text-center text-[#8E8E90] text-sm app-card border-dashed">
+                            Tidak ada pengguna aktif yang ditemukan.
+                        </div>
                     ) : (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "14px" }}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {filteredActive.map((user, i) => (
-                                <div key={i} style={userCardStyle}>
+                                <div key={i} className="app-card p-5 flex flex-col justify-between transition-all hover:border-[#FAF9F6]/20">
                                     {/* Header card */}
-                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
+                                    <div className="flex justify-between items-start mb-3.5 gap-2">
                                         <div>
                                             {user.customer_name ? (
                                                 <>
-                                                    <div style={{ fontWeight: "700", fontSize: "14px", color: "#111111" }}>
+                                                    <div className="font-bold text-sm text-[#FAF9F6]">
                                                         {user.customer_name}
                                                     </div>
-                                                    <div style={{ fontSize: "11px", color: "#787774", fontWeight: "600", marginTop: "2px" }}>
-                                                        PPPoE: <code style={{ background: "#FAF9F6", padding: "1px 5px", borderRadius: "4px", border: "1px solid #D1D1CB" }}>{user.name}</code>
+                                                    <div className="text-[10px] text-[#8E8E90] font-semibold mt-1">
+                                                        PPPoE: <code className="bg-[#0B0B0D] px-1.5 py-0.5 rounded border border-[#222226] text-[#FAF9F6] font-mono">{user.name}</code>
                                                     </div>
                                                 </>
                                             ) : (
-                                                <div style={{ fontWeight: "700", fontSize: "14px", color: "#111111" }}>
+                                                <div className="font-bold text-sm text-[#FAF9F6]">
                                                     {user.name}
-                                                    <span style={{ fontSize: "11px", color: "#787774", marginLeft: "6px" }}>Tidak teridentifikasi</span>
+                                                    <span className="text-[10px] text-[#8E8E90] ml-2 font-normal">Unidentified</span>
                                                 </div>
                                             )}
                                         </div>
-                                        <div style={{ display: "flex", flexDirection: "column", gap: "4px", alignItems: "flex-end" }}>
-                                            <span style={{
-                                                fontSize: "10px", padding: "2px 8px", borderRadius: "999px", fontWeight: "700",
-                                                background: user.service === "PPPoE" ? "#EBF3FE" : "#FFF2E6",
-                                                color: user.service === "PPPoE" ? "#2D5B9F" : "#A65F1D"
-                                            }}>{user.service}</span>
+                                        <div className="flex flex-col gap-1.5 items-end shrink-0">
+                                            <span className="text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider bg-[#0C2D1F]/50 text-[#10B981] border border-[#10B981]/20">
+                                                {user.service}
+                                            </span>
                                             {user.is_active !== null && (
                                                 <span className={user.is_active ? "status-badge-active" : "status-badge-inactive"}>
                                                     {user.is_active ? "Aktif" : "Nonaktif"}
@@ -374,46 +383,45 @@ export default function MikrotikMonitoringPanel({
                                     </div>
 
                                     {/* Detail rows */}
-                                    <div style={userDetailGrid}>
-                                        <span style={detailLabel}>IP Address</span>
-                                        <span style={detailValue}><code>{user.address}</code></span>
+                                    <div className="grid grid-cols-[80px_1fr] gap-x-3 gap-y-1.5 text-xs mb-3.5">
+                                        <span className="text-[#8E8E90] font-semibold">IP Address</span>
+                                        <span className="text-[#FAF9F6] font-mono font-semibold">{user.address}</span>
 
                                         {user.customer_code && user.customer_code !== '-' && (
                                             <>
-                                                <span style={detailLabel}>Kode</span>
-                                                <span style={{ ...detailValue, color: "#111111", fontWeight: "700" }}>{user.customer_code}</span>
+                                                <span className="text-[#8E8E90] font-semibold">Kode</span>
+                                                <span className="text-[#FAF9F6] font-bold">{user.customer_code}</span>
                                             </>
                                         )}
 
                                         {user.package_name && (
                                             <>
-                                                <span style={detailLabel}>Paket</span>
-                                                <span style={detailValue}>{user.package_name}</span>
+                                                <span className="text-[#8E8E90] font-semibold">Paket</span>
+                                                <span className="text-[#E4E4E7] font-semibold">{user.package_name}</span>
                                             </>
                                         )}
 
                                         {user.customer_phone && (
                                             <>
-                                                <span style={detailLabel}>Telpon</span>
-                                                <a href={`tel:${user.customer_phone}`} style={{ ...detailValue, color: "#111111", textDecoration: "underline" }}>
+                                                <span className="text-[#8E8E90] font-semibold">Telepon</span>
+                                                <a href={`tel:${user.customer_phone}`} className="text-[#FAF9F6] underline hover:text-[#FAF9F6]/80 font-medium">
                                                     {user.customer_phone}
                                                 </a>
                                             </>
                                         )}
 
-                                        <span style={detailLabel}>Uptime</span>
-                                        <span style={{ ...detailValue, color: "#346538", fontWeight: "700" }}>{user.uptime}</span>
+                                        <span className="text-[#8E8E90] font-semibold">Uptime</span>
+                                        <span className="text-[#10B981] font-bold font-mono">{user.uptime}</span>
 
-                                        <span style={detailLabel}>MAC/Caller</span>
-                                        <span style={{ ...detailValue, fontFamily: "monospace", fontSize: "11px" }}>{user.caller_id}</span>
+                                        <span className="text-[#8E8E90] font-semibold">MAC / Caller</span>
+                                        <span className="text-[#E4E4E7] font-mono text-[10px] break-all">{user.caller_id}</span>
                                     </div>
 
                                     {/* Link ke profil pelanggan */}
                                     {user.customer_id && (
                                         <a
                                             href={`/customers/${user.customer_id}`}
-                                            style={linkBtnStyle}
-                                            className="btn-hover"
+                                            className="btn-minimal-secondary w-full text-center py-2 text-xs font-semibold"
                                         >
                                             Lihat Profil Pelanggan
                                         </a>
@@ -427,11 +435,13 @@ export default function MikrotikMonitoringPanel({
 
             {/* ===== TAB: ADDRESS LIST ===== */}
             {activeSection === "address_lists" && (
-                <div style={{ marginTop: "10px" }}>
+                <div className="mt-2.5">
                     {filteredAddresses.length === 0 ? (
-                        <div style={emptyTabStyle}>Tidak ada data address list yang ditemukan.</div>
+                        <div className="p-10 text-center text-[#8E8E90] text-sm app-card border-dashed">
+                            Tidak ada data address list yang ditemukan.
+                        </div>
                     ) : (
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "14px" }}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {filteredAddresses.map((entry, i) => {
                                 const isIsolated = entry.list?.toLowerCase().includes("isolir") ||
                                     entry.list?.toLowerCase().includes("block") ||
@@ -439,23 +449,22 @@ export default function MikrotikMonitoringPanel({
                                 const dbStatus = entry.is_active; // boolean from DB or null
 
                                 return (
-                                    <div key={i} style={{
-                                        ...userCardStyle,
-                                        borderLeft: `4px solid ${isIsolated ? "#9F2F2D" : "#346538"}`
-                                    }}>
+                                    <div key={i} className={`app-card p-5 flex flex-col justify-between border-l-4 transition-all hover:border-r-[#FAF9F6]/10 ${
+                                        isIsolated ? 'border-l-[#EF4444]' : 'border-l-[#10B981]'
+                                    }`}>
                                         {/* Header */}
-                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
+                                        <div className="flex justify-between items-start mb-3.5 gap-2">
                                             <div>
-                                                <div style={{ fontWeight: "700", fontSize: "14px", color: "#111111" }}>
+                                                <div className="font-bold text-sm text-[#FAF9F6]">
                                                     {entry.customer_name}
                                                 </div>
                                                 {entry.customer_code && entry.customer_code !== '-' && (
-                                                    <div style={{ fontSize: "11px", color: "#787774", fontWeight: "600", marginTop: "2px" }}>
-                                                        Kode: <strong>{entry.customer_code}</strong>
+                                                    <div className="text-[10px] text-[#8E8E90] font-semibold mt-1">
+                                                        Kode: <strong className="text-[#FAF9F6]">{entry.customer_code}</strong>
                                                     </div>
                                                 )}
                                             </div>
-                                            <div style={{ display: "flex", flexDirection: "column", gap: "4px", alignItems: "flex-end" }}>
+                                            <div className="flex flex-col gap-1.5 items-end shrink-0">
                                                 {/* Status MikroTik (address-list) */}
                                                 <span className={isIsolated ? "status-badge-inactive" : "status-badge-active"}>
                                                     {isIsolated ? "TERISOLIR" : "AKTIF"}
@@ -470,12 +479,12 @@ export default function MikrotikMonitoringPanel({
                                         </div>
 
                                         {/* Detail rows */}
-                                        <div style={userDetailGrid}>
-                                            <span style={detailLabel}>IP Address</span>
-                                            <span style={detailValue}><code>{entry.address}</code></span>
+                                        <div className="grid grid-cols-[80px_1fr] gap-x-3 gap-y-1.5 text-xs mb-3.5">
+                                            <span className="text-[#8E8E90] font-semibold">IP Address</span>
+                                            <span className="text-[#FAF9F6] font-mono font-semibold">{entry.address}</span>
 
-                                            <span style={detailLabel}>Address List</span>
-                                            <span style={{ ...detailValue, fontSize: "11px" }}>
+                                            <span className="text-[#8E8E90] font-semibold">Address List</span>
+                                            <span className="text-left">
                                                 <span className={isIsolated ? "status-badge-inactive" : "status-badge-active"}>
                                                     {entry.list}
                                                 </span>
@@ -483,15 +492,15 @@ export default function MikrotikMonitoringPanel({
 
                                             {entry.package_name && entry.package_name !== '-' && (
                                                 <>
-                                                    <span style={detailLabel}>Paket</span>
-                                                    <span style={detailValue}>{entry.package_name}</span>
+                                                    <span className="text-[#8E8E90] font-semibold">Paket</span>
+                                                    <span className="text-[#E4E4E7] font-semibold">{entry.package_name}</span>
                                                 </>
                                             )}
 
                                             {entry.customer_phone && entry.customer_phone !== '-' && (
                                                 <>
-                                                    <span style={detailLabel}>Telpon</span>
-                                                    <a href={`tel:${entry.customer_phone}`} style={{ ...detailValue, color: "#111111", textDecoration: "underline" }}>
+                                                    <span className="text-[#8E8E90] font-semibold">Telepon</span>
+                                                    <a href={`tel:${entry.customer_phone}`} className="text-[#FAF9F6] underline hover:text-[#FAF9F6]/80 font-medium">
                                                         {entry.customer_phone}
                                                     </a>
                                                 </>
@@ -499,8 +508,8 @@ export default function MikrotikMonitoringPanel({
 
                                             {entry.comment && (
                                                 <>
-                                                    <span style={detailLabel}>Comment</span>
-                                                    <span style={{ ...detailValue, color: "#787774", fontSize: "11px" }}>{entry.comment}</span>
+                                                    <span className="text-[#8E8E90] font-semibold">Comment</span>
+                                                    <span className="text-[#8E8E90] text-[10px] break-all">{entry.comment}</span>
                                                 </>
                                             )}
                                         </div>
@@ -509,8 +518,7 @@ export default function MikrotikMonitoringPanel({
                                         {entry.customer_id && (
                                             <a
                                                 href={`/customers/${entry.customer_id}`}
-                                                style={linkBtnStyle}
-                                                className="btn-hover"
+                                                className="btn-minimal-secondary w-full text-center py-2 text-xs font-semibold"
                                             >
                                                 Lihat Profil Pelanggan
                                             </a>
@@ -526,214 +534,3 @@ export default function MikrotikMonitoringPanel({
         </section>
     );
 }
-
-/* ======= STYLES ======= */
-const historySectionStyle = {
-    marginTop: "30px",
-    background: "#fff",
-    borderRadius: "6px",
-    border: "1px solid #E5E5E0",
-    padding: "25px",
-};
-
-const historyHeaderStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "20px",
-    borderBottom: "1px solid #E5E5E0",
-    paddingBottom: "12px"
-};
-
-const historyBadgeStyle = {
-    background: "#FAF9F6",
-    color: "#111111",
-    padding: "6px 12px",
-    borderRadius: "6px",
-    fontSize: "12px",
-    fontWeight: "bold",
-    border: "1px solid #D1D1CB"
-};
-
-const livePulseDot = {
-    width: "8px",
-    height: "8px",
-    borderRadius: "50%",
-    background: "#346538",
-    display: "inline-block"
-};
-
-const panelControlsRow = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: "15px",
-    flexWrap: "wrap",
-    marginBottom: "20px"
-};
-
-const tabContainer = {
-    display: "flex",
-    gap: "4px",
-    background: "#FAF9F6",
-    padding: "4px",
-    borderRadius: "6px",
-    border: "1px solid #D1D1CB",
-    flexWrap: "wrap"
-};
-
-const btnBlue = {
-    padding: "8px 14px",
-    background: "#111111",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "600",
-    textAlign: "center",
-    textDecoration: "none",
-    transition: "all 0.15s ease"
-};
-
-const localSearchInput = {
-    padding: "8px 12px",
-    borderRadius: "6px",
-    border: "1px solid #D1D1CB",
-    fontSize: "14px",
-    outline: "none",
-    background: "#FAF9F6",
-    width: "220px",
-};
-
-const resourceCard = {
-    background: "#FAF9F6",
-    border: "1px solid #E5E5E0",
-    borderRadius: "6px",
-    padding: "16px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    minHeight: "150px",
-    justifyContent: "space-between",
-};
-
-const cardLabel = {
-    fontSize: "11px",
-    color: "#787774",
-    fontWeight: "700",
-    textTransform: "uppercase",
-    letterSpacing: "0.05em",
-};
-
-const trafficHeaderRow = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexWrap: "wrap",
-    gap: "12px",
-    padding: "14px 16px",
-    background: "#FAF9F6",
-    borderRadius: "6px",
-    border: "1px solid #E5E5E0",
-};
-
-const ifaceSelectStyle = {
-    padding: "8px 14px",
-    borderRadius: "6px",
-    border: "1px solid #D1D1CB",
-    fontSize: "13px",
-    fontWeight: "600",
-    background: "#FAF9F6",
-    color: "#111111",
-    outline: "none",
-    cursor: "pointer",
-    minWidth: "200px",
-};
-
-const uptimeBadge = {
-    fontSize: "12px",
-    color: "#111111",
-    background: "#FAF9F6",
-    padding: "4px 10px",
-    borderRadius: "6px",
-    border: "1px solid #D1D1CB",
-    fontWeight: "600",
-};
-
-const speedItemCard = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "2px",
-    textAlign: "right",
-};
-
-const emptyChartStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-    gap: "8px",
-    color: "#787774",
-    fontSize: "13px",
-};
-
-const userCardStyle = {
-    background: "#ffffff",
-    border: "1px solid #E5E5E0",
-    borderRadius: "6px",
-    padding: "16px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    transition: "transform 0.15s ease, box-shadow 0.15s ease",
-};
-
-const userDetailGrid = {
-    display: "grid",
-    gridTemplateColumns: "100px 1fr",
-    rowGap: "8px",
-    columnGap: "12px",
-    fontSize: "13px",
-    alignItems: "center",
-    marginBottom: "12px",
-};
-
-const detailLabel = {
-    color: "#787774",
-    fontWeight: "600",
-};
-
-const detailValue = {
-    color: "#111111",
-    fontWeight: "500",
-    wordBreak: "break-all",
-};
-
-const linkBtnStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "6px",
-    padding: "8px 12px",
-    background: "white",
-    color: "#111111",
-    borderRadius: "6px",
-    fontSize: "12px",
-    fontWeight: "700",
-    textDecoration: "none",
-    textAlign: "center",
-    transition: "all 0.15s ease",
-    border: "1px solid #D1D1CB",
-};
-
-const emptyTabStyle = {
-    padding: "40px",
-    textAlign: "center",
-    color: "#787774",
-    background: "#FAF9F6",
-    borderRadius: "6px",
-    border: "1px dashed #D1D1CB",
-    fontSize: "14px",
-    fontWeight: "500",
-};

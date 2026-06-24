@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="p-6">
 
-        <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#111111] mb-6">Data Paket</h2>
+        <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#FAF9F6] mb-6">Data Paket</h2>
 
         <!-- Tombol Tambah -->
         <div class="mb-6">
@@ -11,7 +11,7 @@
         </div>
 
         <!-- TABLE -->
-        <div class="border border-[#E5E5E0] rounded-md overflow-hidden bg-white">
+        <div class="app-card overflow-hidden">
             <table class="app-table">
                 <thead>
                     <tr>
@@ -27,11 +27,11 @@
                     @foreach($packages as $index => $p)
                     <tr>
                         <td class="p-3 text-center font-mono text-xs">{{ $index + 1 }}</td>
-                        <td class="p-3 font-semibold text-[#111111]">{{ $p->name }}</td>
-                        <td class="p-3 font-mono text-xs text-[#111111]">
+                        <td class="p-3 font-semibold text-[#FAF9F6]">{{ $p->name }}</td>
+                        <td class="p-3 font-mono text-xs text-[#FAF9F6]">
                             Rp {{ number_format($p->price, 0, ',', '.') }}
                         </td>
-                        <td class="p-3 font-mono text-xs text-[#787774]">{{ $p->speed }}</td>
+                        <td class="p-3 font-mono text-xs text-[#8E8E90]">{{ $p->speed }}</td>
 
                         <td class="p-3 text-center">
                             <div class="inline-flex items-center gap-1.5 justify-center">
@@ -47,7 +47,7 @@
                                       onsubmit="return confirm('Yakin mau hapus paket ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="inline-flex items-center justify-center px-2.5 py-1 bg-[#FDEBEC] hover:bg-[#9F2F2D] hover:text-white text-[#9F2F2D] border border-[#FDEBEC] rounded-md text-[10px] font-bold transition-all cursor-pointer">
+                                    <button class="inline-flex items-center justify-center px-2.5 py-1 btn-minimal-secondary border-[#EF4444]/30 hover:bg-[#EF4444]/10 hover:border-[#EF4444] text-[#EF4444] rounded-md text-[10px] font-bold transition-all cursor-pointer">
                                         Hapus
                                     </button>
                                 </form>

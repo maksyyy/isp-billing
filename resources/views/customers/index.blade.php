@@ -1,16 +1,16 @@
 <x-app-layout>
 <div class="p-6">
 
-    <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#111111] mb-6">Data Pelanggan</h2>
+    <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#FAF9F6] mb-6">Data Pelanggan</h2>
 
     <!-- NOTIFIKASI STATUS -->
     @if(session('success'))
-        <div class="bg-[#EDF3EC] border border-[#EDF3EC] text-[#346538] px-4 py-3 rounded-md mb-4 text-xs font-semibold">
+        <div class="bg-[#0C2D1F]/20 border border-[#10B981]/25 text-[#10B981] px-4 py-3 rounded-md mb-4 text-xs font-semibold">
             [OK] {{ session('success') }}
         </div>
     @endif
     @if(session('error'))
-        <div class="bg-[#FDEBEC] border border-[#FDEBEC] text-[#9F2F2D] px-4 py-3 rounded-md mb-4 text-xs font-semibold">
+        <div class="bg-[#2F1517]/20 border border-[#EF4444]/25 text-[#EF4444] px-4 py-3 rounded-md mb-4 text-xs font-semibold">
             [ERROR] {{ session('error') }}
         </div>
     @endif
@@ -39,7 +39,7 @@
     @endif
 
     <!-- TABLE -->
-    <div class="border border-[#E5E5E0] rounded-md overflow-hidden bg-white">
+    <div class="app-card overflow-hidden">
         <table class="app-table">
             <thead>
                 <tr>
@@ -64,21 +64,21 @@
                         {{ $index + 1 + ($customers->currentPage() - 1) * $customers->perPage() }}
                     </td>
 
-                    <td class="p-3 font-semibold text-[#111111]">
+                    <td class="p-3 font-semibold text-[#FAF9F6]">
                         <a href="{{ route('customers.history', $c->id) }}" class="hover:underline">
                             {{ $c->name }}
                         </a>
                     </td>
 
-                    <td class="p-3 font-mono text-xs text-[#111111]">
+                    <td class="p-3 font-mono text-xs text-[#FAF9F6]">
                         {{ $c->customer_code }}
                     </td>
 
-                    <td class="p-3 text-xs text-[#787774]">
+                    <td class="p-3 text-xs text-[#8E8E90]">
                         {{ $c->phone }}
                     </td>
 
-                    <td class="p-3 font-mono text-xs text-[#787774]">
+                    <td class="p-3 font-mono text-xs text-[#8E8E90]">
                         {{ $c->ip ?? '-' }}
                     </td>
 
@@ -89,16 +89,16 @@
                                     ? $c->address
                                     : 'https://www.google.com/maps/search/?api=1&query=' . urlencode($c->address);
                             @endphp
-                            <a href="{{ $gmapsUrl }}" target="_blank" class="text-xs hover:underline block truncate text-[#787774]" title="Lihat di Google Maps">
+                            <a href="{{ $gmapsUrl }}" target="_blank" class="text-xs hover:underline block truncate text-[#8E8E90]" title="Lihat di Google Maps">
                                 [MAP] {{ \Illuminate\Support\Str::limit($c->address, 35) }}
                             </a>
                         @else
-                            <span class="text-gray-400 italic">Tidak ada</span>
+                            <span class="text-[#8E8E90] italic">Tidak ada</span>
                         @endif
                     </td>
 
                     <td class="p-3 text-xs">
-                        <span class="inline-flex px-2 py-0.5 bg-[#EDF3EC] text-[#346538] border border-[#EDF3EC] rounded text-[10px] font-bold">
+                        <span class="inline-flex px-2 py-0.5 bg-[#0C2D1F]/50 text-[#10B981] border border-[#10B981]/20 rounded text-[10px] font-bold">
                             {{ $c->package->name ?? '-' }}
                         </span>
                     </td>
@@ -116,9 +116,9 @@
                             </label>
                             <div class="mt-1 text-[8px] font-bold uppercase tracking-wider text-center" id="status-text-{{ $c->id }}">
                                 @if($c->is_active)
-                                    <span class="text-[#346538]">● AKTIF</span>
+                                    <span class="text-[#10B981]">● AKTIF</span>
                                 @else
-                                    <span class="text-[#9F2F2D]">○ OFF</span>
+                                    <span class="text-[#EF4444]">○ OFF</span>
                                 @endif
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                             <form action="{{ route('customers.destroy', $c->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus?')">
                                 @csrf
                                 @method('DELETE')
-                                <button class="inline-flex items-center justify-center px-2.5 py-1 bg-[#FDEBEC] hover:bg-[#9F2F2D] hover:text-white text-[#9F2F2D] border border-[#FDEBEC] rounded-md text-[10px] font-bold transition-all cursor-pointer">
+                                <button class="inline-flex items-center justify-center px-2.5 py-1 btn-minimal-secondary border-[#EF4444]/30 hover:bg-[#EF4444]/10 hover:border-[#EF4444] text-[#EF4444] rounded-md text-[10px] font-bold transition-all cursor-pointer">
                                     Hapus
                                 </button>
                             </form>
@@ -144,7 +144,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="9" class="text-center p-8 text-[#787774] font-mono text-xs">
+                    <td colspan="9" class="text-center p-8 text-[#8E8E90] font-mono text-xs">
                         [Belum ada data pelanggan]
                     </td>
                 </tr>
@@ -160,9 +160,9 @@
 </div>
 
 <!-- PREMIUM SYNC TOAST NOTIFICATION CONTAINER -->
-<div id="sync-toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 ease-out bg-[#111111] text-[#FAF9F6] px-5 py-4 rounded-md shadow-none border border-[#2D2D30] max-w-sm">
+<div id="sync-toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 ease-out bg-[#0C0C0E]/95 text-[#FAF9F6] px-5 py-4 rounded-md shadow-2xl border border-[#222226] max-w-sm backdrop-blur-md">
     <div class="flex items-start gap-3">
-        <div id="sync-toast-icon" class="w-8 h-8 rounded-md flex items-center justify-center text-xs font-bold font-mono bg-[#1E1E20] border border-[#2D2D30] text-[#FAF9F6] shrink-0"></div>
+        <div id="sync-toast-icon" class="w-8 h-8 rounded-md flex items-center justify-center text-xs font-bold font-mono bg-[#0B0B0D] border border-[#222226] text-[#FAF9F6] shrink-0"></div>
         <div class="flex-1 min-w-0">
             <p id="sync-toast-title" class="text-[9px] font-bold uppercase tracking-wider text-[#8E8E90]"></p>
             <p id="sync-toast-message" class="text-xs font-medium text-[#FAF9F6] mt-0.5"></p>
@@ -194,8 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
         toastDetails.innerHTML = '';
         if (mtSynced !== undefined) {
             const mtBadge = document.createElement('span');
-            mtBadge.className = `text-[8px] px-1.5 py-0.5 rounded font-mono font-bold ${
-                mtSynced ? 'bg-[#EDF3EC] text-[#346538]' : 'bg-[#FAF3DB] text-[#956400]'
+            mtBadge.className = `text-[8px] px-1.5 py-0.5 rounded font-mono font-bold border ${
+                mtSynced ? 'bg-[#0C2D1F]/50 border-[#10B981]/20 text-[#10B981]' : 'bg-[#2E200C]/50 border-[#F59E0B]/20 text-[#F59E0B]'
             }`;
             mtBadge.innerText = `MIKROTIK: ${mtSynced ? 'SYNCED' : 'FAILED/SKIP'}`;
             toastDetails.appendChild(mtBadge);
@@ -203,8 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (prtgSynced !== undefined) {
             const prtgBadge = document.createElement('span');
-            prtgBadge.className = `text-[8px] px-1.5 py-0.5 rounded font-mono font-bold ${
-                prtgSynced ? 'bg-[#EDF3EC] text-[#346538]' : 'bg-[#FAF3DB] text-[#956400]'
+            prtgBadge.className = `text-[8px] px-1.5 py-0.5 rounded font-mono font-bold border ${
+                prtgSynced ? 'bg-[#0C2D1F]/50 border-[#10B981]/20 text-[#10B981]' : 'bg-[#2E200C]/50 border-[#F59E0B]/20 text-[#F59E0B]'
             }`;
             prtgBadge.innerText = `PRTG: ${prtgSynced ? 'SYNCED' : 'FAILED/SKIP'}`;
             toastDetails.appendChild(prtgBadge);
@@ -228,9 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
             this.disabled = true;
 
             if (isChecked) {
-                statusLabel.innerHTML = '<span class="text-[#346538]">● AKTIF</span>';
+                statusLabel.innerHTML = '<span class="text-[#10B981]">● AKTIF</span>';
             } else {
-                statusLabel.innerHTML = '<span class="text-[#9F2F2D]">○ OFF</span>';
+                statusLabel.innerHTML = '<span class="text-[#EF4444]">○ OFF</span>';
             }
 
             showToast('SINKRONISASI JARINGAN', 'Sedang menghubungi MikroTik & PRTG...', '[SYNC]', 'success');
@@ -251,9 +251,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.checked = data.is_active;
 
                 if (data.is_active) {
-                    statusLabel.innerHTML = '<span class="text-[#346538]">● AKTIF</span>';
+                    statusLabel.innerHTML = '<span class="text-[#10B981]">● AKTIF</span>';
                 } else {
-                    statusLabel.innerHTML = '<span class="text-[#9F2F2D]">○ OFF</span>';
+                    statusLabel.innerHTML = '<span class="text-[#EF4444]">○ OFF</span>';
                 }
 
                 showToast(
@@ -269,9 +269,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.disabled = false;
                 this.checked = !isChecked;
                 if (!isChecked) {
-                    statusLabel.innerHTML = '<span class="text-[#346538]">● AKTIF</span>';
+                    statusLabel.innerHTML = '<span class="text-[#10B981]">● AKTIF</span>';
                 } else {
-                    statusLabel.innerHTML = '<span class="text-[#9F2F2D]">○ OFF</span>';
+                    statusLabel.innerHTML = '<span class="text-[#EF4444]">○ OFF</span>';
                 }
 
                 showToast('ERROR SINKRONISASI', err.message || 'Gagal mengubah status jaringan.', '[ERR]', 'error');

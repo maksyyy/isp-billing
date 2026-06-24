@@ -315,23 +315,12 @@ export default function BackboneAlerts({ role }) {
     const prtgCustomers = prtgData.filter((d) => d && d.device && /^\d+/.test(String(d.device)));
 
     return (
-        <main style={appContainer}>
+        <main className="py-6 max-w-7xl mx-auto text-[#FAF9F6] font-sans">
             <style>{`
                 .modal-anim { animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
                 @keyframes modalFadeIn {
                     from { opacity: 0; transform: translateY(20px) scale(0.95); }
                     to { opacity: 1; transform: translateY(0) scale(1); }
-                }
-                .btn-hover {
-                    transition: all 0.2s ease-in-out !important;
-                }
-                .btn-hover:hover {
-                    transform: translateY(-2px) !important;
-                    filter: brightness(1.1) !important;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-                }
-                .btn-hover:active {
-                    transform: translateY(0) !important;
                 }
                 @keyframes pulseGreen {
                     0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
@@ -351,27 +340,25 @@ export default function BackboneAlerts({ role }) {
                 }
             `}</style>
 
-
             {/* Header Area */}
-            <header style={headerStyle}>
+            <header className="flex justify-between items-center mb-8 pb-4 border-b border-[#222226]">
                 <div>
-                    <h2 style={titleStyle}>Sub-second Alerts (Backbone Monitor)</h2>
-                    <p style={{ margin: "5px 0 0", color: "#64748b", fontSize: "14px" }}>
+                    <h2 className="m-0 text-3xl font-bold font-heading text-[#FAF9F6] tracking-tight">Sub-second Alerts (Backbone Monitor)</h2>
+                    <p className="margin-0 mt-1 text-xs text-[#8E8E90] uppercase tracking-wider font-semibold">
                         Pantau status perangkat backbone secara real-time. Notifikasi instan akan dikirimkan ke Telegram saat status berubah.
                     </p>
                 </div>
 
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#FAF9F6", padding: "6px 12px", borderRadius: "6px", border: "1px solid #D1D1CB" }}>
-                        <span style={livePulseDot} className="pulse-green"></span>
-                        <span style={{ fontSize: "12px", color: "#787774", fontWeight: "600" }}>Live Checking</span>
+                <div className="flex gap-2.5 items-center">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#0C2D1F]/50 border border-[#10B981]/20 text-[9px] text-[#10B981] font-bold uppercase tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] pulse-green"></span>
+                        <span>Live Checking</span>
                     </div>
                     
                     <button 
                         type="button" 
                         onClick={openAddModal} 
-                        style={btnAdd}
-                        className="btn-hover"
+                        className="btn-minimal px-4 py-2.5"
                     >
                         Tambah Perangkat
                     </button>
@@ -379,27 +366,27 @@ export default function BackboneAlerts({ role }) {
             </header>
 
             {/* Toolbar: Search */}
-            <div style={toolbarStyle}>
+            <div className="flex justify-between items-center mb-5 gap-4 flex-wrap">
                 <input 
                     type="text" 
                     placeholder="Cari nama atau IP perangkat..." 
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    style={searchInputStyle}
+                    className="w-72 text-xs py-2 bg-[#0B0B0D] border border-[#222226] focus:border-[#FAF9F6]/40 focus:ring-0 rounded-md text-[#FAF9F6] transition-all"
                 />
-                <div style={{ fontSize: "13px", color: "#64748b" }}>
-                    Menampilkan <strong>{filteredDevices.length}</strong> perangkat
+                <div className="text-xs text-[#8E8E90]">
+                    Menampilkan <strong className="text-[#FAF9F6]">{filteredDevices.length}</strong> perangkat
                 </div>
             </div>
 
             {/* Table Area */}
-            <div style={tableContainerStyle}>
+            <div className="app-card overflow-hidden mb-8">
                 {loading ? (
-                    <div style={{ padding: "40px", textAlign: "center", color: "#787774" }}>
+                    <div className="p-10 text-center text-[#8E8E90] text-sm">
                         Memuat data perangkat backbone...
                     </div>
                 ) : filteredDevices.length === 0 ? (
-                    <div style={{ padding: "50px", textAlign: "center", color: "#787774", background: "#fff", borderRadius: "6px", border: "1px dashed #D1D1CB" }}>
+                    <div className="p-12 text-center text-[#8E8E90] text-sm app-card border-dashed">
                         Belum ada perangkat backbone yang terdaftar atau cocok dengan pencarian.
                     </div>
                 ) : (
@@ -418,17 +405,16 @@ export default function BackboneAlerts({ role }) {
                                 const isUp = d.status === "up";
                                 return (
                                     <tr key={d.id}>
-                                        <td style={{ fontWeight: "600" }}>
+                                        <td className="font-semibold text-[#FAF9F6]">
                                             {d.name}
                                         </td>
-                                        <td style={{ fontFamily: "monospace" }}>
+                                        <td className="font-mono text-xs">
                                             {d.ip}
                                         </td>
                                         <td>
                                             <span className={isUp ? "status-badge-active" : "status-badge-inactive"}>
                                                 <span 
-                                                    style={isUp ? statusPulseGreen : statusPulseRed} 
-                                                    className={isUp ? "pulse-green" : "pulse-red"}
+                                                    className={`w-1.5 h-1.5 rounded-full inline-block mr-1.5 ${isUp ? 'bg-[#10B981] pulse-green' : 'bg-[#EF4444] pulse-red'}`}
                                                 ></span>
                                                 {d.status.toUpperCase()}
                                             </span>
@@ -439,20 +425,18 @@ export default function BackboneAlerts({ role }) {
                                                 : "Belum pernah dicek"}
                                         </td>
                                         <td style={{ textAlign: "right" }}>
-                                            <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+                                            <div className="flex gap-2 justify-end">
                                                 <button 
                                                     type="button" 
                                                     onClick={() => openEditModal(d)} 
-                                                    style={btnEdit}
-                                                    className="btn-hover"
+                                                    className="btn-minimal-secondary px-3 py-1.5 text-[10px]"
                                                 >
                                                     Edit
                                                 </button>
                                                 <button 
                                                     type="button" 
                                                     onClick={() => handleDelete(d.id, d.name)} 
-                                                    style={btnDelete}
-                                                    className="btn-hover"
+                                                    className="btn-minimal-secondary border-[#EF4444]/30 hover:bg-[#EF4444]/10 hover:border-[#EF4444] text-[#EF4444] px-3 py-1.5 text-[10px]"
                                                 >
                                                     Hapus
                                                 </button>
@@ -476,7 +460,6 @@ export default function BackboneAlerts({ role }) {
                 trafficHistory={trafficHistory}
             />
 
-
             {/* PRTG Monitoring Panel */}
             {prtgData.length > 0 && (
                 <PrtgMonitoringPanel 
@@ -488,59 +471,56 @@ export default function BackboneAlerts({ role }) {
 
             {/* Modal Box for Add / Edit Device */}
             {modalOpen && (
-                <div style={overlay} onClick={() => setModalOpen(false)}>
+                <div className="fixed inset-0 bg-[#050505]/80 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setModalOpen(false)}>
                     <div 
-                        style={modalBox} 
-                        className="modal-anim" 
+                        className="bg-[#0C0C0E]/95 border border-[#222226] p-6 rounded-md w-full max-w-md shadow-2xl modal-anim" 
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <h3 style={{ margin: "0 0 15px 0", fontSize: "18px", fontWeight: "700" }}>
+                        <h3 className="margin-0 mb-4 text-lg font-bold text-[#FAF9F6]">
                             {editingDevice ? "Edit Perangkat Backbone" : "Tambah Perangkat Backbone"}
                         </h3>
 
                         {formError && (
-                            <div style={errorBoxStyle}>
+                            <div className="p-3 border border-[#EF4444]/20 rounded-md bg-[#EF4444]/10 text-[#EF4444] text-xs mb-4">
                                 {formError}
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                                <label style={labelStyle}>Nama Perangkat</label>
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[10px] font-bold text-[#8E8E90] uppercase tracking-wider">Nama Perangkat</label>
                                 <input 
                                     type="text" 
                                     placeholder="Contoh: Router Core Gedung A" 
                                     value={name} 
                                     onChange={(e) => setName(e.target.value)}
-                                    style={modalInputStyle}
+                                    className="w-full text-sm p-2 bg-[#0B0B0D] border border-[#222226] focus:border-[#FAF9F6]/40 focus:ring-0 rounded-md text-[#FAF9F6] transition-all"
                                 />
                             </div>
 
-                            <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                                <label style={labelStyle}>IP Address</label>
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[10px] font-bold text-[#8E8E90] uppercase tracking-wider">IP Address</label>
                                 <input 
                                     type="text" 
                                     placeholder="Contoh: 192.168.1.1" 
                                     value={ip} 
                                     onChange={(e) => setIp(e.target.value)}
-                                    style={modalInputStyle}
+                                    className="w-full text-sm p-2 bg-[#0B0B0D] border border-[#222226] focus:border-[#FAF9F6]/40 focus:ring-0 rounded-md text-[#FAF9F6] transition-all"
                                 />
                             </div>
 
-                            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+                            <div className="flex gap-2.5 mt-2.5">
                                 <button 
                                     type="button" 
                                     onClick={() => setModalOpen(false)} 
-                                    style={btnCancel}
-                                    className="btn-hover"
+                                    className="btn-minimal-secondary w-full"
                                 >
                                     Batal
                                 </button>
                                 <button 
                                     type="submit" 
                                     disabled={isSubmitting} 
-                                    style={btnSubmit}
-                                    className="btn-hover"
+                                    className="btn-minimal w-full"
                                 >
                                     {isSubmitting ? "Menyimpan..." : "Simpan"}
                                 </button>
@@ -552,194 +532,3 @@ export default function BackboneAlerts({ role }) {
         </main>
     );
 }
-
-/* Style Definitions */
-const appContainer = {
-    padding: "30px",
-    maxWidth: "1200px",
-    margin: "0 auto",
-    color: "#111111",
-    fontFamily: "'Geist Sans', -apple-system, sans-serif"
-};
-
-const headerStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "30px",
-    paddingBottom: "15px",
-    borderBottom: "1px solid #EAEAEA"
-};
-
-const titleStyle = {
-    margin: 0,
-    fontSize: "36px",
-    fontWeight: "400",
-    fontFamily: "'Instrument Serif', serif",
-    fontStyle: "italic",
-    color: "#111111"
-};
-
-const livePulseDot = {
-    width: "8px",
-    height: "8px",
-    borderRadius: "50%",
-    background: "#346538",
-    display: "inline-block"
-};
-
-const statusPulseGreen = {
-    width: "6px",
-    height: "6px",
-    borderRadius: "50%",
-    background: "#346538",
-    display: "inline-block"
-};
-
-const statusPulseRed = {
-    width: "6px",
-    height: "6px",
-    borderRadius: "50%",
-    background: "#9F2F2D",
-    display: "inline-block"
-};
-
-const toolbarStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "20px",
-    gap: "15px",
-    flexWrap: "wrap"
-};
-
-const searchInputStyle = {
-    padding: "6px 12px",
-    borderRadius: "6px",
-    border: "1px solid #D1D1CB",
-    fontSize: "12px",
-    outline: "none",
-    width: "300px",
-    background: "#FAF9F6",
-    color: "#111111"
-};
-
-const tableContainerStyle = {
-    background: "#fff",
-    borderRadius: "6px",
-    border: "1px solid #E5E5E0",
-    overflow: "hidden",
-    marginBottom: "30px"
-};
-
-const btnAdd = {
-    padding: "8px 16px",
-    background: "#111111",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "600",
-    fontSize: "13px",
-    transition: "all 0.15s ease"
-};
-
-const btnEdit = {
-    padding: "6px 12px",
-    background: "white",
-    color: "#111111",
-    border: "1px solid #D1D1CB",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "600",
-    fontSize: "12px",
-    transition: "all 0.15s ease"
-};
-
-const btnDelete = {
-    padding: "6px 12px",
-    background: "white",
-    color: "#9F2F2D",
-    border: "1px solid #D1D1CB",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "600",
-    fontSize: "12px",
-    transition: "all 0.15s ease"
-};
-
-const overlay = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: "rgba(0, 0, 0, 0.3)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 999
-};
-
-const modalBox = {
-    background: "#fff",
-    padding: "25px",
-    borderRadius: "6px",
-    border: "1px solid #E5E5E0",
-    width: "90%",
-    maxWidth: "450px",
-    boxShadow: "none",
-};
-
-const labelStyle = {
-    fontSize: "11px",
-    fontWeight: "700",
-    color: "#787774",
-    textTransform: "uppercase",
-    letterSpacing: "0.05em"
-};
-
-const modalInputStyle = {
-    padding: "8px 12px",
-    borderRadius: "6px",
-    border: "1px solid #D1D1CB",
-    fontSize: "14px",
-    background: "#FAF9F6",
-    outline: "none"
-};
-
-const btnCancel = {
-    padding: "8px 16px",
-    background: "white",
-    color: "#787774",
-    border: "1px solid #D1D1CB",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "600",
-    flex: 1,
-    textAlign: "center",
-    transition: "all 0.15s ease"
-};
-
-const btnSubmit = {
-    padding: "8px 16px",
-    background: "#111111",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "600",
-    flex: 1,
-    textAlign: "center",
-    transition: "all 0.15s ease"
-};
-
-const errorBoxStyle = {
-    padding: "12px",
-    border: "1px solid #FDEBEC",
-    borderRadius: "6px",
-    background: "#FDEBEC",
-    color: "#9F2F2D",
-    fontSize: "13px",
-    marginBottom: "15px"
-};

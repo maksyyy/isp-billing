@@ -3,7 +3,7 @@
 
     <!-- HEADER -->
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#111111]">
+        <h2 class="text-3xl font-normal italic font-serif tracking-tight text-[#FAF9F6]">
             Tiket Aduan
         </h2>
 
@@ -15,7 +15,7 @@
     </div>
 
     <!-- TABLE -->
-    <div class="border border-[#E5E5E0] rounded-md overflow-hidden bg-white">
+    <div class="app-card overflow-hidden">
         <table class="app-table">
             <thead>
                 <tr>
@@ -36,11 +36,11 @@
                 @forelse($tickets as $t)
                 <tr>
                     <!-- JUDUL -->
-                    <td class="p-3 font-semibold text-[#111111]">{{ $t->title }}</td>
+                    <td class="p-3 font-semibold text-[#FAF9F6]">{{ $t->title }}</td>
 
                     <!-- CUSTOMER -->
                     <td class="p-3 text-xs">
-                        <div class="font-semibold text-[#111111]">{{ $t->customer->name ?? '-' }}</div>
+                        <div class="font-semibold text-[#FAF9F6]">{{ $t->customer->name ?? '-' }}</div>
                     </td>
 
                     <!-- ALAMAT -->
@@ -48,27 +48,27 @@
                         @if($t->customer && $t->customer->address)
                             <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($t->customer->address) }}" 
                                target="_blank" 
-                               class="text-xs hover:underline text-[#787774]"
+                               class="text-xs hover:underline text-[#8E8E90]"
                                title="Buka di Google Maps">
                                 [MAP] <span class="max-w-[150px] truncate block inline-block align-bottom">{{ $t->customer->address }}</span>
                             </a>
                         @else
-                            <span class="text-gray-400">-</span>
+                            <span class="text-[#8E8E90]">-</span>
                         @endif
                     </td>
 
                     <!-- TEKNISI -->
-                    <td class="p-3 text-xs text-[#787774]">{{ $t->teknisi->name ?? '-' }}</td>
+                    <td class="p-3 text-xs text-[#8E8E90]">{{ $t->teknisi->name ?? '-' }}</td>
 
                     <!-- TANGGAL BUAT -->
-                    <td class="p-3 text-xs text-[#787774] font-mono">
+                    <td class="p-3 text-xs text-[#8E8E90] font-mono">
                         {{ $t->tanggal ?? $t->created_at->format('d-m-Y') }}
                     </td>
 
                     <!-- TANGGAL SELESAI -->
-                    <td class="p-3 text-xs text-[#787774] font-mono">
+                    <td class="p-3 text-xs text-[#8E8E90] font-mono">
                         @if($t->tanggal_selesai)
-                            <span class="text-[#346538] font-semibold">
+                            <span class="text-[#10B981] font-semibold font-mono">
                                 {{ \Carbon\Carbon::parse($t->tanggal_selesai)->format('d-m-Y H:i') }}
                             </span>
                         @else
@@ -79,11 +79,11 @@
                     <!-- STATUS -->
                     <td class="p-3 text-xs">
                         @if($t->status == 'open')
-                            <span class="inline-flex px-2 py-0.5 bg-[#FAF3DB] text-[#956400] border border-[#FAF3DB] rounded text-[10px] font-bold uppercase tracking-wider">
+                            <span class="inline-flex px-2 py-0.5 bg-[#2E200C]/50 text-[#F59E0B] border border-[#F59E0B]/20 rounded text-[10px] font-bold uppercase tracking-wider">
                                 Open
                             </span>
                         @else
-                            <span class="inline-flex px-2 py-0.5 bg-[#EDF3EC] text-[#346538] border border-[#EDF3EC] rounded text-[10px] font-bold uppercase tracking-wider">
+                            <span class="inline-flex px-2 py-0.5 bg-[#0C2D1F]/50 text-[#10B981] border border-[#10B981]/20 rounded text-[10px] font-bold uppercase tracking-wider">
                                 Done
                             </span>
                         @endif
@@ -94,10 +94,10 @@
                         @if($t->foto_masalah)
                             <a href="{{ asset('storage/'.$t->foto_masalah) }}" target="_blank" class="inline-block">
                                 <img src="{{ asset('storage/'.$t->foto_masalah) }}"
-                                     class="w-10 h-10 object-cover rounded-md border border-[#E5E5E0] hover:scale-105 transition">
+                                     class="w-10 h-10 object-cover rounded-md border border-[#222226] hover:scale-105 transition">
                             </a>
                         @else
-                            <span class="text-gray-400 text-xs">-</span>
+                            <span class="text-[#8E8E90] text-xs">-</span>
                         @endif
                     </td>
  
@@ -106,10 +106,10 @@
                         @if($t->bukti)
                             <a href="{{ asset('storage/'.$t->bukti) }}" target="_blank" class="inline-block">
                                 <img src="{{ asset('storage/'.$t->bukti) }}"
-                                     class="w-10 h-10 object-cover rounded-md border border-[#E5E5E0] hover:scale-105 transition">
+                                     class="w-10 h-10 object-cover rounded-md border border-[#222226] hover:scale-105 transition">
                             </a>
                         @else
-                            <span class="text-gray-400 text-[10px] font-mono">[KOSONG]</span>
+                            <span class="text-[#8E8E90] text-[10px] font-mono">[KOSONG]</span>
                         @endif
                     </td>
 
@@ -125,7 +125,7 @@
                                 @csrf
 
                                 <input type="file" name="bukti"
-                                       class="text-[9px] border border-[#D1D1CB] rounded px-1 py-0.5 bg-[#FAF9F6] w-28" required>
+                                       class="text-[9px] border border-[#222226] rounded px-1 py-0.5 bg-[#0B0B0D] w-28 text-xs text-[#FAF9F6] focus:border-[#FAF9F6]/40 focus:ring-0" required>
 
                                 <button class="btn-minimal px-2 py-1 text-[10px]">
                                     Selesai
@@ -146,7 +146,7 @@
                                       onsubmit="return confirm('Yakin hapus?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="inline-flex items-center justify-center px-2.5 py-1 bg-[#FDEBEC] hover:bg-[#9F2F2D] hover:text-white text-[#9F2F2D] border border-[#FDEBEC] rounded-md text-[10px] font-bold transition-all cursor-pointer">
+                                    <button class="inline-flex items-center justify-center px-2.5 py-1 btn-minimal-secondary border-[#EF4444]/30 hover:bg-[#EF4444]/10 hover:border-[#EF4444] text-[#EF4444] rounded-md text-[10px] font-bold transition-all cursor-pointer">
                                         Hapus
                                     </button>
                                 </form>
@@ -158,7 +158,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="10" class="p-8 text-center text-[#787774] font-mono text-xs">
+                    <td colspan="10" class="p-8 text-center text-[#8E8E90] font-mono text-xs">
                         [Belum ada tiket aduan]
                     </td>
                 </tr>
@@ -173,4 +173,4 @@
     </div>
 
 </div>
-</x-app-layout>ayout>
+</x-app-layout>

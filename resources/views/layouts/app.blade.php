@@ -18,7 +18,8 @@
     <style>
         body {
             font-family: 'Geist Sans', 'Plus Jakarta Sans', sans-serif;
-            background-color: #F5F4F0;
+            background-color: #050505;
+            color: #FAF9F6;
         }
 
         h1, h2, h3, h4, .font-heading {
@@ -29,8 +30,8 @@
 
         /* Sidebar styling with deep obsidian dark */
         .sidebar-minimalist {
-            background: #0C0C0D;
-            border-right: 1px solid #1F1F21;
+            background: #09090B;
+            border-right: 1px solid #1C1C1F;
         }
 
         /* Nav link transitions */
@@ -55,7 +56,7 @@
     </style>
 </head>
 
-<body class="font-sans antialiased text-[#121212] bg-[#F5F4F0] h-full overflow-hidden">
+<body class="font-sans antialiased text-[#FAF9F6] bg-[#050505] h-full overflow-hidden">
 <div class="flex h-full min-h-screen overflow-hidden relative">
 
     <!-- BACKDROP OVERLAY FOR MOBILE SIDEBAR -->
@@ -303,11 +304,11 @@
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         
         <!-- TOP STICKY HEADER BAR -->
-        <header class="h-16 border-b border-[#E5E5E0] bg-white px-6 flex items-center justify-between sticky top-0 z-20 shrink-0">
+        <header class="h-16 border-b border-[#1C1C1F] bg-[#050505]/70 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-20 shrink-0">
             <!-- Left Header Section -->
             <div class="flex items-center gap-4 min-w-0">
                 <!-- Mobile Sidebar Toggle -->
-                <button id="sidebar-toggle" class="lg:hidden p-2 text-[#787774] hover:text-[#111111] hover:bg-[#F5F5F4] rounded-lg transition-colors cursor-pointer" aria-label="Toggle Navigation Sidebar">
+                <button id="sidebar-toggle" class="lg:hidden p-2 text-[#8E8E90] hover:text-[#FAF9F6] hover:bg-[#1C1C1F]/60 rounded-lg transition-colors cursor-pointer" aria-label="Toggle Navigation Sidebar">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -318,7 +319,7 @@
                     @if (isset($header))
                         {{ $header }}
                     @else
-                        <h2 class="text-sm font-bold text-[#111111] uppercase tracking-wider leading-tight truncate">
+                        <h2 class="text-sm font-bold text-[#FAF9F6] uppercase tracking-wider leading-tight truncate">
                             {{ config('app.name', 'ISP Billing') }} Console
                         </h2>
                     @endif
@@ -339,36 +340,36 @@
                     @elseif($currentRoute === 'settings.index' || $currentRoute === 'users.index')
                         <input type="hidden" name="tab" value="staff">
                     @endif
-                    <input type="text" name="search" id="global-search-input" value="{{ request('search') }}" placeholder="Cari data..." class="w-full text-xs pl-8 pr-3 sm:pr-10 py-1.5 bg-[#FAF9F6] border border-[#D1D1CB] focus:outline-none focus:border-[#111111] focus:ring-0 rounded-md text-[#111111] font-medium transition-all">
-                    <span class="absolute left-2.5 top-2 text-[#787774]">
+                    <input type="text" name="search" id="global-search-input" value="{{ request('search') }}" placeholder="Cari data..." class="w-full text-xs pl-8 pr-3 sm:pr-10 py-1.5 bg-[#0B0B0D] border border-[#222226] focus:outline-none focus:border-[#FAF9F6]/40 focus:ring-0 rounded-md text-[#FAF9F6] font-medium transition-all">
+                    <span class="absolute left-2.5 top-2 text-[#8E8E90]">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </span>
-                    <span class="absolute right-2 top-1.5 px-1.5 py-0.5 bg-white border border-[#D1D1CB] text-[8px] text-[#787774] font-mono rounded-md hidden sm:block">
+                    <span class="absolute right-2 top-1.5 px-1.5 py-0.5 bg-[#121216] border border-[#222226] text-[8px] text-[#8E8E90] font-mono rounded-md hidden sm:block">
                         ⌘ K
                     </span>
                 </form>
 
                 <!-- Network Status indicator -->
-                <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#EDF3EC] border border-[#EDF3EC] text-[9px] text-[#346538] font-bold">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[#346538]"></span>
+                <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#0C2D1F]/50 border border-[#10B981]/20 text-[9px] text-[#10B981] font-bold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span>
                     <span>GATEWAY LIVE</span>
                 </div>
 
                 <!-- Alert/Notifications Bell -->
                 <div class="relative">
-                    <button class="p-2 text-[#787774] hover:text-[#111111] hover:bg-[#F5F5F4] border border-transparent hover:border-[#E5E5E0] rounded-md transition-all cursor-pointer">
+                    <button class="p-2 text-[#8E8E90] hover:text-[#FAF9F6] hover:bg-[#1C1C1F]/60 border border-transparent hover:border-[#222226] rounded-md transition-all cursor-pointer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#111111] rounded-full border border-white"></span>
+                        <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#FAF9F6] rounded-full border border-[#050505]"></span>
                     </button>
                 </div>
                 
                 <!-- Quick Settings Link / Profile Avatar -->
-                <a href="{{ route('profile.edit') }}" class="p-1 bg-[#F5F5F4] border border-[#E5E5E0] hover:bg-[#EAEAEA] rounded-md transition-all flex items-center justify-center gap-2">
-                    <div class="w-7 h-7 bg-[#FFFFFF] text-[#111111] text-xs font-bold rounded-md flex items-center justify-center">
+                <a href="{{ route('profile.edit') }}" class="p-1 bg-[#0B0B0D] border border-[#222226] hover:bg-[#121216] rounded-md transition-all flex items-center justify-center gap-2">
+                    <div class="w-7 h-7 bg-[#FAF9F6] text-[#0C0C0D] text-xs font-bold rounded-md flex items-center justify-center">
                         {{ strtoupper(substr($user->name, 0, 1)) }}
                     </div>
                 </a>
@@ -376,19 +377,19 @@
         </header>
 
         <!-- SCROLLABLE WORKSPACE CONTENT -->
-        <div class="flex-1 overflow-y-auto min-h-0 flex flex-col justify-between bg-[#F5F4F0]">
+        <div class="flex-1 overflow-y-auto min-h-0 flex flex-col justify-between bg-[#050505]">
             <!-- Slot Content View -->
             <main class="flex-1 p-6 lg:p-8">
                 {{ $slot }}
             </main>
 
             <!-- Footer Section -->
-            <footer class="border-t border-[#E5E5E0] bg-white px-6 lg:px-8 py-4 text-[10px] text-[#787774] font-medium flex items-center justify-between shrink-0 uppercase tracking-wider">
+            <footer class="border-t border-[#1C1C1F] bg-[#050505] px-6 lg:px-8 py-4 text-[10px] text-[#8E8E90] font-medium flex items-center justify-between shrink-0 uppercase tracking-wider">
                 <div>
                     &copy; {{ date('Y') }} {{ config('app.name', 'ISP Billing') }} Portal.
                 </div>
-                <div class="flex items-center gap-1.5 text-[9px] text-[#111111] bg-[#F5F4F0] px-2.5 py-1 rounded-md border border-[#E5E5E0] font-mono">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[#111111]"></span>
+                <div class="flex items-center gap-1.5 text-[9px] text-[#FAF9F6] bg-[#0B0B0D] px-2.5 py-1 rounded-md border border-[#222226] font-mono">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span>
                     Console v3.0
                 </div>
             </footer>
