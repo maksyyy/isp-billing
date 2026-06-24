@@ -32,7 +32,25 @@ class MonitorBackbone extends Command
     {
         $this->info("Backbone monitoring daemon started... Press Ctrl+C to stop.");
 
+        // Disable query log to prevent memory leaks from running queries indefinitely
+        \Illuminate\Support\Facades\DB::disableQueryLog();
+
+        $startTime = time();
+
         while (true) {
+            // Exit after 1 hour (3600 seconds) to prevent memory leaks and database connection timeouts.
+            // Systemd/Supervisor will automatically restart the daemon fresh.
+            if (time() - $startTime > 3600) {
+                $this->info("Daemon running for 1 hour. Exiting for scheduled restart...");
+                return 0;
+            }
+
+            // Exit if memory usage exceeds 128MB to prevent Out-Of-Memory issues
+            if (memory_get_usage(true) > 128 * 1024 * 1024) {
+                $this->warn("Memory usage exceeded 128MB. Exiting for scheduled restart...");
+                return 0;
+            }
+
             try {
                 $devices = BackboneDevice::all();
                 
@@ -199,11 +217,20 @@ class MonitorBackbone extends Command
             } catch (\Exception $e) {
                 Log::error("MonitorBackbone error: " . $e->getMessage());
                 $this->error("Error: " . $e->getMessage());
+
+                // If it is a database connection or query error, exit so systemd/supervisor restarts the daemon fresh
+                if ($e instanceof \PDOException || str_contains(strtolower($e->getMessage()), 'database') || str_contains(strtolower($e->getMessage()), 'sql') || str_contains(strtolower($e->getMessage()), 'connection')) {
+                    $this->error("Database connection lost or SQL error. Exiting to trigger restart...");
+                    return 1;
+                }
             }
 
             if (app()->environment('testing')) {
                 break;
             }
+
+            // Force garbage collection of cycles to keep memory usage minimal
+            gc_collect_cycles();
 
             // Sleep 2 seconds before the next check iteration
             sleep(2);

@@ -174,6 +174,10 @@ class RouterosAPI
         
         while (true) {
             $length = $this->getLength();
+            if ($length < 0) {
+                $this->disconnect();
+                break;
+            }
             if ($length > 0) {
                 $word = '';
                 $received = 0;
@@ -267,7 +271,7 @@ class RouterosAPI
     {
         $char = fread($this->socket, 1);
         if ($char === false || $char === '') {
-            return 0;
+            return -1;
         }
         
         $byte = ord($char);
@@ -275,16 +279,28 @@ class RouterosAPI
             return $byte;
         } elseif (($byte & 0xC0) == 0x80) {
             $char2 = fread($this->socket, 1);
+            if ($char2 === false || $char2 === '') {
+                return -1;
+            }
             $byte2 = ord($char2);
             return (($byte & 0x3F) << 8) + $byte2;
         } elseif (($byte & 0xE0) == 0xC0) {
             $char2 = fread($this->socket, 2);
+            if ($char2 === false || strlen($char2) < 2) {
+                return -1;
+            }
             return (($byte & 0x1F) << 16) + (ord($char2[0]) << 8) + ord($char2[1]);
         } elseif (($byte & 0xF0) == 0xE0) {
             $char2 = fread($this->socket, 3);
+            if ($char2 === false || strlen($char2) < 3) {
+                return -1;
+            }
             return (($byte & 0x0F) << 24) + (ord($char2[0]) << 16) + (ord($char2[1]) << 8) + ord($char2[2]);
         } elseif (($byte & 0xF8) == 0xF0) {
             $char2 = fread($this->socket, 4);
+            if ($char2 === false || strlen($char2) < 4) {
+                return -1;
+            }
             return (ord($char2[0]) << 24) + (ord($char2[1]) << 16) + (ord($char2[2]) << 8) + ord($char2[3]);
         }
         
