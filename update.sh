@@ -91,9 +91,14 @@ if [ -f package.json ]; then
   echo "Menginstal npm packages..."
   npm install --legacy-peer-deps
 
+  # Pulihkan execute permission pada semua binary node_modules
+  # (chmod 644 dari run sebelumnya bisa men-strip execute bit)
+  echo "Memulihkan execute permission node_modules/.bin..."
+  find node_modules/.bin -maxdepth 1 \( -type f -o -type l \) -exec chmod +x {} \; 2>/dev/null || true
+
   echo "Kompilasi asset frontend..."
-  # Gunakan npx agar tidak bergantung pada execute-bit di node_modules/.bin
-  npx vite build
+  # Gunakan 'node' langsung ke entrypoint Vite — tidak bergantung execute-bit
+  node node_modules/vite/bin/vite.js build
 else
   echo -e "${YELLOW}⚠️ package.json tidak ditemukan. Melewati langkah kompilasi frontend.${NC}"
 fi
