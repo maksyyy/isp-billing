@@ -1,44 +1,42 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-[#111111] leading-tight">
             Edit Ticket
         </h2>
     </x-slot>
 
     <div class="p-6 flex justify-center">
-
         <!-- CARD -->
-        <div class="w-full max-w-2xl bg-white shadow-lg rounded-lg p-6">
-
+        <div class="w-full max-w-2xl app-card p-6">
             <form action="{{ route('tickets.update', $ticket->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <!-- JUDUL -->
                 <div class="mb-4">
-                    <label class="block font-semibold mb-1 text-gray-700">Judul</label>
+                    <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Judul</label>
                     <input type="text"
                            name="title"
                            value="{{ old('title', $ticket->title) }}"
-                           class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400 @error('title') border-red-500 @enderror"
+                           class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                            required>
                     @error('title')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- PELANGGAN -->
                 <div class="mb-4">
-                    <label class="block font-semibold mb-1 text-gray-700">Pelanggan</label>
-                    <div class="relative">
+                    <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Pelanggan</label>
+                    <div class="relative space-y-2">
                         <input type="text"
                                id="customer_search"
                                placeholder="🔍 Cari nama atau alamat pelanggan..."
-                               class="w-full border border-slate-200 px-3 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all mb-2"
+                               class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                                autocomplete="off">
                         <select name="customer_id"
                                 id="customer_select"
-                                class="w-full border border-slate-200 px-3 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all @error('customer_id') border-red-500 @enderror"
+                                class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                                 required>
                             <option value="">-- Pilih Pelanggan --</option>
                             @foreach($customers as $c)
@@ -50,55 +48,56 @@
                         </select>
                     </div>
                     @error('customer_id')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- TANGGAL -->
                 <div class="mb-4">
-                    <label class="block font-semibold mb-1 text-gray-700">Tanggal</label>
+                    <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Tanggal</label>
                     <input type="date"
                            name="tanggal"
                            value="{{ old('tanggal', $ticket->tanggal) }}"
-                           class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400 @error('tanggal') border-red-500 @enderror"
+                           class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                            required>
                     @error('tanggal')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- MASALAH -->
                 <div class="mb-4">
-                    <label class="block font-semibold mb-1 text-gray-700">Masalah</label>
+                    <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Masalah</label>
                     <textarea name="problem"
                               rows="4"
-                              class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400 @error('problem') border-red-500 @enderror"
+                              class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                               required>{{ old('problem', $ticket->description) }}</textarea>
                     @error('problem')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- FOTO MASALAH -->
                 <div class="mb-4">
-                    <label class="block font-semibold mb-1 text-gray-700">Foto Masalah (Opsional)</label>
+                    <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Foto Masalah (Opsional)</label>
                     @if($ticket->foto_masalah)
-                        <div class="mb-2">
-                            <p class="text-xs text-gray-500 mb-1">Foto Masalah Saat Ini:</p>
-                            <img src="{{ asset('storage/' . $ticket->foto_masalah) }}" class="w-48 object-cover rounded border shadow-sm">
+                        <div class="mb-3">
+                            <p class="text-xs text-[#71717A] mb-1">Foto Masalah Saat Ini:</p>
+                            <img src="{{ asset('storage/' . $ticket->foto_masalah) }}" class="w-48 object-cover rounded border border-[#E4E4E7] shadow-sm">
                         </div>
                     @endif
-                    <input type="file" name="foto_masalah" accept="image/*" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400 @error('foto_masalah') border-red-500 @enderror">
+                    <input type="file" name="foto_masalah" accept="image/*"
+                           class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm file:bg-[#F4F4F5] file:border-[#E4E4E7] file:text-[#111111] file:rounded-md file:px-3 file:py-1 file:mr-3 file:text-xs">
                     @error('foto_masalah')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- TEKNISI -->
                 <div class="mb-6">
-                    <label class="block font-semibold mb-1 text-gray-700">Teknisi</label>
+                    <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Teknisi</label>
                     <select name="assigned_to"
-                            class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400 @error('assigned_to') border-red-500 @enderror"
+                            class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                             required>
                         <option value="">-- Pilih Teknisi --</option>
                         @foreach($teknisi as $t)
@@ -109,28 +108,21 @@
                         @endforeach
                     </select>
                     @error('assigned_to')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- BUTTON -->
-                <div class="flex justify-between items-center">
-
-                    <a href="{{ route('tickets.index') }}"
-                       class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition">
-                        ← Kembali
-                    </a>
-
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition font-semibold shadow">
+                <div class="flex gap-2">
+                    <button type="submit" class="btn-minimal">
                         Simpan Perubahan
                     </button>
-
+                    <a href="{{ route('tickets.index') }}" class="btn-minimal-secondary">
+                        Batal
+                    </a>
                 </div>
-
             </form>
-
         </div>
-
     </div>
 
     <script>

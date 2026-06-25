@@ -315,7 +315,7 @@ export default function BackboneAlerts({ role }) {
     const prtgCustomers = prtgData.filter((d) => d && d.device && /^\d+/.test(String(d.device)));
 
     return (
-        <main className="py-6 max-w-7xl mx-auto text-[#FAF9F6] font-sans">
+        <main className="py-6 max-w-7xl mx-auto text-[#111111] font-sans">
             <style>{`
                 .modal-anim { animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
                 @keyframes modalFadeIn {
@@ -341,17 +341,17 @@ export default function BackboneAlerts({ role }) {
             `}</style>
 
             {/* Header Area */}
-            <header className="flex justify-between items-center mb-8 pb-4 border-b border-[#222226]">
+            <header className="flex justify-between items-center mb-8 pb-4 border-b border-[#E4E4E7]">
                 <div>
-                    <h2 className="m-0 text-3xl font-bold font-heading text-[#FAF9F6] tracking-tight">Sub-second Alerts (Backbone Monitor)</h2>
-                    <p className="margin-0 mt-1 text-xs text-[#8E8E90] uppercase tracking-wider font-semibold">
+                    <h2 className="m-0 text-3xl font-bold font-heading text-[#111111] tracking-tight">Sub-second Alerts (Backbone Monitor)</h2>
+                    <p className="margin-0 mt-1 text-xs text-[#71717A] uppercase tracking-wider font-semibold">
                         Pantau status perangkat backbone secara real-time. Notifikasi instan akan dikirimkan ke Telegram saat status berubah.
                     </p>
                 </div>
 
                 <div className="flex gap-2.5 items-center">
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#0C2D1F]/50 border border-[#10B981]/20 text-[9px] text-[#10B981] font-bold uppercase tracking-wider">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] pulse-green"></span>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#ECFDF5] border border-[#A7F3D0] text-[9px] text-[#047857] font-bold uppercase tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#059669] pulse-green"></span>
                         <span>Live Checking</span>
                     </div>
                     
@@ -372,21 +372,21 @@ export default function BackboneAlerts({ role }) {
                     placeholder="Cari nama atau IP perangkat..." 
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-72 text-xs py-2 bg-[#0B0B0D] border border-[#222226] focus:border-[#FAF9F6]/40 focus:ring-0 rounded-md text-[#FAF9F6] transition-all"
+                    className="w-72 text-xs py-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:border-[#6366F1]/40 focus:ring-0 rounded-md text-[#111111] transition-all"
                 />
-                <div className="text-xs text-[#8E8E90]">
-                    Menampilkan <strong className="text-[#FAF9F6]">{filteredDevices.length}</strong> perangkat
+                <div className="text-xs text-[#71717A]">
+                    Menampilkan <strong className="text-[#111111]">{filteredDevices.length}</strong> perangkat
                 </div>
             </div>
 
             {/* Table Area */}
             <div className="app-card overflow-hidden mb-8">
                 {loading ? (
-                    <div className="p-10 text-center text-[#8E8E90] text-sm">
+                    <div className="p-10 text-center text-[#71717A] text-sm">
                         Memuat data perangkat backbone...
                     </div>
                 ) : filteredDevices.length === 0 ? (
-                    <div className="p-12 text-center text-[#8E8E90] text-sm app-card border-dashed">
+                    <div className="p-12 text-center text-[#71717A] text-sm app-card border-dashed">
                         Belum ada perangkat backbone yang terdaftar atau cocok dengan pencarian.
                     </div>
                 ) : (
@@ -405,7 +405,7 @@ export default function BackboneAlerts({ role }) {
                                 const isUp = d.status === "up";
                                 return (
                                     <tr key={d.id}>
-                                        <td className="font-semibold text-[#FAF9F6]">
+                                        <td className="font-semibold text-[#111111]">
                                             {d.name}
                                         </td>
                                         <td className="font-mono text-xs">
@@ -414,7 +414,7 @@ export default function BackboneAlerts({ role }) {
                                         <td>
                                             <span className={isUp ? "status-badge-active" : "status-badge-inactive"}>
                                                 <span 
-                                                    className={`w-1.5 h-1.5 rounded-full inline-block mr-1.5 ${isUp ? 'bg-[#10B981] pulse-green' : 'bg-[#EF4444] pulse-red'}`}
+                                                    className={`w-1.5 h-1.5 rounded-full inline-block mr-1.5 ${isUp ? 'bg-[#059669] pulse-green' : 'bg-[#EF4444] pulse-red'}`}
                                                 ></span>
                                                 {d.status.toUpperCase()}
                                             </span>
@@ -436,7 +436,7 @@ export default function BackboneAlerts({ role }) {
                                                 <button 
                                                     type="button" 
                                                     onClick={() => handleDelete(d.id, d.name)} 
-                                                    className="btn-minimal-secondary border-[#EF4444]/30 hover:bg-[#EF4444]/10 hover:border-[#EF4444] text-[#EF4444] px-3 py-1.5 text-[10px]"
+                                                    className="btn-minimal-secondary border-[#FCA5A5]/30 hover:bg-[#FEF2F2] hover:border-[#EF4444] text-[#DC2626] px-3 py-1.5 text-[10px]"
                                                 >
                                                     Hapus
                                                 </button>
@@ -471,41 +471,41 @@ export default function BackboneAlerts({ role }) {
 
             {/* Modal Box for Add / Edit Device */}
             {modalOpen && (
-                <div className="fixed inset-0 bg-[#050505]/80 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setModalOpen(false)}>
+                <div className="fixed inset-0 bg-[#FFFFFF]/60 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setModalOpen(false)}>
                     <div 
-                        className="bg-[#0C0C0E]/95 border border-[#222226] p-6 rounded-md w-full max-w-md shadow-2xl modal-anim" 
+                        className="bg-[#FFFFFF] border border-[#E4E4E7] p-6 rounded-md w-full max-w-md shadow-2xl modal-anim" 
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <h3 className="margin-0 mb-4 text-lg font-bold text-[#FAF9F6]">
+                        <h3 className="margin-0 mb-4 text-lg font-bold text-[#111111]">
                             {editingDevice ? "Edit Perangkat Backbone" : "Tambah Perangkat Backbone"}
                         </h3>
 
                         {formError && (
-                            <div className="p-3 border border-[#EF4444]/20 rounded-md bg-[#EF4444]/10 text-[#EF4444] text-xs mb-4">
+                            <div className="p-3 border border-[#FCA5A5]/20 rounded-md bg-[#FEF2F2] text-[#B91C1C] text-xs mb-4">
                                 {formError}
                             </div>
                         )}
 
                         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1.5">
-                                <label className="text-[10px] font-bold text-[#8E8E90] uppercase tracking-wider">Nama Perangkat</label>
+                                <label className="text-[10px] font-bold text-[#71717A] uppercase tracking-wider">Nama Perangkat</label>
                                 <input 
                                     type="text" 
                                     placeholder="Contoh: Router Core Gedung A" 
                                     value={name} 
                                     onChange={(e) => setName(e.target.value)}
-                                    className="w-full text-sm p-2 bg-[#0B0B0D] border border-[#222226] focus:border-[#FAF9F6]/40 focus:ring-0 rounded-md text-[#FAF9F6] transition-all"
+                                    className="w-full text-sm p-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:border-[#6366F1]/40 focus:ring-0 rounded-md text-[#111111] transition-all"
                                 />
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                                <label className="text-[10px] font-bold text-[#8E8E90] uppercase tracking-wider">IP Address</label>
+                                <label className="text-[10px] font-bold text-[#71717A] uppercase tracking-wider">IP Address</label>
                                 <input 
                                     type="text" 
                                     placeholder="Contoh: 192.168.1.1" 
                                     value={ip} 
                                     onChange={(e) => setIp(e.target.value)}
-                                    className="w-full text-sm p-2 bg-[#0B0B0D] border border-[#222226] focus:border-[#FAF9F6]/40 focus:ring-0 rounded-md text-[#FAF9F6] transition-all"
+                                    className="w-full text-sm p-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:border-[#6366F1]/40 focus:ring-0 rounded-md text-[#111111] transition-all"
                                 />
                             </div>
 

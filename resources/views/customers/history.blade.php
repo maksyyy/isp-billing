@@ -1,159 +1,160 @@
 <x-app-layout>
     <div class="p-6">
 
-        <h2 class="text-xl font-bold mb-4">
+        <h2 class="text-3xl font-bold tracking-tight text-[#111111] mb-6">
             Riwayat - {{ $customer->name }}
         </h2>
 
-        <a href="{{ route('customers.index') }}"
-           class="bg-gray-500 text-white px-3 py-2 rounded mb-4 inline-block">
-            ← Kembali
-        </a>
+        <div class="mb-6">
+            <a href="{{ route('customers.index') }}" class="btn-minimal-secondary">
+                ← Kembali
+            </a>
+        </div>
 
         <!-- ========================= -->
         <!-- 💰 RIWAYAT PEMBAYARAN -->
         <!-- ========================= -->
-        <div class="bg-white shadow rounded overflow-hidden mb-6">
+        <div class="app-card overflow-hidden mb-6">
 
-            <div class="p-3 bg-gray-100 font-semibold">
+            <div class="p-4 bg-[#F4F4F5] font-bold text-xs uppercase tracking-wider text-[#6366F1] border-b border-[#E4E4E7]">
                 Riwayat Pembayaran
             </div>
 
-            <table class="w-full border text-sm">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="p-2">Tanggal</th>
-                        <th class="p-2">Jumlah</th>
-                        <th class="p-2">Status</th>
-                        <th class="p-2">Aksi</th>
-                    </tr>
-                </thead>
+            <div class="overflow-x-auto">
+                <table class="app-table">
+                    <thead>
+                        <tr>
+                            <th class="p-3 text-left">Tanggal</th>
+                            <th class="p-3 text-left">Jumlah</th>
+                            <th class="p-3 text-left">Status</th>
+                            <th class="p-3 text-center w-28">Aksi</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    @forelse($invoices as $inv)
-                    @php
-                        $isLunas = $inv->paid_amount >= $inv->amount;
-                        $sisa = $inv->amount - $inv->paid_amount;
-                    @endphp
+                    <tbody>
+                        @forelse($invoices as $inv)
+                        @php
+                            $isLunas = $inv->paid_amount >= $inv->amount;
+                            $sisa = $inv->amount - $inv->paid_amount;
+                        @endphp
 
-                    <tr class="border">
+                        <tr>
+                            <!-- TANGGAL -->
+                            <td class="p-3 text-xs font-mono text-[#111111]">
+                                {{ $inv->created_at->format('d-m-Y') }}
+                            </td>
 
-                        <!-- TANGGAL -->
-                        <td class="p-2">
-                            {{ $inv->created_at->format('d-m-Y') }}
-                        </td>
+                            <!-- JUMLAH -->
+                            <td class="p-3">
+                                <div>
+                                    <strong class="text-[#6366F1] font-mono text-sm">
+                                        Rp {{ number_format($inv->paid_amount) }}
+                                    </strong>
+                                    <br>
+                                    <small class="text-[#71717A] text-[10px]">
+                                        dari Rp {{ number_format($inv->amount) }}
+                                    </small>
+                                </div>
+                            </td>
 
-                        <!-- JUMLAH (FIX UTAMA 🔥) -->
-                        <td class="p-2">
-                            <div>
-                                <strong class="text-blue-600">
-                                    Rp {{ number_format($inv->paid_amount) }}
-                                </strong>
-                                <br>
-                                <small class="text-gray-400">
-                                    dari Rp {{ number_format($inv->amount) }}
-                                </small>
-                            </div>
-                        </td>
+                            <!-- STATUS DINAMIS -->
+                            <td class="p-3 text-xs">
+                                @if($isLunas)
+                                    <span class="inline-flex px-2 py-0.5 bg-[#DCFCE7] text-[#15803D] border border-[#BBF7D0] rounded text-[10px] font-bold uppercase tracking-wider">
+                                        Lunas
+                                    </span>
+                                @else
+                                    <span class="inline-flex px-2 py-0.5 bg-[#FEF3C7] text-[#D97706] border border-[#FDE68A] rounded text-[10px] font-bold uppercase tracking-wider">
+                                        Belum Lunas
+                                    </span>
+                                    <br>
+                                    <small class="text-[#71717A] text-[10px]">
+                                        Sisa: Rp {{ number_format($sisa) }}
+                                    </small>
+                                @endif
+                            </td>
 
-                        <!-- STATUS DINAMIS -->
-                        <td class="p-2">
-                            @if($isLunas)
-                                <span class="text-green-600 font-bold">
-                                    Lunas
-                                </span>
-                            @else
-                                <span class="text-orange-500 font-bold">
-                                    Belum Lunas
-                                </span>
-                                <br>
-                                <small class="text-gray-500">
-                                    Sisa: Rp {{ number_format($sisa) }}
-                                </small>
-                            @endif
-                        </td>
+                            <!-- AKSI -->
+                            <td class="p-3 text-center">
+                                <a href="{{ route('invoices.print', $inv->id) }}" class="btn-minimal px-3 py-1.5 text-[10px]">
+                                    Cetak
+                                </a>
+                            </td>
 
-                        <!-- AKSI -->
-                        <td class="p-2">
-                            <a href="{{ route('invoices.print', $inv->id) }}"
-                               class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">
-                                Cetak
-                            </a>
-                        </td>
-
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="4" class="text-center p-4 text-gray-400">
-                            Belum ada riwayat pembayaran
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-
-            </table>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="text-center p-8 text-[#71717A] font-mono text-xs">
+                                [Belum ada riwayat pembayaran]
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 
         <!-- ========================= -->
         <!-- 🛠️ RIWAYAT PERBAIKAN -->
         <!-- ========================= -->
-        <div class="bg-white shadow rounded overflow-hidden">
+        <div class="app-card overflow-hidden">
 
-            <div class="p-3 bg-gray-100 font-semibold">
+            <div class="p-4 bg-[#F4F4F5] font-bold text-xs uppercase tracking-wider text-[#6366F1] border-b border-[#E4E4E7]">
                 Riwayat Perbaikan
             </div>
 
-            <table class="w-full border text-sm">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="p-2">Tanggal Selesai</th>
-                        <th class="p-2">Masalah</th>
-                        <th class="p-2">Teknisi</th>
-                        <th class="p-2">Bukti</th>
-                    </tr>
-                </thead>
+            <div class="overflow-x-auto">
+                <table class="app-table">
+                    <thead>
+                        <tr>
+                            <th class="p-3 text-left">Tanggal Selesai</th>
+                            <th class="p-3 text-left">Masalah</th>
+                            <th class="p-3 text-left">Teknisi</th>
+                            <th class="p-3 text-center w-28">Bukti</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    @forelse($tickets as $t)
-                    <tr class="border">
+                    <tbody>
+                        @forelse($tickets as $t)
+                        <tr>
 
-                        <td class="p-2">
-                            {{ $t->tanggal_selesai ? \Carbon\Carbon::parse($t->tanggal_selesai)->format('d-m-Y H:i') : '-' }}
-                        </td>
+                            <td class="p-3 text-xs font-mono text-[#111111]">
+                                {{ $t->tanggal_selesai ? \Carbon\Carbon::parse($t->tanggal_selesai)->format('d-m-Y H:i') : '-' }}
+                            </td>
 
-                        <td class="p-2">
-                            {{ $t->description }}
-                        </td>
+                            <td class="p-3 text-xs text-[#111111]">
+                                {{ $t->description }}
+                            </td>
 
-                        <td class="p-2">
-                            {{ $t->teknisi->name ?? '-' }}
-                        </td>
+                            <td class="p-3 text-xs text-[#71717A]">
+                                {{ $t->teknisi->name ?? '-' }}
+                            </td>
 
-                        <td class="p-2">
-                            @if($t->bukti)
-                                <a href="{{ asset('storage/'.$t->bukti) }}" target="_blank">
-                                    <img src="{{ asset('storage/'.$t->bukti) }}"
-                                         class="w-12 h-12 object-cover rounded border hover:scale-110 transition">
-                                </a>
-                            @else
-                                <span class="text-gray-400 text-xs">
-                                    Tidak ada
-                                </span>
-                            @endif
-                        </td>
+                            <td class="p-3 text-center">
+                                @if($t->bukti)
+                                    <a href="{{ asset('storage/'.$t->bukti) }}" target="_blank" class="inline-block">
+                                        <img src="{{ asset('storage/'.$t->bukti) }}"
+                                             class="w-10 h-10 object-cover rounded-md border border-[#E4E4E7] hover:scale-105 transition">
+                                    </a>
+                                @else
+                                    <span class="text-[#71717A] text-xs">
+                                        -
+                                    </span>
+                                @endif
+                            </td>
 
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="4" class="text-center p-4 text-gray-400">
-                            Belum ada riwayat perbaikan
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-
-            </table>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="text-center p-8 text-[#71717A] font-mono text-xs">
+                                [Belum ada riwayat perbaikan]
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 

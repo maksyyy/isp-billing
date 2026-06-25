@@ -18,8 +18,8 @@
     <style>
         body {
             font-family: 'Geist Sans', 'Plus Jakarta Sans', sans-serif;
-            background-color: #050505;
-            color: #FAF9F6;
+            background-color: #FAF9F6;
+            color: #111111;
         }
 
         h1, h2, h3, h4, .font-heading {
@@ -28,10 +28,10 @@
             letter-spacing: -0.02em;
         }
 
-        /* Sidebar styling with deep obsidian dark */
+        /* Sidebar styling with clean light mode */
         .sidebar-minimalist {
-            background: #09090B;
-            border-right: 1px solid #1C1C1F;
+            background: #FFFFFF;
+            border-right: 1px solid #E4E4E7;
         }
 
         /* Nav link transitions */
@@ -47,30 +47,30 @@
             background: transparent;
         }
         .sidebar-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05);
             border-radius: 4px;
         }
         .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
 
-<body class="font-sans antialiased text-[#FAF9F6] bg-[#050505] h-full overflow-hidden">
+<body class="font-sans antialiased text-[#111111] bg-[#FAF9F6] h-full overflow-hidden">
 <div class="flex h-full min-h-screen overflow-hidden relative">
 
     <!-- BACKDROP OVERLAY FOR MOBILE SIDEBAR -->
     <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-30 hidden opacity-0 transition-opacity duration-200 ease-in-out lg:hidden"></div>
 
     <!-- SIDEBAR -->
-    <aside id="sidebar-menu" class="w-64 sidebar-minimalist text-[#FAF9F6] h-full flex flex-col justify-between fixed inset-y-0 left-0 -translate-x-full lg:translate-x-0 lg:static z-40 transition-transform duration-200 ease-in-out">
+    <aside id="sidebar-menu" class="w-64 sidebar-minimalist text-[#111111] h-full flex flex-col justify-between fixed inset-y-0 left-0 -translate-x-full lg:translate-x-0 lg:static z-40 transition-transform duration-200 ease-in-out">
         
         <!-- TOP MENU AREA -->
         <div class="flex-1 flex flex-col min-h-0">
             <!-- Sidebar Header / Branding -->
-            <div class="p-6 border-b border-[#1F1F21]">
+            <div class="p-6 border-b border-[#F4F4F5]">
                 <a href="{{ route('dashboard') }}" class="block hover:opacity-90 transition-opacity">
-                    <x-company-logo class="text-[#FAF9F6]" mark-class="h-9 w-9 text-white" text-class="text-sm text-[#FAF9F6] font-heading font-bold" />
+                    <x-company-logo class="text-[#111111]" mark-class="h-9 w-9 text-slate-800" text-class="text-sm text-[#111111] font-heading font-bold" />
                 </a>
             </div>
 
@@ -82,8 +82,8 @@
                     
                     // Style menu navigasi menjadi two-tone capsule minimal
                     $baseClass = "nav-link-item flex items-center gap-3 px-4 py-2 rounded-md text-[10px] font-bold uppercase tracking-wider transition-all duration-150 border";
-                    $activeClass = "bg-[#FAF9F6] text-[#0C0C0D] border-[#FAF9F6]";
-                    $inactiveClass = "text-[#8E8E90] hover:bg-[#1E1E20] hover:text-[#FFFFFF] border-transparent";
+                    $activeClass = "bg-gradient-to-r from-[#6366F1]/10 to-[#8B5CF6]/10 text-[#6366F1] border-[#6366F1]/30 shadow-[0_4px_12px_rgba(99,102,241,0.05)]";
+                    $inactiveClass = "text-[#71717A] hover:bg-[#F4F4F5] hover:text-[#111111] border-transparent hover:border-[#E4E4E7]";
                 @endphp
 
                 <ul class="space-y-1">
@@ -272,23 +272,23 @@
         </div>
 
         <!-- BOTTOM USER INFO -->
-        <div class="p-4 border-t border-[#1F1F21] bg-[#0C0C0D]">
+        <div class="p-4 border-t border-[#E4E4E7] bg-[#F4F4F5]">
 
             <!-- Profile Info Card -->
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-[#1E1E20] border border-[#2D2D30] text-[#FAF9F6] rounded-md flex items-center justify-center text-sm font-extrabold">
+                <div class="w-10 h-10 bg-[#FFFFFF] border border-[#E4E4E7] text-[#111111] rounded-md flex items-center justify-center text-sm font-extrabold shadow-sm">
                     {{ strtoupper(substr($user->name, 0, 1)) }}
                 </div>
                 <div class="min-w-0 flex-1">
-                    <p class="text-xs font-bold text-[#FAF9F6] leading-tight truncate">{{ $user->name }}</p>
-                    <p class="text-[8px] text-[#8E8E90] font-bold uppercase tracking-wider mt-0.5">{{ $user->role }}</p>
+                    <p class="text-xs font-bold text-[#111111] leading-tight truncate">{{ $user->name }}</p>
+                    <p class="text-[8px] text-[#71717A] font-bold uppercase tracking-wider mt-0.5">{{ $user->role }}</p>
                 </div>
             </div>
 
             <!-- Logout Action -->
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#1E1E20] border border-[#2D2D30] hover:bg-[#2D2D30] hover:text-white text-[#8E8E90] rounded-md transition-all duration-150 text-[10px] font-bold uppercase tracking-wider cursor-pointer">
+                <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#FFFFFF] border border-[#E4E4E7] hover:bg-[#F4F4F5] hover:text-[#111111] text-[#71717A] rounded-md transition-all duration-150 text-[10px] font-bold uppercase tracking-wider cursor-pointer shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
@@ -304,11 +304,11 @@
     <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         
         <!-- TOP STICKY HEADER BAR -->
-        <header class="h-16 border-b border-[#1C1C1F] bg-[#050505]/70 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-20 shrink-0">
+        <header class="h-16 border-b border-[#E4E4E7] bg-[#FAF9F6]/75 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-20 shrink-0">
             <!-- Left Header Section -->
             <div class="flex items-center gap-4 min-w-0">
                 <!-- Mobile Sidebar Toggle -->
-                <button id="sidebar-toggle" class="lg:hidden p-2 text-[#8E8E90] hover:text-[#FAF9F6] hover:bg-[#1C1C1F]/60 rounded-lg transition-colors cursor-pointer" aria-label="Toggle Navigation Sidebar">
+                <button id="sidebar-toggle" class="lg:hidden p-2 text-[#71717A] hover:text-[#111111] hover:bg-[#F4F4F5] rounded-lg transition-colors cursor-pointer" aria-label="Toggle Navigation Sidebar">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -319,7 +319,7 @@
                     @if (isset($header))
                         {{ $header }}
                     @else
-                        <h2 class="text-sm font-bold text-[#FAF9F6] uppercase tracking-wider leading-tight truncate">
+                        <h2 class="text-sm font-bold text-[#111111] uppercase tracking-wider leading-tight truncate">
                             {{ config('app.name', 'ISP Billing') }} Console
                         </h2>
                     @endif
@@ -340,36 +340,36 @@
                     @elseif($currentRoute === 'settings.index' || $currentRoute === 'users.index')
                         <input type="hidden" name="tab" value="staff">
                     @endif
-                    <input type="text" name="search" id="global-search-input" value="{{ request('search') }}" placeholder="Cari data..." class="w-full text-xs pl-8 pr-3 sm:pr-10 py-1.5 bg-[#0B0B0D] border border-[#222226] focus:outline-none focus:border-[#FAF9F6]/40 focus:ring-0 rounded-md text-[#FAF9F6] font-medium transition-all">
-                    <span class="absolute left-2.5 top-2 text-[#8E8E90]">
+                    <input type="text" name="search" id="global-search-input" value="{{ request('search') }}" placeholder="Cari data..." class="w-full text-xs pl-8 pr-3 sm:pr-10 py-1.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:border-[#6366F1]/50 focus:ring-0 rounded-md text-[#111111] font-medium transition-all shadow-sm">
+                    <span class="absolute left-2.5 top-2.5 text-[#71717A]">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </span>
-                    <span class="absolute right-2 top-1.5 px-1.5 py-0.5 bg-[#121216] border border-[#222226] text-[8px] text-[#8E8E90] font-mono rounded-md hidden sm:block">
+                    <span class="absolute right-2 top-1.5 px-1.5 py-0.5 bg-[#F4F4F5] border border-[#E4E4E7] text-[8px] text-[#71717A] font-mono rounded-md hidden sm:block">
                         ⌘ K
                     </span>
                 </form>
 
                 <!-- Network Status indicator -->
-                <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#0C2D1F]/50 border border-[#10B981]/20 text-[9px] text-[#10B981] font-bold">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span>
+                <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#DCFCE7] border border-[#BBF7D0] text-[9px] text-[#15803D] font-bold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#15803D] animate-pulse"></span>
                     <span>GATEWAY LIVE</span>
                 </div>
 
                 <!-- Alert/Notifications Bell -->
                 <div class="relative">
-                    <button class="p-2 text-[#8E8E90] hover:text-[#FAF9F6] hover:bg-[#1C1C1F]/60 border border-transparent hover:border-[#222226] rounded-md transition-all cursor-pointer">
+                    <button class="p-2 text-[#71717A] hover:text-[#111111] hover:bg-[#F4F4F5] border border-[#E4E4E7] rounded-md transition-all cursor-pointer bg-[#FFFFFF] shadow-sm">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#FAF9F6] rounded-full border border-[#050505]"></span>
+                        <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#6366F1] rounded-full border border-[#FFFFFF]"></span>
                     </button>
                 </div>
                 
                 <!-- Quick Settings Link / Profile Avatar -->
-                <a href="{{ route('profile.edit') }}" class="p-1 bg-[#0B0B0D] border border-[#222226] hover:bg-[#121216] rounded-md transition-all flex items-center justify-center gap-2">
-                    <div class="w-7 h-7 bg-[#FAF9F6] text-[#0C0C0D] text-xs font-bold rounded-md flex items-center justify-center">
+                <a href="{{ route('profile.edit') }}" class="p-1 bg-[#FFFFFF] border border-[#E4E4E7] hover:bg-[#F4F4F5] rounded-md transition-all flex items-center justify-center gap-2 shadow-sm">
+                    <div class="w-7 h-7 bg-[#F4F4F5] text-[#111111] text-xs font-bold rounded-md flex items-center justify-center border border-[#E4E4E7]">
                         {{ strtoupper(substr($user->name, 0, 1)) }}
                     </div>
                 </a>
@@ -377,18 +377,18 @@
         </header>
 
         <!-- SCROLLABLE WORKSPACE CONTENT -->
-        <div class="flex-1 overflow-y-auto min-h-0 flex flex-col justify-between bg-[#050505]">
+        <div class="flex-1 overflow-y-auto min-h-0 flex flex-col justify-between bg-[#FAF9F6]">
             <!-- Slot Content View -->
             <main class="flex-1 p-6 lg:p-8">
                 {{ $slot }}
             </main>
 
             <!-- Footer Section -->
-            <footer class="border-t border-[#1C1C1F] bg-[#050505] px-6 lg:px-8 py-4 text-[10px] text-[#8E8E90] font-medium flex items-center justify-between shrink-0 uppercase tracking-wider">
+            <footer class="border-t border-[#E4E4E7] bg-[#FFFFFF] px-6 lg:px-8 py-4 text-[10px] text-[#71717A] font-medium flex items-center justify-between shrink-0 uppercase tracking-wider shadow-sm">
                 <div>
                     &copy; {{ date('Y') }} {{ config('app.name', 'ISP Billing') }} Portal.
                 </div>
-                <div class="flex items-center gap-1.5 text-[9px] text-[#FAF9F6] bg-[#0B0B0D] px-2.5 py-1 rounded-md border border-[#222226] font-mono">
+                <div class="flex items-center gap-1.5 text-[9px] text-[#111111] bg-[#F4F4F5] px-2.5 py-1 rounded-md border border-[#E4E4E7] font-mono">
                     <span class="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span>
                     Console v3.0
                 </div>

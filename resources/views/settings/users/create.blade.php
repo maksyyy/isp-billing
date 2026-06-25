@@ -1,13 +1,13 @@
 <x-app-layout>
 <div class="p-6">
-    <div class="max-w-2xl bg-white rounded-lg shadow p-6">
-        <p class="text-sm font-semibold text-blue-600 uppercase">
+    <div class="max-w-2xl app-card p-6 mx-auto">
+        <p class="text-xs font-extrabold text-[#6366F1] uppercase tracking-wider">
             {{ auth()->user()->role == 'master' ? 'Admin Penyewa' : 'Sub User' }}
         </p>
-        <h2 class="text-2xl font-bold mt-1">
+        <h2 class="text-2xl font-bold mt-1 text-[#111111]">
             Tambah {{ auth()->user()->role == 'master' ? 'Admin Baru' : 'Sub User Baru' }}
         </h2>
-        <p class="text-gray-500 mt-1 mb-6">
+        <p class="text-[#71717A] text-xs mt-1 mb-6">
             {{ auth()->user()->role == 'master'
                 ? 'Admin baru dapat mengelola tim finance, NOC, dan teknisi masing-masing.'
                 : 'Sub-user akan otomatis berada di bawah akun admin Anda.' }}
@@ -17,51 +17,51 @@
             @csrf
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Nama</label>
+                <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Nama</label>
                 <input type="text" name="name" value="{{ old('name') }}"
-                       class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                        required>
                 @error('name')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Email</label>
                 <input type="email" name="email" value="{{ old('email') }}"
-                       class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                        required>
                 @error('email')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">No. HP</label>
+                <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">No. HP</label>
                 <input type="text" name="phone" value="{{ old('phone') }}"
-                       class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                        required>
                 @error('phone')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Telegram Chat ID (Opsional)</label>
+                <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Telegram Chat ID (Opsional)</label>
                 <input type="text" name="telegram_chat_id" value="{{ old('telegram_chat_id') }}"
-                       class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm">
                 @error('telegram_chat_id')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+                <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Password</label>
                 <input type="password" name="password"
-                       class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm"
                        required>
                 @error('password')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -77,43 +77,43 @@
             </style>
 
             <!-- SCAN WAJAH (WEBCAM) -->
-            <div id="face-scan-container" class="border-2 p-4 rounded-lg bg-gray-50 mb-4 transition-all duration-300">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Registrasi Wajah (Webcam Scan) <span class="text-red-500">* Wajib</span>
+            <div id="face-scan-container" class="border border-[#E4E4E7] p-4 rounded-md bg-[#F4F4F5] mb-4 transition-all duration-300 shadow-sm">
+                <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">
+                    Registrasi Wajah (Webcam Scan) <span class="text-[#B91C1C] font-bold">* Wajib</span>
                 </label>
                 
                 <div class="flex flex-col items-center gap-3">
                     <!-- Video player for live feed -->
-                    <div class="relative w-64 h-64 bg-black rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center">
+                    <div class="relative w-64 h-64 bg-[#FFFFFF] rounded-md overflow-hidden border border-dashed border-[#E4E4E7] flex items-center justify-center shadow-inner">
                         <video id="webcam" class="w-full h-full object-cover transform -scale-x-100" autoplay playsinline></video>
                         <canvas id="canvas" class="hidden absolute w-full h-full object-cover transform -scale-x-100"></canvas>
                         
                         <!-- Laser line animation -->
-                        <div id="scanner-laser" class="hidden absolute left-0 right-0 h-1 bg-indigo-500 shadow-[0_0_8px_#6366f1] z-10 animate-scan"></div>
+                        <div id="scanner-laser" class="hidden absolute left-0 right-0 h-1 bg-[#8B5CF6] shadow-[0_0_8px_#8B5CF6] z-10 animate-scan"></div>
                         
                         <!-- Circular border frame indicator -->
-                        <div class="absolute inset-4 border border-indigo-400/20 rounded-lg pointer-events-none"></div>
+                        <div class="absolute inset-4 border border-[#6366F1]/20 rounded-md pointer-events-none"></div>
                         
                         <!-- Status text overlay -->
-                        <div id="biometric-status-overlay" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-950/85 border border-indigo-500/40 backdrop-blur-sm rounded-full px-3 py-1 text-[9px] font-extrabold tracking-widest text-indigo-400 uppercase hidden z-20 shadow-lg">
+                        <div id="biometric-status-overlay" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#FFFFFF]/90 border border-[#8B5CF6]/40 backdrop-blur-sm rounded-full px-3 py-1 text-[9px] font-extrabold tracking-widest text-[#8B5CF6] uppercase hidden z-20 shadow-lg">
                             ⚡ MEMINDAI WAJAH...
                         </div>
  
-                        <div id="camera-placeholder" class="absolute text-center text-gray-400 p-2">
+                        <div id="camera-placeholder" class="absolute text-center text-[#71717A] p-2">
                             <span class="text-3xl">📷</span>
                             <p class="text-xs mt-1">Kamera belum aktif</p>
                         </div>
                     </div>
  
-                    <!-- Capture Buttons -->
+                     <!-- Capture Buttons -->
                     <div class="flex gap-2">
-                        <button type="button" id="btn-start-camera" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded transition">
+                        <button type="button" id="btn-start-camera" class="btn-minimal-secondary px-3 py-1.5">
                             Aktifkan Kamera
                         </button>
-                        <button type="button" id="btn-capture" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1.5 rounded transition">
+                        <button type="button" id="btn-capture" class="hidden btn-minimal px-3 py-1.5">
                             Mulai Scan Wajah
                         </button>
-                        <button type="button" id="btn-retake" class="hidden bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1.5 rounded transition">
+                        <button type="button" id="btn-retake" class="hidden bg-[#FEE2E2] text-[#B91C1C] border border-[#FECACA] rounded-md px-3 py-1.5 font-bold uppercase tracking-wider text-xs hover:bg-[#FECACA] active:scale-95 transition-all shadow-sm">
                             Ambil Ulang
                         </button>
                     </div>
@@ -122,15 +122,15 @@
                     <input type="hidden" name="face_photo" id="face_photo_input">
                     
                     @error('face_photo')
-                        <p class="text-red-600 text-sm mt-1 font-bold">{{ $message }}</p>
+                        <p class="text-[#B91C1C] text-sm mt-1 font-bold">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
  
             <!-- CUSTOMER LIMIT -->
             <div id="customer-limit-container" class="mb-4 hidden transition-all duration-300">
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Limit Jumlah Pelanggan</label>
-                <select name="customer_limit" class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Limit Jumlah Pelanggan</label>
+                <select name="customer_limit" class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm">
                     <option value="200" @selected(old('customer_limit') == 200)>200</option>
                     <option value="500" @selected(old('customer_limit') == 500)>500</option>
                     <option value="1000" @selected(old('customer_limit') == 1000)>1000</option>
@@ -140,28 +140,27 @@
                     <option value="5000" @selected(old('customer_limit') == 5000)>5000</option>
                 </select>
                 @error('customer_limit')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
  
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Role</label>
-                <select name="role" class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <label class="block text-xs font-bold text-[#71717A] uppercase tracking-wider mb-2">Role</label>
+                <select name="role" class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] transition-all shadow-sm">
                     @foreach($roles as $value => $label)
                         <option value="{{ $value }}" @selected(old('role') == $value)>{{ $label }}</option>
                     @endforeach
                 </select>
                 @error('role')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-[#B91C1C] text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="flex gap-2 pt-2">
-                <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">
+            <div class="flex gap-2 pt-4">
+                <button class="btn-minimal">
                     Simpan
                 </button>
-                <a href="{{ route('users.index') }}"
-                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                <a href="{{ route('users.index') }}" class="btn-minimal-secondary">
                     Kembali
                 </a>
             </div>
@@ -347,10 +346,10 @@
         btnCapture.addEventListener('click', () => {
             // Tampilkan laser dan status pemindaian
             laser.classList.remove('hidden');
-            laser.className = "absolute left-0 right-0 h-1 bg-indigo-500 shadow-[0_0_8px_#6366f1] z-10 animate-scan";
+            laser.className = "absolute left-0 right-0 h-1 bg-[#8B5CF6] shadow-[0_0_8px_#8B5CF6] z-10 animate-scan";
             statusOverlay.classList.remove('hidden');
             statusOverlay.innerHTML = "⚡ MEMINDAI WAJAH: 0%";
-            statusOverlay.className = "absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-950/85 border border-indigo-500/40 backdrop-blur-sm rounded-full px-3 py-1 text-[9px] font-extrabold tracking-widest text-indigo-400 uppercase z-20 shadow-lg";
+            statusOverlay.className = "absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#FFFFFF]/90 border border-[#8B5CF6]/40 backdrop-blur-sm rounded-full px-3 py-1 text-[9px] font-extrabold tracking-widest text-[#8B5CF6] uppercase z-20 shadow-lg";
             
             btnCapture.classList.add('hidden');
             
@@ -382,7 +381,7 @@
                     clearInterval(scanInterval);
                     
                     statusOverlay.innerHTML = "❌ DUPLIKAT TERDETEKSI";
-                    statusOverlay.className = "absolute bottom-4 left-1/2 -translate-x-1/2 bg-rose-950/85 border border-rose-500/40 backdrop-blur-sm rounded-full px-3 py-1 text-[9px] font-extrabold tracking-widest text-rose-400 uppercase z-20 shadow-lg";
+                    statusOverlay.className = "absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#FEE2E2]/90 border border-red-455 border-red-400/40 backdrop-blur-sm rounded-full px-3 py-1 text-[9px] font-extrabold tracking-widest text-[#B91C1C] uppercase z-20 shadow-lg";
                     laser.classList.add('hidden');
                     
                     alert(`⚠️ Pendaftaran Wajah Ditolak!\n\nWajah yang dideteksi sangat mirip dengan karyawan lain (${duplicateFound.name} - ${maxSimilarity.toFixed(1)}% Match).\n\nMohon pastikan wajah yang didaftarkan unik dan bukan milik karyawan lain.`);
@@ -490,7 +489,7 @@
                 btnStart.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 
                 // Beri efek visual border merah berkedip
-                const scanContainer = btnStart.closest('.border-2');
+                const scanContainer = btnStart.closest('.border');
                 if (scanContainer) {
                     scanContainer.classList.add('border-red-400', 'ring-2', 'ring-red-200');
                     setTimeout(() => {

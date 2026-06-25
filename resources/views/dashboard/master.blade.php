@@ -14,7 +14,7 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span>
                     Unified Control Console Enabled
                 </div>
-                <h1 class="text-3xl lg:text-4xl font-normal italic font-serif tracking-tight text-[#FAF9F6]">Dashboard Master Admin</h1>
+                <h1 class="text-3xl lg:text-4xl font-bold tracking-tight text-[#111111]">Dashboard Master Admin</h1>
                 <p class="mt-2 text-[#8E8E90] text-xs leading-relaxed max-w-2xl font-light">
                     Kelola seluruh admin penyewa sistem, tentukan limit kapasitas pelanggan yang diperbolehkan, pantau jumlah tim, serta atur akses operasional dari panel kendali terpusat.
                 </p>

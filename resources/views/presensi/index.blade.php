@@ -1,17 +1,17 @@
 <x-app-layout>
     <div class="p-6">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+        <h2 class="text-2xl font-bold mb-6 text-[#111111] flex items-center gap-2">
             📅 Kios Presensi Biometrik Otomatis
         </h2>
 
         <!-- ALERT STATUS -->
         @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6 font-medium shadow-sm">
+            <div class="bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] px-4 py-3 rounded-md mb-6 font-medium shadow-sm">
                 ✅ {{ session('success') }}
             </div>
         @endif
         @if(session('error'))
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6 font-medium shadow-sm">
+            <div class="bg-[#FEF2F2] border border-[#FCA5A5] text-[#991B1B] px-4 py-3 rounded-md mb-6 font-medium shadow-sm">
                 ❌ {{ session('error') }}
             </div>
         @endif
@@ -21,26 +21,26 @@
             <!-- ============================================ -->
             <!-- 📷 PEMINDAI WAJAH BIOMETRIK (SCANNER PANEL) -->
             <!-- ============================================ -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 flex flex-col items-center">
-                <h3 class="font-bold text-lg text-gray-800 mb-2">Stasiun Pemindai Hands-Free</h3>
-                <p class="text-xs text-gray-500 text-center mb-4 max-w-sm">
+            <div class="app-card p-6 flex flex-col items-center">
+                <h3 class="font-bold text-lg text-[#111111] mb-2">Stasiun Pemindai Hands-Free</h3>
+                <p class="text-xs text-[#71717A] text-center mb-4 max-w-sm">
                     Kamera biometrik akan mendeteksi dan mengenali wajah Anda secara otomatis. Cukup berdiri tegak di depan kamera.
                 </p>
 
                 <!-- Status Mode Badge & Toggle -->
                 <div class="flex items-center gap-2 mb-6">
-                    <span id="badge-mode" class="px-2.5 py-1 bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-extrabold tracking-widest text-indigo-600 rounded-full uppercase animate-pulse">
+                    <span id="badge-mode" class="px-2.5 py-1 bg-[#6366F1]/10 border border-[#6366F1]/20 text-[10px] font-extrabold tracking-widest text-[#6366F1] rounded-full uppercase animate-pulse">
                         ⚡ Mode Scan Otomatis (Biometrik)
                     </span>
-                    <button type="button" id="btn-toggle-manual" class="text-[10px] text-slate-400 hover:text-indigo-600 font-extrabold tracking-wider uppercase border border-slate-200 rounded-full px-2.5 py-1 transition-all cursor-pointer hover:bg-slate-50">
+                    <button type="button" id="btn-toggle-manual" class="text-[10px] text-[#6366F1] hover:text-[#4F46E5] font-extrabold tracking-wider uppercase border border-[#6366F1]/20 hover:border-[#6366F1]/50 rounded-full px-2.5 py-1 transition-all cursor-pointer hover:bg-[#6366F1]/5">
                         Pilih Manual
                     </button>
                 </div>
 
                 <!-- Dropdown Pilih Karyawan (Manual Fallback, Hidden by Default) -->
                 <div id="manual-select-container" class="mb-6 w-full max-w-xs hidden">
-                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 text-center">Pilih Nama Anda</label>
-                    <select id="user_id_select" class="w-full text-xs px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/50 rounded-xl font-bold text-slate-800 transition-all cursor-pointer">
+                    <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-widest mb-1.5 text-center">Pilih Nama Anda</label>
+                    <select id="user_id_select" class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md font-bold text-[#111111] transition-all shadow-sm cursor-pointer">
                         <option value="" data-face="false">-- Pilih Nama Karyawan --</option>
                         @foreach($employees as $emp)
                             <option value="{{ $emp->id }}" data-face="{{ $emp->face_photo ? 'true' : 'false' }}">
@@ -51,45 +51,45 @@
                 </div>
 
                 <!-- Scanner Container -->
-                <div class="relative w-72 h-72 rounded-full overflow-hidden border-4 border-indigo-600 shadow-2xl bg-black flex items-center justify-center mb-2 group">
+                <div class="relative w-72 h-72 rounded-full overflow-hidden border-4 border-[#8B5CF6] shadow-[0_4px_20px_rgba(139,92,246,0.15)] bg-[#FFFFFF] flex items-center justify-center mb-2 group">
                     <video id="webcam" class="w-full h-full object-cover transform -scale-x-100" autoplay playsinline></video>
                     <canvas id="canvas" class="hidden absolute w-full h-full object-cover transform -scale-x-100"></canvas>
                     
                     <!-- Circular Overlay -->
-                    <div class="absolute inset-0 border-[24px] border-black/40 pointer-events-none rounded-full"></div>
+                    <div class="absolute inset-0 border-[24px] border-[#FFFFFF]/60 pointer-events-none rounded-full"></div>
                     
                     <!-- Scanner Laser Red Line (Animation) -->
-                    <div id="scanner-laser" class="hidden absolute left-0 right-0 h-1 bg-red-500 shadow-[0_0_8px_#f43f5e] z-10 animate-scan"></div>
+                    <div id="scanner-laser" class="hidden absolute left-0 right-0 h-1 bg-[#8B5CF6] shadow-[0_0_8px_#8B5CF6] z-10 animate-scan"></div>
                     
                     <!-- Target Reticle Overlay -->
-                    <div class="absolute inset-8 border border-cyan-400/30 rounded-full border-dashed pointer-events-none"></div>
+                    <div class="absolute inset-8 border border-[#8B5CF6]/40 rounded-full border-dashed pointer-events-none"></div>
 
                     <!-- Biometric Status Text Overlay -->
-                    <div id="biometric-status-overlay" class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-950/85 border border-cyan-500/40 backdrop-blur-md rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-cyan-400 uppercase hidden z-20 shadow-lg shadow-cyan-950/30">
+                    <div id="biometric-status-overlay" class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#FFFFFF]/90 border border-[#8B5CF6]/40 backdrop-blur-sm rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-[#8B5CF6] uppercase hidden z-20 shadow-lg">
                         ⚡ Memindai Wajah...
                     </div>
 
                     <!-- Placeholder -->
-                    <div id="camera-placeholder" class="absolute text-center text-gray-400 p-4">
+                    <div id="camera-placeholder" class="absolute text-center text-[#71717A] p-4">
                         <span class="text-4xl block animate-bounce mb-2">🎥</span>
-                        <span class="text-sm font-semibold block text-slate-300">Kamera Belum Aktif</span>
-                        <p class="text-[10px] text-slate-500 mt-1">Stasiun presensi mendeteksi pilihan Anda</p>
+                        <span class="text-sm font-semibold block text-[#111111]">Kamera Belum Aktif</span>
+                        <p class="text-[10px] text-[#71717A] mt-1">Stasiun presensi mendeteksi pilihan Anda</p>
                     </div>
                 </div>
 
                 <!-- Tombol Mulai Scan Wajah -->
                 <div class="mt-4 mb-2 flex flex-col items-center">
-                    <button type="button" id="btn-start-scan" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-6 py-2.5 rounded-full shadow-lg shadow-indigo-600/20 cursor-pointer transition-all hover:scale-105">
+                    <button type="button" id="btn-start-scan" class="flex items-center gap-2 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-[#FFFFFF] font-bold text-xs px-6 py-2.5 rounded-full shadow-[0_4px_20px_rgba(99,102,241,0.25)] cursor-pointer transition-all hover:scale-105 active:scale-95 border-0">
                         🔍 Mulai Pindai Wajah
                     </button>
                 </div>
 
                 <!-- Auto status text & Reset button -->
                 <div class="text-center min-h-[40px] flex flex-col items-center justify-center">
-                    <div id="status-instructions" class="text-xs text-indigo-600 font-bold animate-pulse hidden max-w-xs">
+                    <div id="status-instructions" class="text-xs text-[#6366F1] font-bold animate-pulse hidden max-w-xs">
                         Kamera aktif, mohon menghadap ke arah kamera...
                     </div>
-                    <button type="button" id="btn-reset" class="hidden text-xs text-rose-500 font-bold hover:underline mt-2 flex items-center gap-1 cursor-pointer">
+                    <button type="button" id="btn-reset" class="hidden text-xs text-[#B91C1C] font-bold hover:underline mt-2 flex items-center gap-1 cursor-pointer">
                         ✕ Batalkan & Pindai Ulang
                     </button>
                 </div>
@@ -106,46 +106,46 @@
             <!-- ============================================ -->
             <!-- 📊 REKAP KEHADIRAN HARI INI (SUMMARY PANEL) -->
             <!-- ============================================ -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 class="font-bold text-lg text-gray-800 border-b pb-3 mb-6 flex items-center gap-2">
+            <div class="app-card p-6">
+                <h3 class="font-bold text-lg text-[#111111] border-b border-[#E4E4E7] pb-3 mb-6 flex items-center gap-2">
                     ⏱️ Rekap Kehadiran Hari Ini
                 </h3>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                     <!-- Tepat Waktu -->
-                    <div class="bg-green-50/50 border border-green-100 rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                        <span class="text-xs font-bold text-green-700 uppercase tracking-wide">Tepat Waktu</span>
-                        <p class="text-2xl font-extrabold text-green-800 mt-2">
+                    <div class="bg-[#ECFDF5] border border-[#A7F3D0] rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                        <span class="text-xs font-bold text-[#047857] uppercase tracking-wide">Tepat Waktu</span>
+                        <p class="text-2xl font-extrabold text-[#047857] mt-2">
                             {{ $logs->where('status', 'Hadir')->count() }}
                         </p>
-                        <span class="text-[10px] text-gray-400 mt-1">Staf tepat waktu</span>
+                        <span class="text-[10px] text-[#065F46]/80 mt-1">Staf tepat waktu</span>
                     </div>
 
                     <!-- Terlambat -->
-                    <div class="bg-amber-50/50 border border-amber-100 rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                        <span class="text-xs font-bold text-amber-700 uppercase tracking-wide">Terlambat</span>
-                        <p class="text-2xl font-extrabold text-amber-800 mt-2">
+                    <div class="bg-[#FFFBEB] border border-[#FDE68A] rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                        <span class="text-xs font-bold text-[#B45309] uppercase tracking-wide">Terlambat</span>
+                        <p class="text-2xl font-extrabold text-[#B45309] mt-2">
                             {{ $logs->where('status', 'Terlambat')->count() }}
                         </p>
-                        <span class="text-[10px] text-gray-400 mt-1">Melewati batas masuk</span>
+                        <span class="text-[10px] text-[#92400E]/80 mt-1">Melewati batas masuk</span>
                     </div>
 
                     <!-- Lembur / Extra Time -->
-                    <div class="bg-orange-50/50 border border-orange-100 rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                        <span class="text-xs font-bold text-orange-700 uppercase tracking-wide">Lembur</span>
-                        <p class="text-2xl font-extrabold text-orange-800 mt-2">
+                    <div class="bg-[#FFF7ED] border border-[#FFEDD5] rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                        <span class="text-xs font-bold text-[#C2410C] uppercase tracking-wide">Lembur</span>
+                        <p class="text-2xl font-extrabold text-[#C2410C] mt-2">
                             {{ $logs->where('lembur', '>', 0)->count() }}
                         </p>
-                        <span class="text-[10px] text-gray-400 mt-1">Checkout > 16:00</span>
+                        <span class="text-[10px] text-[#9A3412]/80 mt-1">Checkout > 16:00</span>
                     </div>
                 </div>
 
-                <div class="border-t pt-4">
-                    <h4 class="font-bold text-xs text-gray-500 uppercase tracking-wider mb-2">Ketentuan Jam Kerja</h4>
-                    <ul class="text-xs text-gray-500 space-y-1">
-                        <li>⏰ Jam Masuk Standar: <strong>08:00 - 08:30 WIB</strong></li>
-                        <li>⚠️ Batas Toleransi Terlambat: <strong>> 08:30 WIB</strong></li>
-                        <li>🏠 Jam Keluar Kantor: <strong>16:00 WIB</strong></li>
+                <div class="border-t border-[#E4E4E7] pt-4">
+                    <h4 class="font-bold text-xs text-[#71717A] uppercase tracking-wider mb-2">Ketentuan Jam Kerja</h4>
+                    <ul class="text-xs text-[#71717A] space-y-1">
+                        <li>⏰ Jam Masuk Standar: <strong class="text-[#111111]">08:00 - 08:30 WIB</strong></li>
+                        <li>⚠️ Batas Toleransi Terlambat: <strong class="text-[#111111]">> 08:30 WIB</strong></li>
+                        <li>🏠 Jam Keluar Kantor: <strong class="text-[#111111]">16:00 WIB</strong></li>
                     </ul>
                 </div>
             </div>
@@ -155,48 +155,50 @@
         <!-- ============================================ -->
         <!-- 📅 LIVE BOARD ABSENSI HARI INI (HISTORY TABLE) -->
         <!-- ============================================ -->
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mt-8">
-            <h3 class="font-bold text-lg text-gray-800 mb-6 flex items-center gap-2">
+        <div class="app-card p-6 mt-8">
+            <h3 class="font-bold text-lg text-[#111111] mb-6 flex items-center gap-2">
                 📋 Live Board Kehadiran Staf Hari Ini
             </h3>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-sm border-collapse">
+                <table class="app-table">
                     <thead>
-                        <tr class="bg-gray-50 text-gray-700 border-b border-gray-200 text-left">
-                            <th class="p-3 font-semibold">Nama Staf</th>
-                            <th class="p-3 font-semibold">Jam Masuk</th>
-                            <th class="p-3 font-semibold">Foto Masuk</th>
-                            <th class="p-3 font-semibold">Jam Keluar</th>
-                            <th class="p-3 font-semibold">Foto Keluar</th>
-                            <th class="p-3 font-semibold text-center">Status</th>
+                        <tr>
+                            <th>Nama Staf</th>
+                            <th>Jam Masuk</th>
+                            <th>Foto Masuk</th>
+                            <th>Jam Keluar</th>
+                            <th>Foto Keluar</th>
+                            <th class="text-center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($logs as $log)
-                            <tr class="border-b hover:bg-gray-50/50 transition">
-                                <td class="p-3 font-medium text-gray-800 flex items-center gap-3">
-                                    @if($log->user->face_photo)
-                                        <img src="{{ asset('storage/' . $log->user->face_photo) }}" class="w-8 h-8 object-cover rounded-full border shadow-sm">
-                                    @else
-                                        <div class="w-8 h-8 bg-indigo-100 text-indigo-700 font-bold rounded-full flex items-center justify-center text-xs shadow-sm">
-                                            {{ strtoupper(substr($log->user->name, 0, 1)) }}
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        @if($log->user->face_photo)
+                                            <img src="{{ asset('storage/' . $log->user->face_photo) }}" class="w-8 h-8 object-cover rounded-full border border-[#E4E4E7] shadow-sm">
+                                        @else
+                                            <div class="w-8 h-8 bg-[#8B5CF6]/10 text-[#8B5CF6] font-bold rounded-full flex items-center justify-center text-xs shadow-sm">
+                                                {{ strtoupper(substr($log->user->name, 0, 1)) }}
+                                            </div>
+                                        @endif
+                                        <div>
+                                            <span class="block font-bold text-sm text-[#111111]">{{ $log->user->name }}</span>
+                                            <span class="block text-[9px] text-[#71717A] font-bold uppercase tracking-wider">{{ $log->user->role }}</span>
                                         </div>
-                                    @endif
-                                    <div>
-                                        <span class="block font-bold text-sm text-slate-800">{{ $log->user->name }}</span>
-                                        <span class="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">{{ $log->user->role }}</span>
                                     </div>
                                 </td>
-                                <td class="p-3 text-green-700 font-bold">
+                                <td class="text-[#059669] font-bold">
                                     {{ \Carbon\Carbon::parse($log->jam_masuk)->format('H:i') }} WIB
                                 </td>
-                                <td class="p-3">
+                                <td>
                                     <a href="{{ asset('storage/' . $log->foto_masuk) }}" target="_blank">
-                                        <img src="{{ asset('storage/' . $log->foto_masuk) }}" class="w-10 h-10 object-cover rounded border shadow-sm hover:scale-110 transition">
+                                        <img src="{{ asset('storage/' . $log->foto_masuk) }}" class="w-10 h-10 object-cover rounded border border-[#E4E4E7] shadow-sm hover:scale-110 transition">
                                     </a>
                                 </td>
-                                 <td class="p-3 text-rose-700 font-bold">
+                                 <td class="text-[#DC2626] font-bold">
                                      {{ $log->jam_keluar ? \Carbon\Carbon::parse($log->jam_keluar)->format('H:i') . ' WIB' : '-' }}
                                      @if($log->lembur > 0)
                                          @php
@@ -204,29 +206,35 @@
                                              $minutes = $log->lembur % 60;
                                              $durationStr = ($hours > 0 ? $hours . ' jam ' : '') . ($minutes > 0 ? $minutes . ' menit' : '');
                                          @endphp
-                                         <span class="block text-[10px] text-orange-600 font-extrabold uppercase mt-1">
+                                         <span class="block text-[10px] text-[#4F46E5] font-extrabold uppercase mt-1">
                                              🔥 Lembur: {{ $durationStr }}
                                          </span>
                                      @endif
                                  </td>
-                                <td class="p-3">
+                                <td>
                                     @if($log->foto_keluar)
                                         <a href="{{ asset('storage/' . $log->foto_keluar) }}" target="_blank">
-                                            <img src="{{ asset('storage/' . $log->foto_keluar) }}" class="w-10 h-10 object-cover rounded border shadow-sm hover:scale-110 transition">
+                                            <img src="{{ asset('storage/' . $log->foto_keluar) }}" class="w-10 h-10 object-cover rounded border border-[#E4E4E7] shadow-sm hover:scale-110 transition">
                                         </a>
                                     @else
-                                        <span class="text-gray-400 text-xs italic">Belum Keluar</span>
+                                        <span class="text-[#71717A] text-xs italic">Belum Keluar</span>
                                     @endif
                                 </td>
-                                <td class="p-3 text-center">
-                                    <span class="px-3 py-1 rounded-full text-xs font-bold shadow-sm {{ $log->status === 'Hadir' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800' }}">
-                                        {{ $log->status }}
-                                    </span>
+                                <td class="text-center">
+                                    @if($log->status === 'Hadir')
+                                        <span class="status-badge-active">
+                                            {{ $log->status }}
+                                        </span>
+                                    @else
+                                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A] shadow-sm">
+                                            {{ $log->status }}
+                                        </span>
+                                    @endif
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="p-6 text-center text-gray-500 italic">
+                                <td colspan="6" class="p-6 text-center text-slate-500 italic">
                                     Belum ada staf yang melakukan presensi hari ini.
                                 </td>
                             </tr>
@@ -459,7 +467,7 @@
                 laser.classList.remove('hidden');
                 statusOverlay.classList.remove('hidden');
                 statusOverlay.innerHTML = "⚡ MEMINDAI WAJAH...";
-                statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-950/85 border border-cyan-500/40 backdrop-blur-md rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-cyan-400 uppercase z-20 shadow-lg shadow-cyan-950/30";
+                statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#FFFFFF]/90 border border-[#8B5CF6]/40 backdrop-blur-sm rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-[#8B5CF6] uppercase z-20 shadow-lg";
                 
                 instructions.innerHTML = "🎯 Stasiun Biometrik Aktif. Hadapkan wajah Anda ke kamera...";
                 
@@ -470,7 +478,7 @@
             } catch (err) {
                 console.error("Gagal menginisialisasi kamera:", err);
                 instructions.innerHTML = "⚠️ Gagal mengakses kamera. Silakan gunakan panel simulasi atau input manual.";
-                placeholder.innerHTML = `<span class="text-4xl block mb-2">⚠️</span><span class="text-xs font-semibold text-rose-400">Izin Kamera Ditolak</span>`;
+                placeholder.innerHTML = `<span class="text-4xl block mb-2">⚠️</span><span class="text-xs font-semibold text-[#B91C1C]">Izin Kamera Ditolak</span>`;
                 btnStartScan.classList.remove('hidden');
             }
         }
@@ -526,13 +534,13 @@
             if (scanInterval) clearInterval(scanInterval);
             
             // Laser scanning visual: change color to Indigo for liveness challenge
-            laser.className = "absolute left-0 right-0 h-1 bg-indigo-500 shadow-[0_0_8px_#6366f1] z-10 animate-scan";
+            laser.className = "absolute left-0 right-0 h-1 bg-[#6366F1] shadow-[0_0_8px_#6366F1] z-10 animate-scan";
             
             // Status overlay challenge prompt
             statusOverlay.innerHTML = `⚡ KEDIPKAN MATA ANDA! 😉`;
-            statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-950/85 border border-indigo-500/40 backdrop-blur-md rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-indigo-400 uppercase z-20 shadow-lg shadow-indigo-950/30 animate-pulse";
+            statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#FFFFFF]/90 border border-[#6366F1]/40 backdrop-blur-sm rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-[#6366F1] uppercase z-20 shadow-lg animate-pulse";
             
-            instructions.innerHTML = `🔒 Wajah cocok dengan <strong>${userName}</strong> (${score.toFixed(1)}%).<br><span class="text-indigo-600 font-bold">Harap berkedip sekali untuk verifikasi keaktifan wajah!</span>`;
+            instructions.innerHTML = `🔒 Wajah cocok dengan <strong>${userName}</strong> (${score.toFixed(1)}%).<br><span class="text-[#6366F1] font-bold">Harap berkedip sekali untuk verifikasi keaktifan wajah!</span>`;
             btnReset.classList.remove('hidden');
             
             // Monitor live frames for a blink action
@@ -572,7 +580,7 @@
                         laser.className = "absolute left-0 right-0 h-1 bg-emerald-500 shadow-[0_0_8px_#10b981] z-10 animate-scan";
                         
                         statusOverlay.innerHTML = `🎯 KEAKTIFAN TERVERIFIKASI`;
-                        statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-950/85 border border-emerald-500/40 backdrop-blur-md rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-emerald-400 uppercase z-20 shadow-lg shadow-emerald-950/30";
+                        statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#ECFDF5]/90 border border-emerald-550 border-emerald-400/40 backdrop-blur-sm rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-emerald-600 uppercase z-20 shadow-lg";
                         
                         instructions.innerHTML = `✅ Keaktifan terverifikasi! Mengirim presensi...`;
                         
@@ -599,9 +607,9 @@
                     laser.classList.add('hidden');
                     
                     statusOverlay.innerHTML = `❌ VERIFIKASI KEAKTIFAN GAGAL`;
-                    statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-rose-950/85 border border-rose-500/40 backdrop-blur-md rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-rose-400 uppercase z-20 shadow-lg shadow-rose-950/30";
+                    statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#FEF2F2]/90 border border-red-400/40 backdrop-blur-sm rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-[#B91C1C] uppercase z-20 shadow-lg";
                     
-                    instructions.innerHTML = `⚠️ <span class="text-rose-600 font-bold">Verifikasi Gagal: Wajah terdeteksi tidak aktif!</span> Memulai ulang pemindaian dalam 3 detik...`;
+                    instructions.innerHTML = `⚠️ <span class="text-[#B91C1C] font-bold">Verifikasi Gagal: Wajah terdeteksi tidak aktif!</span> Memulai ulang pemindaian dalam 3 detik...`;
                     
                     scanTimeout = setTimeout(() => {
                         resetState();
@@ -632,9 +640,9 @@
                 context.setTransform(1, 0, 0, 1, 0, 0);
             } catch (e) {
                 // Fallback if camera stream isn't rendering (for headless testing)
-                context.fillStyle = "#1e1b4b";
+                context.fillStyle = "#FAF9F6";
                 context.fillRect(0, 0, 350, 350);
-                context.fillStyle = "#ffffff";
+                context.fillStyle = "#111111";
                 context.font = "14px Outfit";
                 context.fillText("Biometric Verification Verified", 50, 175);
             }
@@ -692,7 +700,7 @@
             if (manualModeActive) {
                 manualSelectContainer.classList.remove('hidden');
                 badgeMode.innerHTML = "✏️ Mode Masukan Manual";
-                badgeMode.className = "px-2.5 py-1 bg-slate-500/10 border border-slate-500/20 text-[10px] font-extrabold tracking-widest text-slate-600 rounded-full uppercase";
+                badgeMode.className = "px-2.5 py-1 bg-[#F4F4F5] border border-[#E4E4E7] text-[10px] font-extrabold tracking-widest text-[#71717A] rounded-full uppercase";
                 btnToggleManual.innerHTML = "Beralih ke Auto-Scan";
                 
                 if (scanInterval) clearInterval(scanInterval);
@@ -709,7 +717,7 @@
             } else {
                 manualSelectContainer.classList.add('hidden');
                 badgeMode.innerHTML = "⚡ Mode Scan Otomatis (Biometrik)";
-                badgeMode.className = "px-2.5 py-1 bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-extrabold tracking-widest text-indigo-600 rounded-full uppercase animate-pulse";
+                badgeMode.className = "px-2.5 py-1 bg-[#6366F1]/10 border border-[#6366F1]/20 text-[10px] font-extrabold tracking-widest text-[#6366F1] rounded-full uppercase animate-pulse";
                 btnToggleManual.innerHTML = "Pilih Manual";
                 
                 resetState();
@@ -749,11 +757,11 @@
                 }
                 
                 laser.classList.remove('hidden');
-                laser.className = "absolute left-0 right-0 h-1 bg-red-500 shadow-[0_0_8px_#f43f5e] z-10 animate-scan";
+                laser.className = "absolute left-0 right-0 h-1 bg-[#8B5CF6] shadow-[0_0_8px_#8B5CF6] z-10 animate-scan";
                 
                 statusOverlay.classList.remove('hidden');
                 statusOverlay.innerHTML = "⚡ MENCOCOKKAN WAJAH...";
-                statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-950/85 border border-cyan-500/40 backdrop-blur-md rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-cyan-400 uppercase z-20 shadow-lg shadow-cyan-950/30";
+                statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#FFFFFF]/90 border border-[#8B5CF6]/40 backdrop-blur-sm rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-[#8B5CF6] uppercase z-20 shadow-lg";
                 
                 instructions.innerHTML = `🎯 Harap hadapkan wajah Anda ke kamera untuk verifikasi <strong>${selectedOption.text.split('(')[0].trim()}</strong>...`;
                 btnReset.classList.remove('hidden');
@@ -766,10 +774,10 @@
                     if (isProcessingMatch) return; // Jika sudah berhasil mencocokkan, biarkan submit berjalan
                     
                     if (scanInterval) clearInterval(scanInterval);
-                    instructions.innerHTML = `⚠️ <span class="text-rose-600 font-bold">Verifikasi Wajah Gagal!</span> Wajah tidak cocok dengan data terdaftar <strong>${selectedOption.text.split('(')[0].trim()}</strong>. Silakan coba lagi.`;
+                    instructions.innerHTML = `⚠️ <span class="text-[#B91C1C] font-bold">Verifikasi Wajah Gagal!</span> Wajah tidak cocok dengan data terdaftar <strong>${selectedOption.text.split('(')[0].trim()}</strong>. Silakan coba lagi.`;
                     
                     statusOverlay.innerHTML = "❌ VERIFIKASI GAGAL";
-                    statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-rose-950/85 border border-rose-500/40 backdrop-blur-md rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-rose-400 uppercase z-20 shadow-lg shadow-rose-950/30";
+                    statusOverlay.className = "absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#FEF2F2]/90 border border-red-450 border-red-400/40 backdrop-blur-sm rounded-full px-4 py-1.5 text-[9px] font-extrabold tracking-widest text-[#B91C1C] uppercase z-20 shadow-lg";
                     
                     laser.classList.add('hidden');
                     isProcessingMatch = true; // Kunci proses agar tidak mencocokkan lagi

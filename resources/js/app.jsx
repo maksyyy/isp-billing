@@ -289,19 +289,19 @@ function App({ role }) {
                 position: "top",
                 labels: {
                     font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: "bold" },
-                    color: "#8E8E90",
+                    color: "#71717A",
                 },
             },
         },
         scales: {
             x: {
-                grid: { color: "rgba(255, 255, 255, 0.05)" },
-                ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 10, weight: "600" }, color: "#8E8E90" },
+                grid: { color: "rgba(0, 0, 0, 0.05)" },
+                ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 10, weight: "600" }, color: "#71717A" },
             },
             y: {
                 beginAtZero: true,
-                grid: { color: "rgba(255, 255, 255, 0.05)" },
-                ticks: { precision: 0, font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 }, color: "#8E8E90" },
+                grid: { color: "rgba(0, 0, 0, 0.05)" },
+                ticks: { precision: 0, font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 }, color: "#71717A" },
             },
         },
     };
@@ -326,7 +326,7 @@ function App({ role }) {
                 position: "bottom",
                 labels: {
                     font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: "bold" },
-                    color: "#8E8E90",
+                    color: "#71717A",
                 },
             },
             tooltip: {
@@ -374,7 +374,7 @@ function App({ role }) {
                 position: "bottom",
                 labels: {
                     font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: "bold" },
-                    color: "#8E8E90",
+                    color: "#71717A",
                 },
             },
         },
@@ -392,9 +392,9 @@ function App({ role }) {
                     to { opacity: 1; transform: translateY(0) scale(1); }
                 }
                 ::-webkit-scrollbar { width: 8px; }
-                ::-webkit-scrollbar-track { background: #0B0B0D; border-radius: 4px; }
-                ::-webkit-scrollbar-thumb { background: #222226; border-radius: 4px; }
-                ::-webkit-scrollbar-thumb:hover { background: #333339; }
+                ::-webkit-scrollbar-track { background: #FAF9F6; border-radius: 4px; }
+                ::-webkit-scrollbar-thumb { background: #E4E4E7; border-radius: 4px; }
+                ::-webkit-scrollbar-thumb:hover { background: #D4D4D8; }
 
                 /* Efek visual hover, shadow, dan transition untuk tombol */
                 .btn-hover {
@@ -657,9 +657,9 @@ function App({ role }) {
                                      padding: "4px 8px",
                                      fontSize: "10px",
                                      fontWeight: "700",
-                                     color: "#FAF9F6",
-                                     background: "#0B0B0D",
-                                     border: "1px solid #222226",
+                                     color: "#111111",
+                                     background: "#F4F4F5",
+                                     border: "1px solid #E4E4E7",
                                      borderRadius: "4px",
                                      cursor: "pointer",
                                  }}
@@ -680,18 +680,18 @@ function App({ role }) {
                         <div style={{ height: "230px", position: "relative" }}>
                             <Doughnut data={financeChartData} options={financeChartOptions} />
                         </div>
-                        <div style={{ marginTop: "15px", padding: "10px", background: "#0B0B0D", borderRadius: "6px", border: "1px solid #222226", display: "flex", justifyContent: "space-between", fontSize: "11px" }}>
+                        <div style={{ marginTop: "15px", padding: "10px", background: "#F4F4F5", borderRadius: "6px", border: "1px solid #E4E4E7", display: "flex", justifyContent: "space-between", fontSize: "11px" }}>
                             <div>
-                                <span style={{ color: "#8E8E90" }}>Efisiensi Penagihan:</span>
-                                <strong style={{ display: "block", color: "#10B981", fontSize: "14px" }}>
+                                <span style={{ color: "#71717A" }}>Efisiensi Penagihan:</span>
+                                <strong style={{ display: "block", color: "#059669", fontSize: "14px" }}>
                                     {((data.total_income || 0) + (data.unpaid_total_amount || 0)) > 0 
                                         ? Math.round((data.total_income / ((data.total_income || 0) + (data.unpaid_total_amount || 0))) * 100) 
                                         : 0}%
                                 </strong>
                             </div>
                             <div style={{ textAlign: "right" }}>
-                                <span style={{ color: "#8E8E90" }}>Total Tagihan Terbit:</span>
-                                <strong style={{ display: "block", color: "#FAF9F6", fontSize: "14px" }}>
+                                <span style={{ color: "#71717A" }}>Total Tagihan Terbit:</span>
+                                <strong style={{ display: "block", color: "#111111", fontSize: "14px" }}>
                                     Rp {Number((data.total_income || 0) + (data.unpaid_total_amount || 0)).toLocaleString("id-ID")}
                                 </strong>
                             </div>
@@ -709,11 +709,11 @@ function App({ role }) {
                         <div style={{ height: "230px", position: "relative" }}>
                             <Doughnut data={deviceChartData} options={deviceChartOptions} />
                         </div>
-                        <div style={{ marginTop: "15px", padding: "10px", background: "#0B0B0D", borderRadius: "6px", border: "1px solid #222226", display: "flex", justifyContent: "space-around", fontSize: "10px", fontWeight: "bold" }}>
-                            <span style={{ color: "#10B981" }}>Online: {online}</span>
-                            <span style={{ color: "#EF4444" }}>Down: {down}</span>
-                            <span style={{ color: "#F59E0B" }}>Warn: {warning}</span>
-                            <span style={{ color: "#8E8E90" }}>Pause: {paused}</span>
+                        <div style={{ marginTop: "15px", padding: "10px", background: "#F4F4F5", borderRadius: "6px", border: "1px solid #E4E4E7", display: "flex", justifyContent: "space-around", fontSize: "10px", fontWeight: "bold" }}>
+                            <span style={{ color: "#059669" }}>Online: {online}</span>
+                            <span style={{ color: "#DC2626" }}>Down: {down}</span>
+                            <span style={{ color: "#D97706" }}>Warn: {warning}</span>
+                            <span style={{ color: "#71717A" }}>Pause: {paused}</span>
                         </div>
                     </div>
                 )}
@@ -727,35 +727,42 @@ function App({ role }) {
             {modal && (
                 <div style={overlay} onClick={() => setModal(null)}>
                     <div style={{ ...modalBox, maxWidth: modal.type === "prtg" ? "750px" : "400px", width: "95%" }} className="modal-anim" onClick={(e) => e.stopPropagation()}>
-                        <h3>{modal.title}</h3>
+                        <h3 className="m-0 mb-4 text-lg font-bold text-[#111111]">{modal.title}</h3>
 
                         <div style={{ ...content, maxHeight: modal.type === "prtg" ? "500px" : "350px" }}>
                             {modal.type === "customers" &&
                                 modal.data.map((item) => (
                                     <div key={item.id} style={listItem}>
-                                        👤 {item.name}
+                                        {item.name}
                                     </div>
-                                ))}
+                                    ))}
 
                             {modal.type === "tickets" &&
                                 modal.data.map((item) => (
                                     <div key={item.id} style={{ ...listItem, flexDirection: "column", alignItems: "flex-start", gap: "4px" }}>
                                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%", fontWeight: "bold" }}>
-                                            <span>🎫 {item.title}</span>
-                                            <span style={{ fontSize: "12px", padding: "2px 6px", borderRadius: "4px", background: item.status === 'open' ? '#fef3c7' : '#d1fae5', color: item.status === 'open' ? '#d97706' : '#059669' }}>
+                                            <span>{item.title}</span>
+                                            <span style={{ 
+                                                fontSize: "10px", 
+                                                padding: "2px 6px", 
+                                                borderRadius: "4px", 
+                                                background: item.status === 'open' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(16, 185, 129, 0.15)', 
+                                                color: item.status === 'open' ? '#f59e0b' : '#10b981',
+                                                border: `1px solid ${item.status === 'open' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)'}`
+                                            }}>
                                                 {item.status === 'open' ? 'Open' : 'Done'}
                                             </span>
                                         </div>
-                                        <div style={{ fontSize: "13px", color: "#4b5563" }}>
-                                            👤 Pelanggan: <strong>{item.customer?.name || '-'}</strong>
+                                        <div style={{ fontSize: "13px", color: "#71717A" }}>
+                                            Pelanggan: <strong style={{ color: "#111111" }}>{item.customer?.name || '-'}</strong>
                                         </div>
                                         {item.teknisi && (
-                                            <div style={{ fontSize: "12px", color: "#6b7280" }}>
-                                                🛠️ Teknisi: {item.teknisi.name}
+                                            <div style={{ fontSize: "12px", color: "#71717A" }}>
+                                                Teknisi: {item.teknisi.name}
                                             </div>
                                         )}
-                                        <div style={{ fontSize: "11px", color: "#9ca3af" }}>
-                                            📅 Tanggal: {item.tanggal || '-'}
+                                        <div style={{ fontSize: "11px", color: "#71717A" }}>
+                                            Tanggal: {item.tanggal || '-'}
                                         </div>
                                     </div>
                                 ))}
@@ -764,9 +771,9 @@ function App({ role }) {
                                 modal.data.map((item) => (
                                     <div key={item.id} style={listItem}>
                                         <div>
-                                            👤 {item.customer?.name}
+                                            {item.customer?.name}
                                             <br />
-                                            <small style={{ color: "#888" }}>
+                                            <small style={{ color: "#8E8E90" }}>
                                                 {item.status}
                                             </small>
                                         </div>
@@ -779,8 +786,8 @@ function App({ role }) {
                             {modal.type === "unpaid" &&
                                 modal.data.map((item) => (
                                     <div key={item.id} style={listItem}>
-                                        <span>👤 {item.customer?.name}</span>
-                                        <span style={{ color: "red" }}>
+                                        <span>{item.customer?.name}</span>
+                                        <span style={{ color: "#EF4444", fontWeight: "bold" }}>
                                             Rp {Number(item.amount).toLocaleString("id-ID")}
                                         </span>
                                     </div>
@@ -794,20 +801,20 @@ function App({ role }) {
                                 ))}
 
                             {modal.type === "prtg" && (
-                                <div style={{ overflowX: "auto" }}>
+                                <div style={{ overflowX: "auto" }} className="border border-[#E4E4E7] rounded-md">
                                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
                                         <thead>
-                                            <tr style={{ background: "#f1f5f9", borderBottom: "2px solid #cbd5e1" }}>
-                                                <th style={{ padding: "10px", color: "#475569" }}>Device / Pelanggan</th>
-                                                <th style={{ padding: "10px", color: "#475569" }}>Status</th>
-                                                <th style={{ padding: "10px", color: "#475569" }}>Durasi Status</th>
-                                                <th style={{ padding: "10px", color: "#475569" }}>Pesan PRTG</th>
+                                            <tr style={{ background: "#F4F4F5", borderBottom: "1px solid #E4E4E7" }}>
+                                                <th style={{ padding: "10px", color: "#111111" }}>Device / Pelanggan</th>
+                                                <th style={{ padding: "10px", color: "#111111" }}>Status</th>
+                                                <th style={{ padding: "10px", color: "#111111" }}>Durasi Status</th>
+                                                <th style={{ padding: "10px", color: "#111111" }}>Pesan PRTG</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {modal.data.length === 0 ? (
                                                 <tr>
-                                                    <td colSpan="4" style={{ padding: "20px", textAlign: "center", color: "#64748b" }}>
+                                                    <td colSpan="4" style={{ padding: "20px", textAlign: "center", color: "#8E8E90" }}>
                                                         Tidak ada data device.
                                                     </td>
                                                 </tr>
@@ -818,7 +825,7 @@ function App({ role }) {
                                                     
                                                     // Status theme
                                                     const badgeStyle = {
-                                                        fontSize: "11px",
+                                                        fontSize: "10px",
                                                         padding: "4px 8px",
                                                         borderRadius: "999px",
                                                         fontWeight: "bold",
@@ -826,19 +833,24 @@ function App({ role }) {
                                                         alignItems: "center",
                                                         gap: "4px",
                                                         background: 
-                                                            status === "online" ? "#d1fae5" :
-                                                            status === "down" ? "#fee2e2" :
-                                                            status === "warning" ? "#fef3c7" : "#e2e8f0",
+                                                            status === "online" ? "rgba(16, 185, 129, 0.15)" :
+                                                            status === "down" ? "rgba(239, 68, 68, 0.15)" :
+                                                            status === "warning" ? "rgba(245, 158, 11, 0.15)" : "rgba(34, 34, 38, 0.5)",
                                                         color: 
-                                                            status === "online" ? "#065f46" :
-                                                            status === "down" ? "#991b1b" :
-                                                            status === "warning" ? "#92400e" : "#475569"
+                                                            status === "online" ? "#10B981" :
+                                                            status === "down" ? "#EF4444" :
+                                                            status === "warning" ? "#F59E0B" : "#8E8E90",
+                                                        border: `1px solid ${
+                                                            status === "online" ? "rgba(16, 185, 129, 0.2)" :
+                                                            status === "down" ? "rgba(239, 68, 68, 0.2)" :
+                                                            status === "warning" ? "rgba(245, 158, 11, 0.2)" : "rgba(34, 34, 38, 0.2)"
+                                                        }`
                                                     };
  
                                                     return (
-                                                        <tr key={i} style={{ borderBottom: "1px solid #e2e8f0" }}>
-                                                            <td style={{ padding: "12px 10px", fontWeight: "600", color: "#1e293b" }}>
-                                                                📡 {item.device}
+                                                        <tr key={i} style={{ borderBottom: "1px solid #E4E4E7" }}>
+                                                            <td style={{ padding: "12px 10px", fontWeight: "600", color: "#111111" }}>
+                                                                {item.device}
                                                             </td>
                                                             <td style={{ padding: "12px 10px" }}>
                                                                 <span style={badgeStyle}>
@@ -847,16 +859,16 @@ function App({ role }) {
                                                                     {status.toUpperCase()}
                                                                 </span>
                                                             </td>
-                                                            <td style={{ padding: "12px 10px", color: "#334155" }}>
-                                                                🕒 <strong>{duration}</strong>
+                                                            <td style={{ padding: "12px 10px", color: "#111111" }}>
+                                                                <strong>{duration}</strong>
                                                                 <br />
-                                                                <small style={{ color: "#94a3b8" }}>
+                                                                <small style={{ color: "#71717A" }}>
                                                                     {status === 'online' ? `sejak offline: ${cleanHtml(item.lastdown) || "-"}` : `sejak online: ${cleanHtml(item.lastup) || "-"}`}
                                                                 </small>
                                                             </td>
-                                                            <td style={{ padding: "12px 10px", color: "#64748b", fontSize: "12px", maxWidth: "220px", wordBreak: "break-word" }}>
+                                                            <td style={{ padding: "12px 10px", color: "#71717A", fontSize: "12px", maxWidth: "220px", wordBreak: "break-word" }}>
                                                                 {cleanHtml(item.message) || "-"}
-                                                            </td>
+                                                             </td>
                                                         </tr>
                                                     );
                                                 })
@@ -885,47 +897,48 @@ function App({ role }) {
             {monthlyModal && (
                 <div style={overlay} onClick={() => setMonthlyModal(null)}>
                     <div style={{ ...modalBox, maxWidth: "650px", width: "95%" }} className="modal-anim" onClick={(e) => e.stopPropagation()}>
-                        <div style={{ display: "flex", justifyBetween: "space-between", justifyContent: "space-between", alignItems: "center", marginBottom: "15px", borderBottom: "1px solid #f1f5f9", paddingBottom: "10px" }}>
-                            <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700" }}>{monthlyModal.title}</h3>
-                            <span style={{ fontSize: "12px", background: "#e0f2fe", color: "#0369a1", padding: "4px 10px", borderRadius: "8px", fontWeight: "bold" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "15px", borderBottom: "1px solid #E4E4E7", paddingBottom: "10px" }}>
+                            <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700", color: "#111111" }}>{monthlyModal.title}</h3>
+                            <span style={{ fontSize: "12px", background: "rgba(99, 102, 241, 0.1)", color: "#6366F1", border: "1px solid rgba(99, 102, 241, 0.2)", padding: "4px 10px", borderRadius: "8px", fontWeight: "bold" }}>
                                 {monthlyModal.data.length} Tiket
                             </span>
                         </div>
 
                         <div style={{ ...content, maxHeight: "400px" }}>
                             {monthlyModal.data.length === 0 ? (
-                                <div style={{ textAlign: "center", padding: "40px 10px", color: "#64748b" }}>
+                                <div style={{ textAlign: "center", padding: "40px 10px", color: "#8E8E90" }}>
                                     📭 Tidak ada tiket pada bulan ini.
                                 </div>
                             ) : (
-                                <div style={{ overflowX: "auto" }}>
-                                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
+                                <div style={{ overflowX: "auto" }} className="border border-[#E4E4E7] rounded-md">
+                                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }} className="app-table">
                                         <thead>
-                                            <tr style={{ background: "#f1f5f9", borderBottom: "2px solid #cbd5e1" }}>
-                                                <th style={{ padding: "8px 10px" }}>No</th>
-                                                <th style={{ padding: "8px 10px" }}>Judul</th>
-                                                <th style={{ padding: "8px 10px" }}>Pelanggan</th>
-                                                <th style={{ padding: "8px 10px" }}>Teknisi</th>
-                                                <th style={{ padding: "8px 10px" }}>Tanggal</th>
-                                                <th style={{ padding: "8px 10px" }}>Status</th>
+                                            <tr style={{ background: "#F4F4F5", borderBottom: "1px solid #E4E4E7" }}>
+                                                <th style={{ padding: "8px 10px", color: "#6366F1", fontWeight: "bold" }}>No</th>
+                                                <th style={{ padding: "8px 10px", color: "#6366F1", fontWeight: "bold" }}>Judul</th>
+                                                <th style={{ padding: "8px 10px", color: "#6366F1", fontWeight: "bold" }}>Pelanggan</th>
+                                                <th style={{ padding: "8px 10px", color: "#6366F1", fontWeight: "bold" }}>Teknisi</th>
+                                                <th style={{ padding: "8px 10px", color: "#6366F1", fontWeight: "bold" }}>Tanggal</th>
+                                                <th style={{ padding: "8px 10px", color: "#6366F1", fontWeight: "bold" }}>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {monthlyModal.data.map((t, index) => (
-                                                <tr key={t.id} style={{ borderBottom: "1px solid #e2e8f0" }}>
-                                                    <td style={{ padding: "10px" }}>{index + 1}</td>
-                                                    <td style={{ padding: "10px", fontWeight: "600" }}>{t.title}</td>
-                                                    <td style={{ padding: "10px" }}>{t.customer?.name || "-"}</td>
-                                                    <td style={{ padding: "10px" }}>{t.teknisi?.name || "-"}</td>
-                                                    <td style={{ padding: "10px" }}>{t.tanggal || "-"}</td>
+                                                <tr key={t.id} style={{ borderBottom: "1px solid #E4E4E7" }}>
+                                                    <td style={{ padding: "10px", color: "#111111" }}>{index + 1}</td>
+                                                    <td style={{ padding: "10px", fontWeight: "600", color: "#111111" }}>{t.title}</td>
+                                                    <td style={{ padding: "10px", color: "#111111" }}>{t.customer?.name || "-"}</td>
+                                                    <td style={{ padding: "10px", color: "#111111" }}>{t.teknisi?.name || "-"}</td>
+                                                    <td style={{ padding: "10px", color: "#111111" }}>{t.tanggal || "-"}</td>
                                                     <td style={{ padding: "10px" }}>
                                                         <span style={{ 
                                                             fontSize: "11px", 
                                                             padding: "3px 8px", 
                                                             borderRadius: "999px", 
                                                             fontWeight: "bold",
-                                                            background: t.status === 'open' ? '#fef3c7' : '#d1fae5', 
-                                                            color: t.status === 'open' ? '#d97706' : '#059669' 
+                                                            background: t.status === 'open' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(16, 185, 129, 0.15)', 
+                                                            color: t.status === 'open' ? '#F59E0B' : '#10B981',
+                                                            border: `1px solid ${t.status === 'open' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)'}`
                                                         }}>
                                                             {t.status === 'open' ? 'Open' : 'Done'}
                                                         </span>
@@ -938,7 +951,7 @@ function App({ role }) {
                             )}
                         </div>
 
-                        <div style={{ display: "flex", gap: "10px", marginTop: "20px", borderTop: "1px solid #f1f5f9", paddingTop: "15px" }}>
+                        <div style={{ display: "flex", gap: "10px", marginTop: "20px", borderTop: "1px solid #E4E4E7", paddingTop: "15px" }}>
                             {monthlyModal.data.length > 0 && (
                                 <button 
                                     style={{ ...btnBlue, flex: 1, padding: "10px 16px", cursor: "pointer", border: "none" }} 
@@ -963,9 +976,9 @@ function App({ role }) {
             {/* LOADING OVERLAY */}
             {loadingMonthly && (
                 <div style={overlay}>
-                    <div style={{ background: "#fff", padding: "20px 30px", borderRadius: "12px", textAlign: "center", boxShadow: "0 10px 25px rgba(0,0,0,0.15)", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+                    <div style={{ background: "#FFFFFF", border: "1px solid #E4E4E7", padding: "20px 30px", borderRadius: "12px", textAlign: "center", boxShadow: "0 10px 25px rgba(0,0,0,0.05)", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
                         <span style={{ fontSize: "28px" }} className="animate-pulse">⏳</span>
-                        <p style={{ margin: 0, fontWeight: "bold", color: "#1e293b", fontSize: "14px" }}>Memuat Data Tiket...</p>
+                        <p style={{ margin: 0, fontWeight: "bold", color: "#111111", fontSize: "14px" }}>Memuat Data Tiket...</p>
                     </div>
                 </div>
             )}
@@ -1012,15 +1025,15 @@ function PrtgMonitoringPanel({ prtgCustomers, getDeviceStatus, getDeviceDuration
                     <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700", display: "flex", alignItems: "center", gap: "8px" }}>
                         📡 Monitoring Status Device (PRTG)
                     </h3>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#f1f5f9", padding: "4px 10px", borderRadius: "12px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "rgba(16, 185, 129, 0.08)", border: "1px solid rgba(16, 185, 129, 0.2)", padding: "4px 10px", borderRadius: "12px" }}>
                         <span style={livePulseDot} className="pulse-green"></span>
-                        <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Live</span>
+                        <span style={{ fontSize: "12px", color: "#059669", fontWeight: "600" }}>Live</span>
                     </div>
                 </div>
                 <span style={historyBadgeStyle}>{counts.all} Total Device</span>
             </div>
 
-            <p style={{ margin: "0 0 20px 0", color: "#64748b", fontSize: "14px" }}>
+            <p style={{ margin: "0 0 20px 0", color: "#8E8E90", fontSize: "14px" }}>
                 Status real-time pelanggan yang terhubung ke jaringan. Data diperbarui otomatis setiap 10 detik.
             </p>
 
@@ -1028,11 +1041,11 @@ function PrtgMonitoringPanel({ prtgCustomers, getDeviceStatus, getDeviceDuration
             <div style={panelControlsRow}>
                 {/* Tabs */}
                 <div style={tabContainer}>
-                    <TabButton active={activeTab === "all"} onClick={() => setActiveTab("all")} label="Semua" count={counts.all} color="#3b82f6" />
+                    <TabButton active={activeTab === "all"} onClick={() => setActiveTab("all")} label="Semua" count={counts.all} color="#8B5CF6" />
                     <TabButton active={activeTab === "online"} onClick={() => setActiveTab("online")} label="Online" count={counts.online} color="#10b981" />
                     <TabButton active={activeTab === "down"} onClick={() => setActiveTab("down")} label="Down" count={counts.down} color="#ef4444" />
                     <TabButton active={activeTab === "warning"} onClick={() => setActiveTab("warning")} label="Warning" count={counts.warning} color="#f59e0b" />
-                    <TabButton active={activeTab === "paused"} onClick={() => setActiveTab("paused")} label="Paused" count={counts.paused} color="#64748b" />
+                    <TabButton active={activeTab === "paused"} onClick={() => setActiveTab("paused")} label="Paused" count={counts.paused} color="#222226" />
                 </div>
 
                 {/* Local Search */}
@@ -1048,7 +1061,7 @@ function PrtgMonitoringPanel({ prtgCustomers, getDeviceStatus, getDeviceDuration
             {/* Device Grid */}
             <div style={deviceGridStyle}>
                 {filteredList.length === 0 ? (
-                    <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px", color: "#64748b", background: "#f8fafc", borderRadius: "12px", border: "1px dashed #cbd5e1" }}>
+                    <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px", color: "#71717A", background: "#F8F9FA", borderRadius: "10px", border: "1px dashed #D4D4D8" }}>
                         🔍 Tidak ada device yang cocok dengan kriteria filter/pencarian.
                     </div>
                 ) : (
@@ -1058,17 +1071,17 @@ function PrtgMonitoringPanel({ prtgCustomers, getDeviceStatus, getDeviceDuration
                         
                         // Theme styling berdasarkan status
                         const theme = {
-                            online: { bg: "#f0fdf4", border: "#bbf7d0", icon: "🟢", color: "#166534", badgeBg: "#d1fae5", badgeColor: "#065f46" },
-                            down: { bg: "#fef2f2", border: "#fecaca", icon: "🔴", color: "#991b1b", badgeBg: "#fee2e2", badgeColor: "#991b1b", pulse: true },
-                            warning: { bg: "#fffbeb", border: "#fef3c7", icon: "🟠", color: "#92400e", badgeBg: "#fef3c7", badgeColor: "#92400e", pulse: true },
-                            paused: { bg: "#f8fafc", border: "#e2e8f0", icon: "🟡", color: "#475569", badgeBg: "#e2e8f0", badgeColor: "#475569" },
-                            unknown: { bg: "#f8fafc", border: "#e2e8f0", icon: "⚪", color: "#64748b", badgeBg: "#f1f5f9", badgeColor: "#64748b" }
-                        }[status] || { bg: "#f8fafc", border: "#e2e8f0", icon: "⚪", color: "#64748b", badgeBg: "#f1f5f9", badgeColor: "#64748b" };
+                            online: { bg: "rgba(16, 185, 129, 0.05)", border: "rgba(16, 185, 129, 0.2)", icon: "🟢", color: "#10B981", badgeBg: "rgba(16, 185, 129, 0.1)", badgeColor: "#059669" },
+                            down: { bg: "rgba(239, 68, 68, 0.05)", border: "rgba(239, 68, 68, 0.2)", icon: "🔴", color: "#EF4444", badgeBg: "rgba(239, 68, 68, 0.1)", badgeColor: "#DC2626", pulse: true },
+                            warning: { bg: "rgba(245, 158, 11, 0.05)", border: "rgba(245, 158, 11, 0.2)", icon: "🟠", color: "#F59E0B", badgeBg: "rgba(245, 158, 11, 0.1)", badgeColor: "#D97706", pulse: true },
+                            paused: { bg: "#F8F9FA", border: "#E4E4E7", icon: "🟡", color: "#71717A", badgeBg: "#F4F4F5", badgeColor: "#71717A" },
+                            unknown: { bg: "#F8F9FA", border: "#E4E4E7", icon: "⚪", color: "#71717A", badgeBg: "#F4F4F5", badgeColor: "#71717A" }
+                        }[status] || { bg: "#F8F9FA", border: "#E4E4E7", icon: "⚪", color: "#71717A", badgeBg: "#F4F4F5", badgeColor: "#71717A" };
 
                         return (
                             <div key={index} style={{ ...deviceCardStyle, backgroundColor: theme.bg, borderColor: theme.border }}>
                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
-                                    <div style={{ fontWeight: "700", color: "#1e293b", fontSize: "14px", display: "flex", alignItems: "center", gap: "6px" }}>
+                                    <div style={{ fontWeight: "700", color: "#111111", fontSize: "14px", display: "flex", alignItems: "center", gap: "6px" }}>
                                         <span>📡</span>
                                         <span>{d.device}</span>
                                     </div>
@@ -1088,7 +1101,7 @@ function PrtgMonitoringPanel({ prtgCustomers, getDeviceStatus, getDeviceDuration
                                     </span>
                                 </div>
 
-                                <div style={{ fontSize: "13px", color: "#475569", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+                                <div style={{ fontSize: "13px", color: "#111111", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
                                     <span>🕒</span>
                                     <span>
                                         <strong>Durasi:</strong> {duration}
@@ -1096,7 +1109,7 @@ function PrtgMonitoringPanel({ prtgCustomers, getDeviceStatus, getDeviceDuration
                                 </div>
 
                                 {(d.lastup || d.lastdown) && (
-                                    <div style={{ fontSize: "11px", color: "#94a3b8", marginBottom: "8px" }}>
+                                    <div style={{ fontSize: "11px", color: "#71717A", marginBottom: "8px" }}>
                                         {status === 'online' ? `Terakhir offline: ${cleanHtml(d.lastdown) || "-"}` : `Terakhir online: ${cleanHtml(d.lastup) || "-"}`}
                                     </div>
                                 )}
@@ -1133,7 +1146,7 @@ function TabButton({ active, onClick, label, count, color }) {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             style={{
-                padding: "8px 16px",
+                padding: "6px 14px",
                 borderRadius: "8px",
                 border: "none",
                 cursor: "pointer",
@@ -1142,8 +1155,8 @@ function TabButton({ active, onClick, label, count, color }) {
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
-                background: active ? color : isHovered ? "#f1f5f9" : "transparent",
-                color: active ? "#ffffff" : "#475569",
+                background: active ? color : isHovered ? "#E4E4E7" : "transparent",
+                color: active ? "#FFFFFF" : "#71717A",
                 transition: "all 0.2s ease"
             }}
         >
@@ -1152,8 +1165,8 @@ function TabButton({ active, onClick, label, count, color }) {
                 fontSize: "11px",
                 padding: "2px 6px",
                 borderRadius: "999px",
-                background: active ? "rgba(255,255,255,0.2)" : "#e2e8f0",
-                color: active ? "#ffffff" : "#64748b"
+                background: active ? "rgba(255,255,255,0.25)" : "#E4E4E7",
+                color: active ? "#FFFFFF" : "#71717A"
             }}>
                 {count}
             </span>
@@ -1215,7 +1228,7 @@ function MikrotikMonitoringPanel({ data, loading }) {
     const ramUsedPercent = ramTotalMb > 0 ? Math.round((ramUsedMb / ramTotalMb) * 100) : 0;
 
     return (
-        <section style={{ ...historySectionStyle, borderLeft: "5px solid #111111" }}>
+        <section style={{ ...historySectionStyle, borderLeft: "5px solid #6366F1" }}>
             {/* Header */}
             <div style={historyHeaderStyle}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -1227,7 +1240,7 @@ function MikrotikMonitoringPanel({ data, loading }) {
                         <span style={{ fontSize: "12px", color: "#346538", fontWeight: "600" }}>Connected</span>
                     </div>
                 </div>
-                <span style={{ ...historyBadgeStyle, background: "#FAF9F6", color: "#111111" }}>
+                <span style={{ ...historyBadgeStyle }}>
                     {resources.board_name}
                 </span>
             </div>
@@ -1243,9 +1256,9 @@ function MikrotikMonitoringPanel({ data, loading }) {
                         type="button"
                         onClick={() => setActiveSection("resources")} 
                         style={{
-                            padding: "6px 12px", borderRadius: "4px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "12px",
-                            background: activeSection === "resources" ? "#111111" : "transparent",
-                            color: activeSection === "resources" ? "#FAF9F6" : "#787774",
+                            padding: "6px 12px", borderRadius: "6px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "12px",
+                            background: activeSection === "resources" ? "#6366F1" : "transparent",
+                            color: activeSection === "resources" ? "#FFFFFF" : "#71717A",
                             transition: "all 0.15s ease"
                         }}
                     >
@@ -1255,9 +1268,9 @@ function MikrotikMonitoringPanel({ data, loading }) {
                         type="button"
                         onClick={() => setActiveSection("active_users")} 
                         style={{
-                            padding: "6px 12px", borderRadius: "4px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "12px",
-                            background: activeSection === "active_users" ? "#111111" : "transparent",
-                            color: activeSection === "active_users" ? "#FAF9F6" : "#787774",
+                            padding: "6px 12px", borderRadius: "6px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "12px",
+                            background: activeSection === "active_users" ? "#6366F1" : "transparent",
+                            color: activeSection === "active_users" ? "#FFFFFF" : "#71717A",
                             transition: "all 0.15s ease"
                         }}
                     >
@@ -1267,9 +1280,9 @@ function MikrotikMonitoringPanel({ data, loading }) {
                         type="button"
                         onClick={() => setActiveSection("address_lists")} 
                         style={{
-                            padding: "6px 12px", borderRadius: "4px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "12px",
-                            background: activeSection === "address_lists" ? "#111111" : "transparent",
-                            color: activeSection === "address_lists" ? "#FAF9F6" : "#787774",
+                            padding: "6px 12px", borderRadius: "6px", border: "none", cursor: "pointer", fontWeight: "600", fontSize: "12px",
+                            background: activeSection === "address_lists" ? "#6366F1" : "transparent",
+                            color: activeSection === "address_lists" ? "#FFFFFF" : "#71717A",
                             transition: "all 0.15s ease"
                         }}
                     >
@@ -1292,40 +1305,40 @@ function MikrotikMonitoringPanel({ data, loading }) {
             {activeSection === "resources" && (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginTop: "10px" }}>
                     {/* CPU CARD */}
-                    <div style={{ background: "rgba(12, 12, 14, 0.5)", border: "1px solid #222226", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "150px" }}>
-                        <span style={{ fontSize: "12px", color: "#8E8E90", fontWeight: "700", textTransform: "uppercase", marginBottom: "10px" }}>CPU Load</span>
+                    <div style={{ background: "#F8F9FA", border: "1px solid #E4E4E7", borderRadius: "10px", padding: "16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "150px" }}>
+                        <span style={{ fontSize: "12px", color: "#71717A", fontWeight: "700", textTransform: "uppercase", marginBottom: "10px" }}>CPU Load</span>
                         <div style={{ position: "relative", width: "90px", height: "90px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <svg width="90" height="90" viewBox="0 0 36 36">
-                                <path stroke="#222226" strokeWidth="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path stroke="#FAF9F6" strokeWidth="3" strokeDasharray={`${resources.cpu_load}, 100`} fill="none" strokeLinecap="round" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path stroke="#E4E4E7" strokeWidth="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path stroke="#6366F1" strokeWidth="3" strokeDasharray={`${resources.cpu_load}, 100`} fill="none" strokeLinecap="round" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                             </svg>
-                            <span style={{ position: "absolute", fontSize: "16px", fontWeight: "800", color: "#FAF9F6", fontFamily: "monospace" }}>{resources.cpu_load}%</span>
+                            <span style={{ position: "absolute", fontSize: "16px", fontWeight: "800", color: "#111111", fontFamily: "monospace" }}>{resources.cpu_load}%</span>
                         </div>
                     </div>
 
                     {/* RAM CARD */}
-                    <div style={{ background: "rgba(12, 12, 14, 0.5)", border: "1px solid #222226", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "150px" }}>
+                    <div style={{ background: "#F8F9FA", border: "1px solid #E4E4E7", borderRadius: "10px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "150px" }}>
                         <div>
-                            <span style={{ display: "block", fontSize: "11px", color: "#8E8E90", fontWeight: "700", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" }}>Memory / RAM Usage</span>
-                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", fontWeight: "bold", color: "#FAF9F6", marginBottom: "6px" }}>
+                            <span style={{ display: "block", fontSize: "11px", color: "#71717A", fontWeight: "700", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.05em" }}>Memory / RAM Usage</span>
+                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", fontWeight: "bold", color: "#111111", marginBottom: "6px" }}>
                                 <span>Terpakai: {ramUsedMb} MB</span>
-                                <span style={{ color: "#8E8E90" }}>Total: {ramTotalMb} MB</span>
+                                <span style={{ color: "#71717A" }}>Total: {ramTotalMb} MB</span>
                             </div>
-                            <div style={{ height: "8px", background: "#222226", borderRadius: "4px", overflow: "hidden" }}>
-                                <div style={{ height: "100%", width: `${ramUsedPercent}%`, background: "#FAF9F6", borderRadius: "4px" }}></div>
+                            <div style={{ height: "8px", background: "#E4E4E7", borderRadius: "4px", overflow: "hidden" }}>
+                                <div style={{ height: "100%", width: `${ramUsedPercent}%`, background: "linear-gradient(90deg, #6366F1, #8B5CF6)", borderRadius: "4px" }}></div>
                             </div>
                         </div>
-                        <span style={{ fontSize: "10px", color: "#8E8E90", fontFamily: "monospace" }}>Bebas: {ramFreeMb} MB ({100 - ramUsedPercent}%)</span>
+                        <span style={{ fontSize: "10px", color: "#71717A", fontFamily: "monospace" }}>Bebas: {ramFreeMb} MB ({100 - ramUsedPercent}%)</span>
                     </div>
 
                     {/* SYSTEM INFO */}
-                    <div style={{ background: "rgba(12, 12, 14, 0.5)", border: "1px solid #222226", borderRadius: "6px", padding: "16px", display: "flex", flexDirection: "column", gap: "10px", minHeight: "150px" }}>
-                        <span style={{ fontSize: "11px", color: "#8E8E90", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>System Details</span>
-                        <div style={{ fontSize: "12px", color: "#E4E4E7" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #222226" }}>
+                    <div style={{ background: "#F8F9FA", border: "1px solid #E4E4E7", borderRadius: "10px", padding: "16px", display: "flex", flexDirection: "column", gap: "10px", minHeight: "150px" }}>
+                        <span style={{ fontSize: "11px", color: "#71717A", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>System Details</span>
+                        <div style={{ fontSize: "12px", color: "#111111" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #E4E4E7" }}>
                                 <strong>Uptime:</strong> <span>{resources.uptime}</span>
                             </div>
-                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #222226" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: "1px solid #E4E4E7" }}>
                                 <strong>Version:</strong> <span>v{resources.version}</span>
                             </div>
                             <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
@@ -1338,7 +1351,7 @@ function MikrotikMonitoringPanel({ data, loading }) {
 
             {/* SECTION 2: ACTIVE USERS */}
             {activeSection === "active_users" && (
-                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#222226] rounded-md">
+                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#E4E4E7] rounded-md">
                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", textAlign: "left" }} className="app-table">
                         <thead>
                             <tr>
@@ -1360,10 +1373,10 @@ function MikrotikMonitoringPanel({ data, loading }) {
                                 filteredActive.map((user, i) => (
                                     <tr key={i}>
                                         <td style={{ padding: "12px 10px" }}>
-                                            <div style={{ fontWeight: "700", color: "#FAF9F6" }}>{user.customer_name || user.name}</div>
-                                            {user.customer_name && <small style={{ color: "#8E8E90", fontFamily: "monospace" }}>PPPoE: <code>{user.name}</code></small>}
+                                            <div style={{ fontWeight: "700", color: "#111111" }}>{user.customer_name || user.name}</div>
+                                            {user.customer_name && <small style={{ color: "#71717A", fontFamily: "monospace" }}>PPPoE: <code>{user.name}</code></small>}
                                         </td>
-                                        <td style={{ padding: "12px 10px", color: "#FAF9F6", fontWeight: "600", fontFamily: "monospace" }}>{user.address}</td>
+                                        <td style={{ padding: "12px 10px", color: "#111111", fontWeight: "600", fontFamily: "monospace" }}>{user.address}</td>
                                         <td style={{ padding: "12px 10px" }}>
                                             <span style={{ 
                                                 fontSize: "10px", 
@@ -1374,8 +1387,8 @@ function MikrotikMonitoringPanel({ data, loading }) {
                                                 color: user.service === "PPPoE" ? "#10B981" : "#F59E0B"
                                             }}>{user.service}</span>
                                         </td>
-                                        <td style={{ padding: "12px 10px", color: "#8E8E90", fontFamily: "monospace" }}>{user.uptime}</td>
-                                        <td style={{ padding: "12px 10px", color: "#8E8E90", fontFamily: "monospace" }}>{user.caller_id}</td>
+                                        <td style={{ padding: "12px 10px", color: "#71717A", fontFamily: "monospace" }}>{user.uptime}</td>
+                                        <td style={{ padding: "12px 10px", color: "#71717A", fontFamily: "monospace" }}>{user.caller_id}</td>
                                     </tr>
                                 ))
                             )}
@@ -1386,7 +1399,7 @@ function MikrotikMonitoringPanel({ data, loading }) {
 
             {/* SECTION 3: ADDRESS LIST CUSTOMERS */}
             {activeSection === "address_lists" && (
-                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#222226] rounded-md">
+                <div style={{ overflowX: "auto", marginTop: "10px" }} className="border border-[#E4E4E7] rounded-md">
                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", textAlign: "left" }} className="app-table">
                         <thead>
                             <tr>
@@ -1413,10 +1426,10 @@ function MikrotikMonitoringPanel({ data, loading }) {
                                     return (
                                         <tr key={i}>
                                             <td style={{ padding: "12px 10px" }}>
-                                                <div style={{ fontWeight: "700", color: "#FAF9F6" }}>{entry.customer_name}</div>
-                                                <small style={{ color: "#8E8E90", fontFamily: "monospace" }}>Kode: <strong>{entry.customer_code}</strong></small>
+                                                <div style={{ fontWeight: "700", color: "#111111" }}>{entry.customer_name}</div>
+                                                <small style={{ color: "#71717A", fontFamily: "monospace" }}>Kode: <strong>{entry.customer_code}</strong></small>
                                             </td>
-                                            <td style={{ padding: "12px 10px", color: "#FAF9F6", fontWeight: "600", fontFamily: "monospace" }}>{entry.address}</td>
+                                            <td style={{ padding: "12px 10px", color: "#111111", fontWeight: "600", fontFamily: "monospace" }}>{entry.address}</td>
                                             <td style={{ padding: "12px 10px" }}>
                                                 <span style={{
                                                     fontSize: "10px", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold",
@@ -1426,8 +1439,8 @@ function MikrotikMonitoringPanel({ data, loading }) {
                                                     {entry.list}
                                                 </span>
                                             </td>
-                                            <td style={{ padding: "12px 10px", color: "#8E8E90" }}>{entry.package_name}</td>
-                                            <td style={{ padding: "12px 10px", color: "#8E8E90", fontSize: "11px" }}>{entry.comment || "-"}</td>
+                                            <td style={{ padding: "12px 10px", color: "#71717A" }}>{entry.package_name}</td>
+                                            <td style={{ padding: "12px 10px", color: "#71717A", fontSize: "11px" }}>{entry.comment || "-"}</td>
                                             <td style={{ padding: "12px 10px", textAlign: "center" }}>
                                                 <span style={{
                                                     fontSize: "10px", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold",
@@ -1457,10 +1470,10 @@ function Card({ title, value, subtitle, color, onClick }) {
     
     // Resolve clean background for subtle color indicators
     let indicatorColor = "#787774";
-    if (color === "#10b981") indicatorColor = "#346538";
-    if (color === "#ef4444") indicatorColor = "#9F2F2D";
-    if (color === "#f59e0b") indicatorColor = "#956400";
-    if (color === "#3b82f6" || color === "#6366f1") indicatorColor = "#1F6C9F";
+    if (color === "#10b981") indicatorColor = "#10B981";
+    if (color === "#ef4444") indicatorColor = "#EF4444";
+    if (color === "#f59e0b") indicatorColor = "#F59E0B";
+    if (color === "#3b82f6" || color === "#6366f1") indicatorColor = "#3B82F6";
 
     return (
         <div
@@ -1470,22 +1483,22 @@ function Card({ title, value, subtitle, color, onClick }) {
             style={{
                 ...card,
                 cursor: "pointer",
-                transform: isHovered ? "translateY(-2px)" : "translateY(0)",
+                transform: isHovered ? "translateY(-3px)" : "translateY(0)",
                 boxShadow: isHovered
-                    ? "0 2px 8px rgba(0,0,0,0.04)"
-                    : "0 1px 3px rgba(0,0,0,0.01)",
+                    ? "0 8px 24px rgba(99, 102, 241, 0.12)"
+                    : "0 2px 12px rgba(0,0,0,0.04)",
             }}
         >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
-                <h4 style={{ color: "#787774", margin: 0, fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: "700" }}>{title}</h4>
-                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: indicatorColor, opacity: 0.6 }}></span>
+                <h4 style={{ color: "#71717A", margin: 0, fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: "700" }}>{title}</h4>
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: indicatorColor, opacity: 0.8 }}></span>
             </div>
-            <p style={{ fontSize: "24px", fontWeight: "700", color: "#111111", margin: 0, letterSpacing: "-0.02em" }}>{value}</p>
+            <p style={{ fontSize: "26px", fontWeight: "700", color: "#111111", margin: 0, letterSpacing: "-0.02em" }}>{value}</p>
             {subtitle && (
-                <p style={{ color: "#787774", fontSize: "12px", fontWeight: "500", margin: "6px 0 0 0" }}>{subtitle}</p>
+                <p style={{ color: "#71717A", fontSize: "12px", fontWeight: "500", margin: "6px 0 0 0" }}>{subtitle}</p>
             )}
-            <div style={{ marginTop: "14px", paddingTop: "10px", borderTop: "1px solid #F5F5F4", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <small style={{ color: "#787774", fontWeight: "500", fontSize: "11px" }}>Detail &rarr;</small>
+            <div style={{ marginTop: "14px", paddingTop: "10px", borderTop: "1px solid #E4E4E7", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <small style={{ color: "#71717A", fontWeight: "500", fontSize: "11px" }}>Detail &rarr;</small>
             </div>
         </div>
     );
@@ -1496,8 +1509,8 @@ const appContainer = {
     padding: "0px",
     maxWidth: "100%",
     margin: "0 auto",
-    color: "#121212",
-    fontFamily: "'Geist Sans', -apple-system, sans-serif"
+    fontFamily: "'Geist Sans', -apple-system, sans-serif",
+    color: "#111111"
 };
 
 const headerStyle = {
@@ -1506,40 +1519,42 @@ const headerStyle = {
     alignItems: "center",
     marginBottom: "30px",
     paddingBottom: "15px",
-    borderBottom: "1px solid #E5E5E0"
+    borderBottom: "1px solid #E4E4E7",
+    flexWrap: "wrap",
+    gap: "15px"
 };
 
 const titleStyle = {
     margin: 0,
     fontSize: "36px",
-    fontWeight: "400",
-    fontFamily: "'Instrument Serif', serif",
-    fontStyle: "italic",
+    fontWeight: "700",
     color: "#111111"
 };
 
 const inputStyle = {
     padding: "6px 12px",
     borderRadius: "6px",
-    border: "1px solid #D1D1CB",
+    border: "1px solid #D4D4D8",
     fontSize: "12px",
     outline: "none",
     cursor: "pointer",
-    background: "#FAF9F6",
+    background: "#FFFFFF",
     color: "#111111"
 };
 
 const grid = {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
     gap: "20px",
 };
 
 const card = {
-    background: "#fff",
-    padding: "24px",
-    borderRadius: "6px",
-    border: "1px solid #E5E5E0",
+    background: "#FFFFFF",
+    padding: "20px",
+    borderRadius: "10px",
+    border: "1px solid #E4E4E7",
+    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+    color: "#111111",
     transition: "all 0.15s ease-in-out",
 };
 
@@ -1549,25 +1564,30 @@ const overlay = {
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(0, 0, 0, 0.3)",
+    background: "rgba(17, 17, 17, 0.45)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 999
+    zIndex: 999,
+    backdropFilter: "blur(6px)"
 };
 
 const modalBox = {
-    background: "#fff",
+    background: "#FFFFFF",
     padding: "25px",
-    borderRadius: "6px",
-    border: "1px solid #E5E5E0",
+    borderRadius: "12px",
+    border: "1px solid #E4E4E7",
     width: "90%",
-    maxWidth: "400px",
-    boxShadow: "none",
+    maxWidth: "500px",
+    maxHeight: "85vh",
+    display: "flex",
+    flexDirection: "column",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.12)",
+    color: "#111111"
 };
 
 const content = {
-    maxHeight: "350px",
+    maxHeight: "450px",
     overflowY: "auto",
     marginTop: "20px",
     paddingRight: "5px"
@@ -1576,9 +1596,9 @@ const content = {
 const listItem = {
     padding: "10px 14px",
     marginBottom: "8px",
-    background: "#FAF9F6",
-    borderRadius: "6px",
-    border: "1px solid #E5E5E0",
+    background: "#F8F9FA",
+    borderRadius: "8px",
+    border: "1px solid #E4E4E7",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -1587,24 +1607,26 @@ const listItem = {
 };
 
 const btn = {
-    padding: "8px 14px",
-    background: "#111111",
-    color: "#fff",
+    padding: "8px 16px",
+    background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
+    color: "#FFFFFF",
     border: "none",
-    borderRadius: "6px",
+    borderRadius: "8px",
     cursor: "pointer",
-    fontWeight: "600",
-    fontSize: "13px",
-    flex: 1,
+    fontWeight: "700",
+    fontSize: "11px",
+    textTransform: "uppercase",
+    letterSpacing: "0.05em",
     textAlign: "center",
-    transition: "all 0.15s ease"
+    transition: "all 0.15s ease",
+    boxShadow: "0 4px 15px rgba(99, 102, 241, 0.25)"
 };
 
 const btnBlue = {
     ...btn,
-    background: "#111111",
-    color: "#FAF9F6",
-    border: "1px solid #111111",
+    background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
+    color: "#FFFFFF",
+    border: "none",
     textDecoration: "none",
 };
 
@@ -1624,27 +1646,30 @@ const inputSearchStyle = {
 const footerStyle = {
     marginTop: "50px",
     paddingTop: "20px",
-    borderTop: "1px solid #E5E5E0",
+    borderTop: "1px solid #E4E4E7",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    fontSize: "13px",
-    color: "#787774"
+    fontSize: "11px",
+    color: "#71717A",
+    flexWrap: "wrap",
+    gap: "10px"
 };
 
 const chartGridStyle = {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
     gap: "24px",
     marginTop: "30px",
     marginBottom: "30px"
 };
 
 const chartCardStyle = {
-    background: "#fff",
-    padding: "24px",
-    borderRadius: "6px",
-    border: "1px solid #E5E5E0",
+    background: "#FFFFFF",
+    padding: "20px",
+    borderRadius: "12px",
+    border: "1px solid #E4E4E7",
+    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
     display: "flex",
     flexDirection: "column",
     transition: "all 0.15s ease",
@@ -1659,10 +1684,10 @@ const chartCardTitleStyle = {
 
 const historySectionStyle = {
     marginTop: "30px",
-    background: "#fff",
-    borderRadius: "6px",
-    border: "1px solid #E5E5E0",
-    boxShadow: "none",
+    background: "#FFFFFF",
+    borderRadius: "12px",
+    border: "1px solid #E4E4E7",
+    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
     padding: "25px",
 };
 
@@ -1671,16 +1696,16 @@ const historyHeaderStyle = {
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: "20px",
-    borderBottom: "1px solid #E5E5E0",
+    borderBottom: "1px solid #E4E4E7",
     paddingBottom: "12px"
 };
 
 const historyBadgeStyle = {
-    background: "#FAF9F6",
+    background: "#F4F4F5",
     color: "#111111",
     padding: "4px 10px",
-    borderRadius: "4px",
-    border: "1px solid #E5E5E0",
+    borderRadius: "6px",
+    border: "1px solid #E4E4E7",
     fontSize: "11px",
     fontWeight: "bold",
     fontFamily: "monospace"
@@ -1693,9 +1718,9 @@ const historyGridStyle = {
 };
 
 const historyCardStyle = {
-    background: "#FAF9F6",
-    border: "1px solid #E5E5E0",
-    borderRadius: "6px",
+    background: "#F8F9FA",
+    border: "1px solid #E4E4E7",
+    borderRadius: "10px",
     padding: "16px",
     transition: "all 0.2s ease",
 };
@@ -1704,7 +1729,7 @@ const livePulseDot = {
     width: "8px",
     height: "8px",
     borderRadius: "50%",
-    background: "#346538",
+    background: "#10B981",
     display: "inline-block",
 };
 
@@ -1712,7 +1737,7 @@ const statusPulseRed = {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#9F2F2D",
+    background: "#EF4444",
     display: "inline-block"
 };
 
@@ -1720,7 +1745,7 @@ const statusPulseOrange = {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#956400",
+    background: "#F59E0B",
     display: "inline-block"
 };
 
@@ -1735,11 +1760,11 @@ const panelControlsRow = {
 
 const tabContainer = {
     display: "flex",
-    gap: "8px",
-    background: "#f8fafc",
+    gap: "6px",
+    background: "#F4F4F5",
     padding: "4px",
     borderRadius: "10px",
-    border: "1px solid #e2e8f0",
+    border: "1px solid #E4E4E7",
     flexWrap: "wrap"
 };
 
