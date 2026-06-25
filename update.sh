@@ -88,12 +88,12 @@ fi
 # 7. Instal Dependensi NPM dan Build Frontend Assets
 echo -e "${YELLOW}📦 5. Membangun ulang asset frontend (React)...${NC}"
 if [ -f package.json ]; then
-  # Bersihkan node_modules jika diperlukan, atau langsung npm install
   echo "Menginstal npm packages..."
   npm install --legacy-peer-deps
-  
+
   echo "Kompilasi asset frontend..."
-  npm run build
+  # Gunakan npx agar tidak bergantung pada execute-bit di node_modules/.bin
+  npx vite build
 else
   echo -e "${YELLOW}⚠️ package.json tidak ditemukan. Melewati langkah kompilasi frontend.${NC}"
 fi
@@ -114,6 +114,10 @@ find "$APP_PATH" -type f -exec chmod 644 {} \;
 find "$APP_PATH" -type d -exec chmod 755 {} \;
 chmod -R 775 "$APP_PATH/storage"
 chmod -R 775 "$APP_PATH/bootstrap/cache"
+# Pastikan node_modules binary tetap executable setelah chmod
+if [ -d "$APP_PATH/node_modules/.bin" ]; then
+  chmod -R +x "$APP_PATH/node_modules/.bin"
+fi
 
 # 10. Restart Layanan Terkait
 echo -e "${YELLOW}🔄 8. Memulai ulang layanan server...${NC}"
