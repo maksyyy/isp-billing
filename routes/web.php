@@ -426,6 +426,8 @@ Route::middleware(['auth'])->group(function () {
         // Unified Settings (Branding, Staf User, PRTG)
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
         Route::post('/settings/branding', [SettingsController::class, 'updateBranding'])->name('settings.branding');
+        Route::post('/settings/email', [SettingsController::class, 'updateEmailSettings'])->name('settings.email');
+        Route::post('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password');
         Route::post('/settings/prtg', [SettingsController::class, 'updatePrtg'])->name('settings.prtg');
         Route::post('/settings/mikrotik', [SettingsController::class, 'updateMikrotik'])->name('settings.mikrotik');
         Route::post('/settings/telegram', [SettingsController::class, 'updateTelegram'])->name('settings.telegram');

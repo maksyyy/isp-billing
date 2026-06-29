@@ -18,9 +18,18 @@ class SettingsController extends Controller
         $adminUser = $user->parent_admin_id ? User::find($user->parent_admin_id) : $user;
 
         // Ambil data branding
-        $logoPath = 'company-logo-' . $adminId . '.png';
+        $logoPath = ($user->role == 'master') ? 'company-logo.png' : 'company-logo-' . $adminId . '.png';
         $companyName = $adminUser->company_name ?? 'Laravel Billing & Monitoring';
         $timezone = $adminUser->timezone ?? 'Asia/Jakarta';
+
+        // Ambil data SMTP (khusus master)
+        $smtpHost = $adminUser->smtp_host;
+        $smtpPort = $adminUser->smtp_port;
+        $smtpUsername = $adminUser->smtp_username;
+        $smtpPassword = $adminUser->smtp_password;
+        $smtpEncryption = $adminUser->smtp_encryption ?? 'none';
+        $smtpFromAddress = $adminUser->smtp_from_address;
+        $smtpFromName = $adminUser->smtp_from_name;
 
         // Ambil data PRTG
         $prtgUrl = $adminUser->prtg_url;
@@ -123,7 +132,14 @@ class SettingsController extends Controller
             'todayAttendance',
             'staffMembers',
             'selectedEmployee',
-            'selectedMonth'
+            'selectedMonth',
+            'smtpHost',
+            'smtpPort',
+            'smtpUsername',
+            'smtpPassword',
+            'smtpEncryption',
+            'smtpFromAddress',
+            'smtpFromName'
         ));
     }
 
@@ -146,7 +162,7 @@ class SettingsController extends Controller
         $adminUser->save();
 
         $adminId = $adminUser->id;
-        $fileName = 'company-logo-' . $adminId . '.png';
+        $fileName = ($user->role == 'master') ? 'company-logo.png' : 'company-logo-' . $adminId . '.png';
 
         if ($request->hasFile('company_logo')) {
             $request->file('company_logo')->move(public_path(), $fileName);
@@ -308,5 +324,56 @@ class SettingsController extends Controller
                 'message' => 'Gagal terhubung: ' . $api->error_str . ' (' . $api->error_no . ')'
             ]);
         }
+    }
+
+    public function updateEmailSettings(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'smtp_host' => ['nullable', 'string', 'max:255'],
+            'smtp_port' => ['nullable', 'integer'],
+            'smtp_username' => ['nullable', 'string', 'max:255'],
+            'smtp_password' => ['nullable', 'string'],
+            'smtp_encryption' => ['nullable', 'string', 'in:ssl,tls,none'],
+            'smtp_from_address' => ['nullable', 'email', 'max:255'],
+            'smtp_from_name' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $user = auth()->user();
+        abort_unless($user->role == 'master', 403);
+
+        $user->smtp_host = $request->smtp_host;
+        $user->smtp_port = $request->smtp_port;
+        $user->smtp_username = $request->smtp_username;
+        if ($request->filled('smtp_password')) {
+            $user->smtp_password = $request->smtp_password;
+        }
+        $user->smtp_encryption = $request->smtp_encryption == 'none' ? null : $request->smtp_encryption;
+        $user->smtp_from_address = $request->smtp_from_address;
+        $user->smtp_from_name = $request->smtp_from_name;
+        $user->save();
+
+        return redirect()->route('settings.index', ['tab' => 'email'])
+            ->with('success', 'Konfigurasi integrasi SMTP Email berhasil diperbarui');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        if (!\Illuminate\Support\Facades\Hash::check($request->current_password, $user->password)) {
+            return redirect()->route('settings.index', ['tab' => 'password'])
+                ->withErrors(['current_password' => 'Password saat ini salah.']);
+        }
+
+        $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+        $user->save();
+
+        return redirect()->route('settings.index', ['tab' => 'password'])
+            ->with('success', 'Password berhasil diperbarui');
     }
 }

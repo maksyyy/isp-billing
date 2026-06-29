@@ -19,7 +19,11 @@
                 </div>
                 <h1 class="text-3xl font-bold tracking-tight text-[#111111]">Pusat Kendali Pengaturan</h1>
                 <p class="mt-2 text-[#71717A] text-xs leading-relaxed max-w-2xl font-light">
-                    Kelola nama dan logo identitas perusahaan Anda, organisasikan daftar staf operasional berserta hak akses mereka, serta konfigurasikan detail monitoring gateway PRTG dalam satu panel terintegrasi.
+                    @if(auth()->user()->role == 'master')
+                        Sebagai Master Administrator, Anda dapat mengatur nama platform default, mengunggah Logo Default Sistem, serta mengonfigurasikan parameter SMTP email dan mengelola keamanan akun Anda secara terpusat.
+                    @else
+                        Kelola nama dan logo identitas perusahaan Anda, organisasikan daftar staf operasional berserta hak akses mereka, serta konfigurasikan detail monitoring gateway PRTG dalam satu panel terintegrasi.
+                    @endif
                 </p>
             </div>
         </div>
@@ -48,11 +52,17 @@
                 <button onclick="switchTab('branding')" id="tab-btn-branding" class="{{ $tabClass }} {{ $activeTab == 'branding' ? $activeTabClass : '' }}">
                     🎨 Branding Logo
                 </button>
-                @if(auth()->user()->role != 'master')
+                @if(auth()->user()->role == 'master')
+                <button onclick="switchTab('email')" id="tab-btn-email" class="{{ $tabClass }} {{ $activeTab == 'email' ? $activeTabClass : '' }}">
+                    ✉️ Pengaturan Email
+                </button>
+                <button onclick="switchTab('password')" id="tab-btn-password" class="{{ $tabClass }} {{ $activeTab == 'password' ? $activeTabClass : '' }}">
+                    🔑 Ganti Password
+                </button>
+                @else
                 <button onclick="switchTab('staff')" id="tab-btn-staff" class="{{ $tabClass }} {{ $activeTab == 'staff' ? $activeTabClass : '' }}">
                     👥 Manajemen Staf
                 </button>
-                @endif
                 <button onclick="switchTab('prtg')" id="tab-btn-prtg" class="{{ $tabClass }} {{ $activeTab == 'prtg' ? $activeTabClass : '' }}">
                     📡 Integrasi PRTG
                 </button>
@@ -66,6 +76,7 @@
                     <button onclick="switchTab('attendance')" id="tab-btn-attendance" class="{{ $tabClass }} {{ $activeTab == 'attendance' ? $activeTabClass : '' }}">
                         📅 Kehadiran Staf
                     </button>
+                @endif
                 @endif
             </div>
 
@@ -108,7 +119,11 @@
                                 <input type="file" name="company_logo" accept="image/png,image/jpeg,image/webp"
                                        class="w-full text-xs px-4 py-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:border-[#6366F1]/60 focus:ring-1 focus:ring-[#6366F1]/20 rounded-md text-[#111111] font-semibold file:mr-4 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[10px] file:font-bold file:uppercase file:bg-[#F4F4F5] file:text-[#6366F1] file:hover:bg-[#E4E4E7] file:transition-colors cursor-pointer shadow-sm">
                                 <p class="text-[9px] text-[#71717A] font-medium mt-2 leading-normal">
-                                    Format disarankan: PNG transparan (Rasio 1:1). Maksimal berkas 2 MB.
+                                    @if(auth()->user()->role == 'master')
+                                        Format disarankan: PNG transparan (Rasio 1:1). Logo default ini akan digunakan sebagai fallback oleh seluruh admin penyewa yang belum mengunggah logo kustom.
+                                    @else
+                                        Format disarankan: PNG transparan (Rasio 1:1). Maksimal berkas 2 MB.
+                                    @endif
                                 </p>
                                 @error('company_logo')
                                     <p class="text-rose-600 text-xs mt-1.5 font-semibold">{{ $message }}</p>
@@ -164,6 +179,145 @@
                     </div>
                 </div>
             </div>
+
+            @if(auth()->user()->role == 'master')
+            <!-- TAB CONTENT: PENGATURAN EMAIL (SMTP) -->
+            <div id="tab-content-email" class="p-6 {{ $activeTab == 'email' ? '' : 'hidden' }}">
+                <div class="max-w-xl">
+                    <h3 class="text-sm font-bold text-[#111111] mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#6366F1]"></span>
+                        Konfigurasi SMTP Email Global
+                    </h3>
+                    <p class="text-xs text-[#71717A] font-light mb-6">
+                        Konfigurasikan detail server SMTP surat keluar di bawah ini. Pengaturan ini akan digunakan secara terpusat untuk mengirimkan email pemberitahuan (seperti email broadcast, tagihan, dll.) ke seluruh mitra admin penyewa.
+                    </p>
+
+                    <form action="{{ route('settings.email') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- SMTP Host -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">SMTP Host</label>
+                                <input type="text" name="smtp_host" value="{{ old('smtp_host', $smtpHost) }}"
+                                       placeholder="Contoh: smtp.gmail.com"
+                                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                            </div>
+
+                            <!-- SMTP Port -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">SMTP Port</label>
+                                <input type="number" name="smtp_port" value="{{ old('smtp_port', $smtpPort) }}"
+                                       placeholder="Contoh: 587"
+                                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- SMTP Username -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">SMTP Username</label>
+                                <input type="text" name="smtp_username" value="{{ old('smtp_username', $smtpUsername) }}"
+                                       placeholder="Contoh: info@perusahaan.com"
+                                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                            </div>
+
+                            <!-- SMTP Password -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">SMTP Password</label>
+                                <input type="password" name="smtp_password"
+                                       placeholder="{{ $smtpPassword ? '•••••••• (Sudah Tersimpan)' : 'Tulis password SMTP...' }}"
+                                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- SMTP Encryption -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">Enkripsi (Encryption)</label>
+                                <select name="smtp_encryption" class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all cursor-pointer shadow-sm">
+                                    <option value="none" @selected($smtpEncryption == 'none')>None (Tanpa Enkripsi)</option>
+                                    <option value="ssl" @selected($smtpEncryption == 'ssl')>SSL</option>
+                                    <option value="tls" @selected($smtpEncryption == 'tls')>TLS</option>
+                                </select>
+                            </div>
+
+                            <!-- From Address -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">Email Pengirim (From)</label>
+                                <input type="email" name="smtp_from_address" value="{{ old('smtp_from_address', $smtpFromAddress) }}"
+                                       placeholder="info@perusahaan.com"
+                                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                            </div>
+
+                            <!-- From Name -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">Nama Pengirim (From Name)</label>
+                                <input type="text" name="smtp_from_name" value="{{ old('smtp_from_name', $smtpFromName) }}"
+                                       placeholder="Contoh: JARTS Billing Support"
+                                       class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-4">
+                            <button type="submit" class="btn-minimal w-full">
+                                Simpan Konfigurasi Email
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT: GANTI PASSWORD -->
+            <div id="tab-content-password" class="p-6 {{ $activeTab == 'password' ? '' : 'hidden' }}">
+                <div class="max-w-md">
+                    <h3 class="text-sm font-bold text-[#111111] mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#EC4899]"></span>
+                        Ganti Password Akun
+                    </h3>
+                    <p class="text-xs text-[#71717A] font-light mb-6">
+                        Pelihara keamanan akun master Anda dengan memperbarui password secara berkala.
+                    </p>
+
+                    <form action="{{ route('settings.password') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <!-- Current Password -->
+                        <div>
+                            <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">Password Saat Ini</label>
+                            <input type="password" name="current_password" required
+                                   class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                            @error('current_password')
+                                <p class="text-rose-600 text-xs mt-1 font-semibold">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- New Password -->
+                        <div>
+                            <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">Password Baru (Min. 8 Karakter)</label>
+                            <input type="password" name="password" required
+                                   class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                            @error('password')
+                                <p class="text-rose-600 text-xs mt-1 font-semibold">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div>
+                            <label class="block text-[10px] font-bold text-[#71717A] uppercase tracking-wider mb-2">Konfirmasi Password Baru</label>
+                            <input type="password" name="password_confirmation" required
+                                   class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-4">
+                            <button type="submit" class="btn-minimal w-full">
+                                Perbarui Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @endif
 
             <!-- TAB CONTENT 2: MANAJEMEN STAF -->
             @if(auth()->user()->role != 'master')
@@ -653,7 +807,7 @@
     <script>
         function switchTab(tabId) {
             // Target elements
-            const tabs = ['branding', 'staff', 'prtg', 'attendance', 'mikrotik', 'telegram'];
+            const tabs = ['branding', 'staff', 'prtg', 'attendance', 'mikrotik', 'telegram', 'email', 'password'];
             
             tabs.forEach(t => {
                 const btn = document.getElementById('tab-btn-' + t);

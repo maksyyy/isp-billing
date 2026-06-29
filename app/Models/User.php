@@ -27,6 +27,13 @@ class User extends Authenticatable
         'timezone',
         'customer_limit',
         'enable_teknisi_payment',
+        'smtp_host',
+        'smtp_port',
+        'smtp_username',
+        'smtp_password',
+        'smtp_encryption',
+        'smtp_from_address',
+        'smtp_from_name',
     ];
 
     protected $hidden = [
@@ -42,6 +49,7 @@ class User extends Authenticatable
             'prtg_password' => 'encrypted',
             'mikrotik_password' => 'encrypted',
             'telegram_bot_token' => 'encrypted',
+            'smtp_password' => 'encrypted',
         ];
     }
 
