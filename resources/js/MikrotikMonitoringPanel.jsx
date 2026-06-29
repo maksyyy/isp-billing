@@ -420,7 +420,7 @@ export default function MikrotikMonitoringPanel({
                                     {/* Link ke profil pelanggan */}
                                     {user.customer_id && (
                                         <a
-                                            href={`/customers/${user.customer_id}`}
+                                            href={`/customers/${user.customer_id}/history`}
                                             className="btn-minimal-secondary w-full text-center py-2 text-xs font-semibold"
                                         >
                                             Lihat Profil Pelanggan
@@ -517,7 +517,7 @@ export default function MikrotikMonitoringPanel({
                                         {/* Link profil */}
                                         {entry.customer_id && (
                                             <a
-                                                href={`/customers/${entry.customer_id}`}
+                                                href={`/customers/${entry.customer_id}/history`}
                                                 className="btn-minimal-secondary w-full text-center py-2 text-xs font-semibold"
                                             >
                                                 Lihat Profil Pelanggan
