@@ -142,7 +142,7 @@ class CustomerController extends Controller
 
         try {
             // Tarik daftar devices dari PRTG API
-            $response = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/table.json', [
+            $response = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/table.json', [
                 'content' => 'devices',
                 'output' => 'json',
                 'columns' => 'objid,device,host',
@@ -748,7 +748,7 @@ class CustomerController extends Controller
             $prtgDevices = [];
             $prtgSensors = [];
 
-            $devicesResponse = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/table.json', [
+            $devicesResponse = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/table.json', [
                 'content' => 'devices',
                 'output' => 'json',
                 'columns' => 'objid,device,host',
@@ -760,7 +760,7 @@ class CustomerController extends Controller
                 $prtgDevices = $devicesResponse->json()['devices'] ?? [];
             }
 
-            $sensorsResponse = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/table.json', [
+            $sensorsResponse = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/table.json', [
                 'content' => 'sensors',
                 'output' => 'json',
                 'columns' => 'objid,device,sensor',
@@ -847,7 +847,7 @@ class CustomerController extends Controller
         }
 
         try {
-            $response = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/table.json', [
+            $response = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/table.json', [
                 'content' => 'devices',
                 'output' => 'json',
                 'columns' => 'objid,device,host',
@@ -870,7 +870,7 @@ class CustomerController extends Controller
             }
 
             // Fallback to check sensors
-            $responseSensors = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/table.json', [
+            $responseSensors = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/table.json', [
                 'content' => 'sensors',
                 'output' => 'json',
                 'columns' => 'objid,device,sensor',
@@ -910,7 +910,7 @@ class CustomerController extends Controller
         }
 
         try {
-            $response = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/adddevice2.htm', [
+            $response = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/adddevice2.htm', [
                 'name_' => $name,
                 'host_' => $ipAddress,
                 'id' => $prtgGroupId,
@@ -940,7 +940,7 @@ class CustomerController extends Controller
         }
 
         try {
-            $response = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/pause.htm', [
+            $response = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/pause.htm', [
                 'id' => $objid,
                 'action' => 'resume',
                 'username' => $prtgUser,
