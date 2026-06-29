@@ -68,13 +68,6 @@ class TerminalController extends Controller
             // Extract standard output and error output
             $output = $result->output() . $result->errorOutput();
 
-            // Handle timeout
-            if ($result->timedOut()) {
-                return response()->json([
-                    'output' => $output . "\n[Command timed out after 15 seconds]\n",
-                    'cwd' => $cwd
-                ]);
-            }
 
             $newCwd = $cwd;
             // Parse output for new working directory path
@@ -105,6 +98,11 @@ class TerminalController extends Controller
                 'cwd' => $newCwd
             ]);
 
+        } catch (\Illuminate\Process\Exceptions\ProcessTimedOutException $e) {
+            return response()->json([
+                'output' => "[Command timed out after 15 seconds]\n",
+                'cwd' => $cwd
+            ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Gagal mengeksekusi perintah: ' . $e->getMessage()], 500);
         }
