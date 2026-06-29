@@ -3,119 +3,73 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use phpseclib3\Net\SSH2;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Process;
 
 class TerminalController extends Controller
 {
     /**
-     * Show SSH Terminal Console Page
+     * Show Local Server Terminal Console Page
      */
     public function index(): View
     {
         abort_unless(auth()->user()->role == 'master', 403);
 
-        $connected = session()->has('ssh_host');
-        $host = session('ssh_host');
-        $port = session('ssh_port', 22);
-        $username = session('ssh_username');
-        $cwd = session('ssh_cwd', '~');
-
-        return view('terminal.index', compact('connected', 'host', 'port', 'username', 'cwd'));
-    }
-
-    /**
-     * Connect to Remote SSH Server
-     */
-    public function connect(Request $request): RedirectResponse
-    {
-        abort_unless(auth()->user()->role == 'master', 403);
-
-        $request->validate([
-            'host' => 'required|string',
-            'port' => 'required|integer|min:1|max:65535',
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        try {
-            $ssh = new SSH2($request->host, $request->port, 5); // 5 seconds connection timeout
-            if (!$ssh->login($request->username, $request->password)) {
-                return back()->withErrors(['connection' => 'Login gagal: Periksa username dan password Anda.']);
-            }
-
-            // Save credentials to session
-            session([
-                'ssh_host' => $request->host,
-                'ssh_port' => $request->port,
-                'ssh_username' => $request->username,
-                'ssh_password' => $request->password,
-                'ssh_cwd' => '~'
-            ]);
-
-            return redirect()->route('terminal.index')->with('success', 'Koneksi SSH berhasil terhubung!');
-        } catch (\Exception $e) {
-            return back()->withErrors(['connection' => 'Gagal terhubung ke server SSH: ' . $e->getMessage()]);
+        $connected = true; // Always connected locally
+        $host = gethostname();
+        $username = get_current_user() ?: 'web-server';
+        
+        // Initialize cwd to base path if not set in session
+        if (!session()->has('local_cwd')) {
+            session(['local_cwd' => base_path()]);
         }
+        $cwd = session('local_cwd');
+
+        return view('terminal.index', compact('connected', 'host', 'username', 'cwd'));
     }
 
     /**
-     * Disconnect SSH Session
-     */
-    public function disconnect(): RedirectResponse
-    {
-        abort_unless(auth()->user()->role == 'master', 403);
-
-        session()->forget(['ssh_host', 'ssh_port', 'ssh_username', 'ssh_password', 'ssh_cwd']);
-
-        return redirect()->route('terminal.index')->with('success', 'Sesi SSH telah diputus.');
-    }
-
-    /**
-     * Execute Command via SSH
+     * Execute Command on Local Server
      */
     public function execute(Request $request): JsonResponse
     {
         abort_unless(auth()->user()->role == 'master', 403);
-
-        if (!session()->has('ssh_host')) {
-            return response()->json(['error' => 'Tidak ada sesi SSH aktif. Silakan hubungkan terlebih dahulu.'], 400);
-        }
 
         $request->validate([
             'command' => 'required|string',
         ]);
 
         $command = $request->command;
-        $host = session('ssh_host');
-        $port = session('ssh_port');
-        $username = session('ssh_username');
-        $password = session('ssh_password');
-        $cwd = session('ssh_cwd', '~');
+        $cwd = session('local_cwd', base_path());
 
-        // Block dangerous commands or interactive programs
+        // Block dangerous interactive programs or subshells
         $lowerCommand = trim(strtolower($command));
-        if (in_array($lowerCommand, ['top', 'htop', 'nano', 'vi', 'vim', 'less', 'more', 'screen'])) {
-            return response()->json(['output' => "Error: Program interaktif '" . $command . "' tidak didukung oleh web terminal ini.\n"]);
+        if (in_array($lowerCommand, ['top', 'htop', 'nano', 'vi', 'vim', 'less', 'more', 'screen', 'cmd', 'powershell', 'bash', 'sh'])) {
+            return response()->json(['output' => "Error: Program interaktif/shell '" . $command . "' tidak didukung oleh web terminal ini.\n"]);
         }
 
         try {
-            $ssh = new SSH2($host, $port, 5);
-            if (!$ssh->login($username, $password)) {
-                return response()->json(['error' => 'Login SSH gagal, sesi kedaluwarsa.'], 401);
+            $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+
+            // Construct chained command to execute command and output the final directory path
+            if ($isWindows) {
+                // cmd.exe style chaining
+                $chainedCommand = "cd /d " . escapeshellarg($cwd) . " && " . $command . " & echo ___CWD___ & cd";
+            } else {
+                // bash/sh style chaining
+                $chainedCommand = "cd " . escapeshellarg($cwd) . " && " . $command . " ; echo \"___CWD___\" ; pwd";
             }
 
-            // Chain command: CD into current directory, execute user command, print unique marker, and print new directory path
-            $chainedCommand = "cd " . escapeshellarg($cwd) . " && " . $command . " && echo \"___CWD___\" && pwd";
+            // Run process with 15 seconds timeout
+            $result = Process::timeout(15)->run($chainedCommand);
             
-            // Set execution timeout (e.g. 15 seconds) to prevent command from hanging
-            $ssh->setTimeout(15);
-            $output = $ssh->exec($chainedCommand);
+            // Extract standard output and error output
+            $output = $result->output() . $result->errorOutput();
 
-            // Handle command execution timeout or empty output
-            if ($ssh->isTimeout()) {
+            // Handle timeout
+            if ($result->timedOut()) {
                 return response()->json([
                     'output' => $output . "\n[Command timed out after 15 seconds]\n",
                     'cwd' => $cwd
@@ -126,9 +80,24 @@ class TerminalController extends Controller
             // Parse output for new working directory path
             if (strpos($output, '___CWD___') !== false) {
                 $parts = explode('___CWD___', $output);
+                
+                // Get output part
                 $output = rtrim($parts[0]);
+                
+                // Get CWD part (trim whitespaces/newlines)
                 $newCwd = trim($parts[1] ?? $cwd);
-                session(['ssh_cwd' => $newCwd]);
+                
+                // Clean Windows newlines/directory output
+                if ($isWindows) {
+                    $newCwd = str_replace("\r", "", $newCwd);
+                }
+                
+                // Only update if the directory actually exists
+                if (is_dir($newCwd)) {
+                    session(['local_cwd' => $newCwd]);
+                } else {
+                    $newCwd = $cwd;
+                }
             }
 
             return response()->json([
@@ -137,7 +106,7 @@ class TerminalController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Koneksi error: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Gagal mengeksekusi perintah: ' . $e->getMessage()], 500);
         }
     }
 }

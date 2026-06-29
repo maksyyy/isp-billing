@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xs font-bold text-[#111111] uppercase tracking-widest leading-tight">
-            Secure SSH Terminal Console
+            Web Console Terminal
         </h2>
     </x-slot>
 
@@ -13,11 +13,11 @@
             <div class="relative z-10">
                 <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-[#FAF9F6] border border-[#E4E4E7] text-[8px] font-bold text-[#111111] uppercase tracking-wider mb-3">
                     <span class="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span>
-                    Master Shell Access Enabled
+                    Direct Server Console Enabled
                 </div>
-                <h1 class="text-2xl font-bold tracking-tight text-[#111111]">SSH Console Server</h1>
+                <h1 class="text-2xl font-bold tracking-tight text-[#111111]">Server Console Terminal</h1>
                 <p class="mt-1.5 text-[#71717A] text-xs leading-relaxed max-w-2xl font-light">
-                    Konsol web aman untuk meremot dan memanage server Linux atau perangkat jaringan eksternal Anda. Sesi koneksi dienkripsi dan dibatasi secara eksklusif untuk peran Master Administrator.
+                    Eksekusi perintah shell langsung pada server lokal tempat program billing berjalan. Akses diamankan khusus untuk peran Master Administrator.
                 </p>
             </div>
         </div>
@@ -34,118 +34,62 @@
             </div>
         @endif
 
-        <div class="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6 items-start">
-            
-            <!-- Sidebar Panel: Connection Config -->
-            <div class="bg-white border border-[#E4E4E7] rounded-md p-5 shadow-sm space-y-4">
-                <h3 class="text-xs font-bold text-[#111111] uppercase tracking-wider flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full {{ $connected ? 'bg-[#10B981]' : 'bg-[#EF4444]' }}"></span>
-                    Sesi Koneksi SSH
-                </h3>
+        <!-- Server Metadata Badges Strip -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white border border-[#E4E4E7] rounded-md p-3 shadow-xs">
+                <div class="text-[8px] font-bold text-[#71717A] uppercase tracking-wider">Sistem Operasi (OS)</div>
+                <div class="text-xs font-bold text-[#111111] mt-1 font-mono">{{ PHP_OS }}</div>
+            </div>
+            <div class="bg-white border border-[#E4E4E7] rounded-md p-3 shadow-xs">
+                <div class="text-[8px] font-bold text-[#71717A] uppercase tracking-wider">Server Hostname</div>
+                <div class="text-xs font-bold text-[#111111] mt-1 font-mono">{{ $host }}</div>
+            </div>
+            <div class="bg-white border border-[#E4E4E7] rounded-md p-3 shadow-xs">
+                <div class="text-[8px] font-bold text-[#71717A] uppercase tracking-wider">Sistem User (PHP)</div>
+                <div class="text-xs font-bold text-[#111111] mt-1 font-mono">{{ $username }}</div>
+            </div>
+            <div class="bg-white border border-[#E4E4E7] rounded-md p-3 shadow-xs">
+                <div class="text-[8px] font-bold text-[#71717A] uppercase tracking-wider">Root Proyek (Base)</div>
+                <div class="text-[10px] font-bold text-[#6366F1] mt-1 font-mono truncate" title="{{ base_path() }}">{{ basename(base_path()) }}</div>
+            </div>
+        </div>
 
-                @if(!$connected)
-                    <form action="{{ route('terminal.connect') }}" method="POST" class="space-y-3.5">
-                        @csrf
-                        <div>
-                            <label class="block text-[9px] font-bold text-[#71717A] uppercase tracking-wider mb-1.5">IP Server / Host</label>
-                            <input type="text" name="host" placeholder="Contoh: 103.169.38.242" required
-                                   class="w-full text-xs px-3 py-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded text-[#111111] font-semibold transition-all">
-                        </div>
-
-                        <div>
-                            <label class="block text-[9px] font-bold text-[#71717A] uppercase tracking-wider mb-1.5">SSH Port</label>
-                            <input type="number" name="port" value="22" required
-                                   class="w-full text-xs px-3 py-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded text-[#111111] font-semibold transition-all">
-                        </div>
-
-                        <div>
-                            <label class="block text-[9px] font-bold text-[#71717A] uppercase tracking-wider mb-1.5">Username</label>
-                            <input type="text" name="username" placeholder="Contoh: root" required
-                                   class="w-full text-xs px-3 py-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded text-[#111111] font-semibold transition-all">
-                        </div>
-
-                        <div>
-                            <label class="block text-[9px] font-bold text-[#71717A] uppercase tracking-wider mb-1.5">Password</label>
-                            <input type="password" name="password" placeholder="Password SSH..." required
-                                   class="w-full text-xs px-3 py-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded text-[#111111] font-semibold transition-all">
-                        </div>
-
-                        <button type="submit" class="w-full btn-minimal py-2 text-xs font-bold text-center block mt-3">
-                            Hubungkan SSH
-                        </button>
-                    </form>
-                @else
-                    <div class="bg-[#F4F4F5] border border-[#E4E4E7] rounded-md p-3.5 space-y-2.5">
-                        <div class="text-[10px] text-[#71717A] uppercase font-bold">Detail Target</div>
-                        <div class="text-xs font-semibold text-[#111111]">
-                            <div class="flex items-center justify-between py-1 border-b border-[#E4E4E7]">
-                                <span>Host:</span> <span class="font-mono text-[#6366F1]">{{ $host }}</span>
-                            </div>
-                            <div class="flex items-center justify-between py-1 border-b border-[#E4E4E7]">
-                                <span>Port:</span> <span class="font-mono">{{ $port }}</span>
-                            </div>
-                            <div class="flex items-center justify-between py-1 border-b border-[#E4E4E7]">
-                                <span>Username:</span> <span class="font-mono">{{ $username }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <form action="{{ route('terminal.disconnect') }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="w-full bg-[#FEF2F2] border border-[#FEE2E2] hover:bg-[#FEE2E2] text-[#DC2626] font-bold py-2 rounded text-xs transition-colors">
-                            Putus Koneksi (Disconnect)
-                        </button>
-                    </form>
-                @endif
+        <!-- Terminal Screen Panel (Full Width) -->
+        <div class="bg-[#09090B] border border-[#27272A] rounded-md overflow-hidden shadow-lg flex flex-col h-[550px]">
+            <!-- Terminal Header Bar -->
+            <div class="bg-[#18181B] px-4 py-2.5 flex items-center justify-between border-b border-[#27272A] select-none">
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#EF4444]"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#F59E0B]"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span>
+                    <span class="text-[10px] font-mono font-bold text-[#A1A1AA] ml-2">server-console-session</span>
+                </div>
+                <button onclick="clearTerminal()" class="text-[10px] font-mono text-[#A1A1AA] hover:text-white px-2 py-0.5 bg-[#27272A] hover:bg-[#3F3F46] rounded border border-[#3F3F46] transition-colors cursor-pointer">
+                    Clear Screen
+                </button>
             </div>
 
-            <!-- Terminal Screen Panel -->
-            <div class="bg-[#09090B] border border-[#27272A] rounded-md overflow-hidden shadow-lg flex flex-col h-[500px]">
-                <!-- Terminal Header Bar -->
-                <div class="bg-[#18181B] px-4 py-2 flex items-center justify-between border-b border-[#27272A] select-none">
-                    <div class="flex items-center gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-[#EF4444]"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-[#F59E0B]"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span>
-                        <span class="text-[10px] font-mono font-bold text-[#A1A1AA] ml-2">web-terminal-session</span>
-                    </div>
-                    <button onclick="clearTerminal()" class="text-[10px] font-mono text-[#A1A1AA] hover:text-white px-2 py-0.5 bg-[#27272A] hover:bg-[#3F3F46] rounded border border-[#3F3F46] transition-colors cursor-pointer">
-                        Clear Screen
-                    </button>
+            <!-- Terminal Output Display -->
+            <div id="terminal-output" class="flex-1 overflow-y-auto p-4 font-mono text-xs text-[#E4E4E7] space-y-1.5 scroll-smooth">
+                <div class="text-[#10B981] select-none">
+                    [Terhubung] Web Terminal aktif untuk {{ $username }}@`{{ $host }}`!
+                    Konsol langsung meremot mesin server utama Anda. Ketik perintah di bawah untuk memulai.
                 </div>
-
-                <!-- Terminal Output Display -->
-                <div id="terminal-output" class="flex-1 overflow-y-auto p-4 font-mono text-xs text-[#E4E4E7] space-y-1.5 scroll-smooth">
-                    @if(!$connected)
-                        <div class="text-[#A1A1AA] select-none">
-                            [Terminal Siap] Silakan masukkan konfigurasi server SSH di sidebar sebelah kiri untuk memulai sesi terminal interaktif.
-                        </div>
-                    @else
-                        <div class="text-[#10B981] select-none">
-                            [Terhubung] Selamat datang di Web Terminal untuk {{ $username }}@`{{ $host }}`!
-                            Ketik perintah di bawah untuk mengeksekusi shell command.
-                        </div>
-                    @endif
-                </div>
-
-                <!-- Terminal Command Prompt Input -->
-                @if($connected)
-                    <div class="bg-[#18181B] border-t border-[#27272A] px-4 py-3 flex items-center font-mono text-xs gap-1.5 relative">
-                        <span id="terminal-prompt" class="text-[#10B981] font-bold select-none">{{ $username }}@`{{ $host }}`:<span class="text-[#38BDF8]">{{ $cwd }}</span>$</span>
-                        <input type="text" id="terminal-input" autocomplete="off" autofocus
-                               class="flex-1 bg-transparent text-[#E4E4E7] focus:outline-none border-0 p-0 m-0 focus:ring-0 placeholder-[#52525B]" 
-                               placeholder="Ketik perintah di sini...">
-                        <div id="terminal-loader" class="hidden absolute right-4 top-1/2 -translate-y-1/2">
-                            <svg class="animate-spin h-4 w-4 text-[#6366F1]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                @endif
             </div>
 
+            <!-- Terminal Command Prompt Input -->
+            <div class="bg-[#18181B] border-t border-[#27272A] px-4 py-3 flex items-center font-mono text-xs gap-1.5 relative">
+                <span id="terminal-prompt" class="text-[#10B981] font-bold select-none">{{ $username }}@`{{ $host }}`:<span class="text-[#38BDF8]">{{ $cwd }}</span>$</span>
+                <input type="text" id="terminal-input" autocomplete="off" autofocus
+                       class="flex-1 bg-transparent text-[#E4E4E7] focus:outline-none border-0 p-0 m-0 focus:ring-0 placeholder-[#52525B]" 
+                       placeholder="Ketik perintah di sini...">
+                <div id="terminal-loader" class="hidden absolute right-4 top-1/2 -translate-y-1/2">
+                    <svg class="animate-spin h-4 w-4 text-[#6366F1]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
+            </div>
         </div>
 
     </div>
