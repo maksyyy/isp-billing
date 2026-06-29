@@ -40,4 +40,39 @@ class DashboardController extends Controller
 
         abort(403);
     }
+
+    public function broadcastEmail(Request $request)
+    {
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $admins = User::where('role', 'admin')->get();
+
+        if ($admins->isEmpty()) {
+            return back()->with('success', 'Tidak ada admin penyewa terdaftar untuk dikirimkan email.');
+        }
+
+        $successCount = 0;
+        $failedCount = 0;
+
+        foreach ($admins as $admin) {
+            try {
+                \Illuminate\Support\Facades\Mail::to($admin->email)->send(
+                    new \App\Mail\BroadcastEmail($request->subject, $request->message)
+                );
+                $successCount++;
+            } catch (\Exception $e) {
+                \Log::error("Failed to send broadcast email to {$admin->email}: " . $e->getMessage());
+                $failedCount++;
+            }
+        }
+
+        if ($failedCount > 0) {
+            return back()->with('success', "Email broadcast berhasil dikirim ke {$successCount} admin. Gagal terkirim ke {$failedCount} admin.");
+        }
+
+        return back()->with('success', "Email broadcast berhasil dikirim ke seluruh ({$successCount}) admin penyewa.");
+    }
 }

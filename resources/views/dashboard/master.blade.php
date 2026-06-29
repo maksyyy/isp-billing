@@ -65,8 +65,55 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
-                </div>
             </div>
+        </div>
+
+        <!-- COLLAPSIBLE BROADCAST EMAIL FORM -->
+        <div class="app-card bg-white border border-[#E4E4E7] shadow-xs rounded-md overflow-hidden">
+            <details class="group">
+                <summary class="flex items-center justify-between p-5 font-bold text-xs uppercase tracking-wider text-[#111111] cursor-pointer hover:bg-[#F4F4F5]/50 transition-colors list-none select-none">
+                    <div class="flex items-center gap-2">
+                        <span class="text-base">📢</span>
+                        <span>Kirim Email Broadcast ke Seluruh Admin</span>
+                    </div>
+                    <span class="transition-transform duration-200 group-open:rotate-180">
+                        <svg class="w-4 h-4 text-[#71717A]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </span>
+                </summary>
+                <div class="p-6 border-t border-[#E4E4E7] bg-[#FAF9F6]/30 space-y-4">
+                    <p class="text-xs text-[#71717A] leading-normal font-light">
+                        Kirim pesan email massal ke seluruh <strong>{{ $totalTenants }}</strong> admin penyewa sistem. Fitur ini sangat berguna untuk menginformasikan pemeliharaan sistem (maintenance), pembaruan fitur, atau kebijakan baru secara instan.
+                    </p>
+
+                    <form action="{{ route('dashboard.broadcast') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <!-- Subject -->
+                        <div>
+                            <label class="block text-[9px] font-bold text-[#71717A] uppercase tracking-wider mb-1.5">Subjek Email Broadcast</label>
+                            <input type="text" name="subject" required
+                                   placeholder="Contoh: Pemberitahuan Pemeliharaan Sistem (System Maintenance)"
+                                   class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm">
+                        </div>
+
+                        <!-- Message Body -->
+                        <div>
+                            <label class="block text-[9px] font-bold text-[#71717A] uppercase tracking-wider mb-1.5">Isi Pesan Pengumuman</label>
+                            <textarea name="message" rows="5" required
+                                      placeholder="Tulis pesan lengkap yang ingin disampaikan ke seluruh mitra admin penyewa..."
+                                      class="w-full text-xs px-3.5 py-2.5 bg-[#FFFFFF] border border-[#E4E4E7] focus:outline-none focus:ring-1 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/60 rounded-md text-[#111111] font-semibold transition-all shadow-sm font-sans"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex justify-end pt-2">
+                            <button type="submit" class="btn-minimal px-6 py-2">
+                                Kirim Broadcast Sekarang
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </details>
         </div>
 
         <!-- Search Bar and Action Button -->

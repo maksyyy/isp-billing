@@ -330,6 +330,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
+    Route::post('/dashboard/master/broadcast', [DashboardController::class, 'broadcastEmail'])
+        ->name('dashboard.broadcast')
+        ->middleware('role:master');
+
     // =========================
     // API PAGE (React redirect to Unified Dashboard)
     // =========================
