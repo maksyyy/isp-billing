@@ -335,6 +335,16 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('role:master');
 
     // =========================
+    // SECURE WEB SSH TERMINAL (MASTER ONLY)
+    // =========================
+    Route::middleware('role:master')->group(function () {
+        Route::get('/terminal', [\App\Http\Controllers\TerminalController::class, 'index'])->name('terminal.index');
+        Route::post('/terminal/connect', [\App\Http\Controllers\TerminalController::class, 'connect'])->name('terminal.connect');
+        Route::post('/terminal/execute', [\App\Http\Controllers\TerminalController::class, 'execute'])->name('terminal.execute');
+        Route::delete('/terminal/disconnect', [\App\Http\Controllers\TerminalController::class, 'disconnect'])->name('terminal.disconnect');
+    });
+
+    // =========================
     // API PAGE (React redirect to Unified Dashboard)
     // =========================
     Route::get('/api-page', function () {

@@ -17,10 +17,19 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span>
                     Unified Control Console Enabled
                 </div>
-                <h1 class="text-3xl lg:text-4xl font-bold tracking-tight text-[#111111]">Dashboard Master Admin</h1>
-                <p class="mt-2 text-[#71717A] text-xs leading-relaxed max-w-2xl font-light">
-                    Kelola seluruh admin penyewa sistem, tentukan limit kapasitas pelanggan yang diperbolehkan, pantau jumlah tim, serta atur akses operasional dari panel kendali terpusat.
-                </p>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-2">
+                    <div>
+                        <h1 class="text-3xl lg:text-4xl font-bold tracking-tight text-[#111111]">Dashboard Master Admin</h1>
+                        <p class="mt-2 text-[#71717A] text-xs leading-relaxed max-w-2xl font-light">
+                            Kelola seluruh admin penyewa sistem, tentukan limit kapasitas pelanggan yang diperbolehkan, pantau jumlah tim, serta atur akses operasional dari panel kendali terpusat.
+                        </p>
+                    </div>
+                    <div class="shrink-0">
+                        <a href="{{ route('terminal.index') }}" class="btn-minimal px-4 py-2.5 text-xs font-bold inline-flex items-center gap-2 shadow-xs">
+                            💻 Buka SSH Terminal
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
