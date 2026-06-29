@@ -539,6 +539,9 @@ class CustomerController extends Controller
                     ->with('error', 'Harap daftarkan minimal satu Layanan Paket terlebih dahulu sebelum sinkronisasi.');
             }
 
+            // Ambil semua paket untuk mencocokkan list name dengan paket di database
+            $packages = Package::when($adminId !== null, fn ($q) => $q->where('admin_id', $adminId))->get();
+
             $importedCount = 0;
             $updatedCount = 0;
             $skippedCount = 0;
@@ -553,37 +556,66 @@ class CustomerController extends Controller
                     continue;
                 }
 
-                // Ekstrak kode pelanggan dan nama dari comment (format: "6666 - rokim")
+                // Ekstrak kode pelanggan dan nama dari comment (format: "6666 - rokim" atau "CUST-001 - Jhon")
                 $customerCode = null;
                 $customerName = null;
 
-                if (preg_match('/^(\d{4})[-_\s\.]+(.+)$/', $comment, $matches)) {
-                    $customerCode = $matches[1];
-                    $customerName = trim($matches[2]);
-                } elseif (preg_match('/^(\d{4})/', $comment, $matches)) {
-                    $customerCode = $matches[1];
-                    $customerName = trim(preg_replace('/^\d{4}[-_\s\.]*/', '', $comment)) ?: 'Pelanggan ' . $matches[1];
-                } elseif (preg_match('/^(\d{4})/', $listName, $matches)) {
-                    $customerCode = $matches[1];
-                    $customerName = trim(preg_replace('/^\d{4}[-_\s\.]*/', '', $listName)) ?: 'Pelanggan ' . $matches[1];
+                if (!empty($comment)) {
+                    if (preg_match('/^([a-zA-Z0-9\-]+)\s*[-_\s\.]+\s*(.+)$/', $comment, $matches)) {
+                        $customerCode = $matches[1];
+                        $customerName = trim($matches[2]);
+                    } elseif (preg_match('/^([a-zA-Z0-9\-]+)$/', $comment, $matches)) {
+                        $customerCode = $matches[1];
+                        $customerName = 'Pelanggan ' . $matches[1];
+                    } else {
+                        $customerName = trim($comment);
+                    }
                 }
 
-                // Jika tidak ada kode pelanggan yang valid, lewati (bukan data pelanggan)
-                if (!$customerCode) {
-                    $skippedCount++;
-                    continue;
+                // Jika list name mengandung kode pelanggan (misal di-generate sistem lain)
+                if (!$customerCode && !empty($listName)) {
+                    if (preg_match('/^([a-zA-Z0-9\-]+)\s*[-_\s\.]+\s*(.+)$/', $listName, $matches)) {
+                        $customerCode = $matches[1];
+                        $customerName = trim($matches[2]);
+                    }
                 }
 
                 // Cek apakah pelanggan sudah ada di database (dalam scope admin)
                 $existingCustomer = Customer::where(function ($q) use ($customerCode, $ipAddress) {
-                        $q->where('customer_code', $customerCode)->orWhere('ip', $ipAddress);
+                        if ($customerCode) {
+                            $q->where('customer_code', $customerCode);
+                        }
+                        if ($ipAddress) {
+                            $q->orWhere('ip', $ipAddress);
+                        }
                     })
                     ->when($adminId !== null, fn ($q) => $q->where('admin_id', $adminId))
                     ->first();
 
+                if (!$customerCode) {
+                    if ($existingCustomer) {
+                        $customerCode = $existingCustomer->customer_code;
+                    } else {
+                        $customerCode = 'MT-' . str_replace('.', '', $ipAddress);
+                    }
+                }
+
+                if (empty($customerName)) {
+                    if ($existingCustomer) {
+                        $customerName = $existingCustomer->name;
+                    } else {
+                        $customerName = trim($comment ?: $listName) ?: 'Pelanggan Mikrotik ' . $ipAddress;
+                    }
+                }
+
                 if ($existingCustomer) {
-                    // Update status aktif dan IP jika berubah
+                    // Update status aktif, nama, IP, dan paket jika berubah
                     $changed = false;
+
+                    if ($customerName && $existingCustomer->name !== $customerName) {
+                        $existingCustomer->name = $customerName;
+                        $changed = true;
+                    }
 
                     if ($existingCustomer->ip !== $ipAddress) {
                         $existingCustomer->ip = $ipAddress;
@@ -593,6 +625,16 @@ class CustomerController extends Controller
                     $newIsActive = !$disabled;
                     if ((bool)$existingCustomer->is_active !== $newIsActive) {
                         $existingCustomer->is_active = $newIsActive;
+                        $changed = true;
+                    }
+
+                    // Cocokkan list name dengan paket di database
+                    $matchedPackage = $packages->first(function ($pkg) use ($listName) {
+                        return strtolower($pkg->name) === strtolower($listName);
+                    });
+
+                    if ($matchedPackage && $existingCustomer->package_id !== $matchedPackage->id) {
+                        $existingCustomer->package_id = $matchedPackage->id;
                         $changed = true;
                     }
 
@@ -611,6 +653,11 @@ class CustomerController extends Controller
                         }
                     }
 
+                    // Cari paket yang cocok dengan list name Mikrotik
+                    $matchedPackage = $packages->first(function ($pkg) use ($listName) {
+                        return strtolower($pkg->name) === strtolower($listName);
+                    });
+
                     // Buat pelanggan baru di database
                     Customer::create([
                         'admin_id'      => $adminId,
@@ -619,7 +666,7 @@ class CustomerController extends Controller
                         'phone'         => '-',
                         'ip'            => $ipAddress,
                         'address'       => null,
-                        'package_id'    => $defaultPackage->id,
+                        'package_id'    => $matchedPackage ? $matchedPackage->id : $defaultPackage->id,
                         'is_active'     => !$disabled,
                     ]);
                     $importedCount++;
