@@ -172,7 +172,7 @@
             terminalLoader.classList.remove('hidden');
 
             // Send command via AJAX POST
-            fetch('{{ route("terminal.execute") }}', {
+            fetch('/terminal/execute', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
