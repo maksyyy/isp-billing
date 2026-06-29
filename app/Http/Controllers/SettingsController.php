@@ -120,6 +120,7 @@ class SettingsController extends Controller
             'logoPath', 
             'companyName', 
             'timezone',
+            'adminUser',
             'prtgUrl',
             'prtgUsername', 
             'prtgPassword',
