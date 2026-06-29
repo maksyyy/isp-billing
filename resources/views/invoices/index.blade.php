@@ -84,15 +84,27 @@
                             <div class="inline-flex items-center gap-1.5 justify-center flex-wrap">
                                 <!-- BAYAR -->
                                 @if($i->status == 'unpaid')
-                                <form action="{{ route('invoices.pay', $i->id) }}" method="POST" class="inline-flex gap-1 items-center">
-                                    @csrf
-                                    <input type="number" name="amount"
-                                           class="border border-[#E4E4E7] px-2 py-1 text-xs w-20 rounded bg-[#FFFFFF] focus:border-[#6366F1]/40 focus:ring-1 focus:ring-[#6366F1]/20 text-xs font-mono text-[#111111] shadow-sm"
-                                           placeholder="Nominal" required>
-                                    <button class="btn-minimal px-2 py-1 text-[10px]">
-                                        Bayar
-                                    </button>
-                                </form>
+                                    @php
+                                        $showPayButton = true;
+                                        if ($role == 'teknisi') {
+                                            $parentAdmin = auth()->user()->parentAdmin ?? auth()->user();
+                                            $showPayButton = (bool)($parentAdmin->enable_teknisi_payment ?? true);
+                                        }
+                                    @endphp
+
+                                    @if($showPayButton)
+                                    <form action="{{ route('invoices.pay', $i->id) }}" method="POST" class="inline-flex gap-1 items-center">
+                                        @csrf
+                                        <input type="number" name="amount"
+                                               class="border border-[#E4E4E7] px-2 py-1 text-xs w-20 rounded bg-[#FFFFFF] focus:border-[#6366F1]/40 focus:ring-1 focus:ring-[#6366F1]/20 text-xs font-mono text-[#111111] shadow-sm"
+                                               placeholder="Nominal" required>
+                                        <button class="btn-minimal px-2 py-1 text-[10px]">
+                                            Bayar
+                                        </button>
+                                    </form>
+                                    @else
+                                    <span class="text-[9px] text-[#71717A] italic">Akses Bayar Dinonaktifkan</span>
+                                    @endif
                                 @endif
 
                                 <!-- SELESAI -->

@@ -30,7 +30,12 @@ class DashboardController extends Controller
                 ->withCount('subUsers')
                 ->latest()
                 ->get();
-            return view('dashboard.master', compact('users'));
+
+            $totalTenants = User::where('role', 'admin')->count();
+            $totalCapacity = User::where('role', 'admin')->sum('customer_limit') ?: 0;
+            $totalStaff = User::whereNotNull('parent_admin_id')->count();
+
+            return view('dashboard.master', compact('users', 'totalTenants', 'totalCapacity', 'totalStaff'));
         }
 
         abort(403);

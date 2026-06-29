@@ -107,6 +107,14 @@ class InvoiceController extends Controller
     // =========================
     public function pay(Request $request, $id)
     {
+        $user = auth()->user();
+        if ($user->role == 'teknisi') {
+            $parentAdmin = $user->parent_admin_id ? \App\Models\User::find($user->parent_admin_id) : $user;
+            if (!($parentAdmin->enable_teknisi_payment ?? true)) {
+                return back()->with('error', 'Gagal: Fitur pembayaran untuk teknisi dinonaktifkan oleh Admin.');
+            }
+        }
+
         $invoice = Invoice::findOrFail($id);
 
         $request->validate([

@@ -26,6 +26,7 @@ class User extends Authenticatable
         'prtg_password',
         'timezone',
         'customer_limit',
+        'enable_teknisi_payment',
     ];
 
     protected $hidden = [

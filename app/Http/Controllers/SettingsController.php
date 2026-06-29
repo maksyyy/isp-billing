@@ -133,14 +133,16 @@ class SettingsController extends Controller
             'company_logo' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
             'company_name' => ['required', 'string', 'max:255'],
             'timezone' => ['required', 'string', 'in:Asia/Jakarta,Asia/Makassar,Asia/Jayapura'],
+            'enable_teknisi_payment' => ['nullable', 'boolean'],
         ]);
 
         $user = auth()->user();
         $adminUser = $user->parent_admin_id ? User::find($user->parent_admin_id) : $user;
         
-        // Simpan pembaruan nama perusahaan dan timezone ke record admin utama
+        // Simpan pembaruan nama perusahaan, timezone, dan status pembayaran teknisi
         $adminUser->company_name = $request->company_name;
         $adminUser->timezone = $request->timezone;
+        $adminUser->enable_teknisi_payment = $request->has('enable_teknisi_payment');
         $adminUser->save();
 
         $adminId = $adminUser->id;

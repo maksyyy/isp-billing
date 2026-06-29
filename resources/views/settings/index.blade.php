@@ -115,6 +115,18 @@
                                 @enderror
                             </div>
 
+                            @if(auth()->user()->role != 'master')
+                            <!-- Izinkan Staf/Teknisi menginput pembayaran tagihan -->
+                            <div class="flex items-center gap-3 pt-2 pb-2">
+                                <input type="checkbox" name="enable_teknisi_payment" id="enable_teknisi_payment" value="1"
+                                       @checked(old('enable_teknisi_payment', $adminUser->enable_teknisi_payment) ?? true)
+                                       class="rounded border-[#E4E4E7] text-[#6366F1] focus:ring-[#6366F1]/20">
+                                <label for="enable_teknisi_payment" class="text-xs font-semibold text-[#111111] cursor-pointer select-none">
+                                    Izinkan Staf Teknisi menginput pembayaran tagihan (Bayar)
+                                </label>
+                            </div>
+                            @endif
+
                             <button type="submit" class="btn-minimal w-full">
                                 Simpan Branding
                             </button>
