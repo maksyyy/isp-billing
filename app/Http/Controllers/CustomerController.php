@@ -556,57 +556,33 @@ class CustomerController extends Controller
                     continue;
                 }
 
-                // Ekstrak kode pelanggan dan nama dari comment (format: "6666 - rokim" atau "CUST-001 - Jhon")
+                // Ekstrak kode pelanggan dan nama dari comment (format: "6666 - rokim")
                 $customerCode = null;
                 $customerName = null;
 
-                if (!empty($comment)) {
-                    if (preg_match('/^([a-zA-Z0-9\-]+)\s*[-_\s\.]+\s*(.+)$/', $comment, $matches)) {
-                        $customerCode = $matches[1];
-                        $customerName = trim($matches[2]);
-                    } elseif (preg_match('/^([a-zA-Z0-9\-]+)$/', $comment, $matches)) {
-                        $customerCode = $matches[1];
-                        $customerName = 'Pelanggan ' . $matches[1];
-                    } else {
-                        $customerName = trim($comment);
-                    }
+                if (preg_match('/^(\d{4})[-_\s\.]+(.+)$/', $comment, $matches)) {
+                    $customerCode = $matches[1];
+                    $customerName = trim($matches[2]);
+                } elseif (preg_match('/^(\d{4})/', $comment, $matches)) {
+                    $customerCode = $matches[1];
+                    $customerName = trim(preg_replace('/^\d{4}[-_\s\.]*/', '', $comment)) ?: 'Pelanggan ' . $matches[1];
+                } elseif (preg_match('/^(\d{4})/', $listName, $matches)) {
+                    $customerCode = $matches[1];
+                    $customerName = trim(preg_replace('/^\d{4}[-_\s\.]*/', '', $listName)) ?: 'Pelanggan ' . $matches[1];
                 }
 
-                // Jika list name mengandung kode pelanggan (misal di-generate sistem lain)
-                if (!$customerCode && !empty($listName)) {
-                    if (preg_match('/^([a-zA-Z0-9\-]+)\s*[-_\s\.]+\s*(.+)$/', $listName, $matches)) {
-                        $customerCode = $matches[1];
-                        $customerName = trim($matches[2]);
-                    }
+                // Jika tidak ada kode pelanggan yang valid, lewati (bukan data pelanggan)
+                if (!$customerCode) {
+                    $skippedCount++;
+                    continue;
                 }
 
                 // Cek apakah pelanggan sudah ada di database (dalam scope admin)
                 $existingCustomer = Customer::where(function ($q) use ($customerCode, $ipAddress) {
-                        if ($customerCode) {
-                            $q->where('customer_code', $customerCode);
-                        }
-                        if ($ipAddress) {
-                            $q->orWhere('ip', $ipAddress);
-                        }
+                        $q->where('customer_code', $customerCode)->orWhere('ip', $ipAddress);
                     })
                     ->when($adminId !== null, fn ($q) => $q->where('admin_id', $adminId))
                     ->first();
-
-                if (!$customerCode) {
-                    if ($existingCustomer) {
-                        $customerCode = $existingCustomer->customer_code;
-                    } else {
-                        $customerCode = 'MT-' . str_replace('.', '', $ipAddress);
-                    }
-                }
-
-                if (empty($customerName)) {
-                    if ($existingCustomer) {
-                        $customerName = $existingCustomer->name;
-                    } else {
-                        $customerName = trim($comment ?: $listName) ?: 'Pelanggan Mikrotik ' . $ipAddress;
-                    }
-                }
 
                 if ($existingCustomer) {
                     // Update status aktif, nama, IP, dan paket jika berubah
