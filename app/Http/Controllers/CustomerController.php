@@ -172,6 +172,7 @@ class CustomerController extends Controller
             }
 
             $importedCount = 0;
+            $updatedCount = 0;
             $skippedCount = 0;
 
             foreach ($devices as $dev) {
@@ -193,14 +194,43 @@ class CustomerController extends Controller
                     continue;
                 }
 
-                // Periksa duplikasi customer_code atau IP di database (dalam scope admin yang sama)
-                $exists = Customer::where(function ($q) use ($customerCode, $deviceIp) {
-                        $q->where('customer_code', $customerCode)->orWhere('ip', $deviceIp);
-                    })
+                // Cek apakah pelanggan sudah ada di database (dalam scope admin)
+                $existingCustomer = Customer::where('customer_code', $customerCode)
+                    ->when($adminId !== null, fn ($q) => $q->where('admin_id', $adminId))
+                    ->first();
+
+                if ($existingCustomer) {
+                    // Update nama dan IP jika berubah
+                    $changed = false;
+                    if ($customerName && $existingCustomer->name !== $customerName) {
+                        $existingCustomer->name = $customerName;
+                        $changed = true;
+                    }
+                    if ($deviceIp && $existingCustomer->ip !== $deviceIp) {
+                        // Cek konflik IP sebelum update IP
+                        $ipConflict = Customer::where('ip', $deviceIp)
+                            ->where('customer_code', '!=', $customerCode)
+                            ->when($adminId !== null, fn ($q) => $q->where('admin_id', $adminId))
+                            ->exists();
+                        if (!$ipConflict) {
+                            $existingCustomer->ip = $deviceIp;
+                            $changed = true;
+                        }
+                    }
+                    if ($changed) {
+                        $existingCustomer->save();
+                        $updatedCount++;
+                    } else {
+                        $skippedCount++;
+                    }
+                    continue;
+                }
+
+                // Jika belum ada, cek apakah IP bentrok dengan pelanggan lain sebelum membuat baru
+                $ipConflict = Customer::where('ip', $deviceIp)
                     ->when($adminId !== null, fn ($q) => $q->where('admin_id', $adminId))
                     ->exists();
-
-                if ($exists) {
+                if ($ipConflict) {
                     $skippedCount++;
                     continue;
                 }
@@ -209,7 +239,7 @@ class CustomerController extends Controller
                     $customerCount = Customer::where('admin_id', $adminId)->count();
                     if ($customerCount >= $adminUser->customer_limit) {
                         return redirect()->route('customers.index')
-                            ->with('success', "Sinkronisasi berhasil sebagian! Sukses mengimpor {$importedCount} pelanggan baru dari PRTG. Sisa diabaikan karena batas jumlah pelanggan ({$adminUser->customer_limit}) telah tercapai.");
+                            ->with('success', "Sinkronisasi berhasil sebagian! Sukses mengimpor {$importedCount} pelanggan baru dari PRTG dan memperbarui {$updatedCount} data. Sisa diabaikan karena batas jumlah pelanggan ({$adminUser->customer_limit}) telah tercapai.");
                     }
                 }
 
@@ -228,7 +258,7 @@ class CustomerController extends Controller
             }
 
             return redirect()->route('customers.index')
-                ->with('success', "Sinkronisasi berhasil! Sukses mengimpor {$importedCount} pelanggan baru dari PRTG (Diabaikan: {$skippedCount} karena nama/IP sudah terdaftar).");
+                ->with('success', "Sinkronisasi berhasil! Sukses mengimpor {$importedCount} pelanggan baru dari PRTG dan memperbarui {$updatedCount} data pelanggan (Diabaikan/Dilewati: {$skippedCount}).");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("PRTG Import Error: " . $e->getMessage());
@@ -714,13 +744,63 @@ class CustomerController extends Controller
                     ->with('success', 'Sinkronisasi Selesai: Tidak ada pelanggan aktif dengan IP yang perlu didaftarkan ke PRTG.');
             }
 
+            // Upfront batch fetch: Get all PRTG devices and sensors in exactly 2 requests
+            $prtgDevices = [];
+            $prtgSensors = [];
+
+            $devicesResponse = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/table.json', [
+                'content' => 'devices',
+                'output' => 'json',
+                'columns' => 'objid,device,host',
+                'username' => $prtgUser,
+                'passhash' => $prtgPass,
+            ]);
+
+            if ($devicesResponse->successful()) {
+                $prtgDevices = $devicesResponse->json()['devices'] ?? [];
+            }
+
+            $sensorsResponse = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/table.json', [
+                'content' => 'sensors',
+                'output' => 'json',
+                'columns' => 'objid,device,sensor',
+                'username' => $prtgUser,
+                'passhash' => $prtgPass,
+            ]);
+
+            if ($sensorsResponse->successful()) {
+                $prtgSensors = $sensorsResponse->json()['sensors'] ?? [];
+            }
+
             $registeredCount = 0;
             $resumedCount = 0;
             $skippedCount = 0;
 
             foreach ($customers as $customer) {
-                // Cek apakah sudah ada di PRTG
-                $prtgObjid = $this->getPrtgDeviceObjid($adminUser, $customer->customer_code, $customer->ip);
+                // Local lookup search in memory instead of hitting the PRTG API for each iteration
+                $prtgObjid = null;
+                foreach ($prtgDevices as $dev) {
+                    $deviceName = $dev['device'] ?? '';
+                    $host = $dev['host'] ?? '';
+                    $objid = $dev['objid'] ?? null;
+
+                    if ((!empty($customer->ip) && $host === $customer->ip) || 
+                        preg_match('/^' . preg_quote($customer->customer_code, '/') . '([-_\s\.]|$)/', $deviceName)) {
+                        $prtgObjid = (int)$objid;
+                        break;
+                    }
+                }
+
+                if (!$prtgObjid) {
+                    foreach ($prtgSensors as $sens) {
+                        $deviceName = $sens['device'] ?? '';
+                        $objid = $sens['objid'] ?? null;
+                        if (preg_match('/^' . preg_quote($customer->customer_code, '/') . '([-_\s\.]|$)/', $deviceName)) {
+                            $prtgObjid = (int)$objid;
+                            break;
+                        }
+                    }
+                }
 
                 if (!$prtgObjid) {
                     // Belum ada di PRTG → daftarkan
