@@ -395,7 +395,7 @@ class CustomerController extends Controller
 
         try {
             // Langkah 1: Cari objid device berdasarkan nama device (mengandung kode pelanggan) atau host IP
-            $response = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/table.json', [
+            $response = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/table.json', [
                 'content' => 'devices',
                 'output' => 'json',
                 'columns' => 'objid,device,host',
@@ -425,7 +425,7 @@ class CustomerController extends Controller
 
             // Fallback: Jika tidak ditemukan di devices, cari di sensors
             if (!$targetObjid) {
-                $responseSensors = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/table.json', [
+                $responseSensors = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/table.json', [
                     'content' => 'sensors',
                     'output' => 'json',
                     'columns' => 'objid,device,sensor',
@@ -453,7 +453,7 @@ class CustomerController extends Controller
             // Langkah 2: Lakukan Pause atau Resume
             if ($active) {
                 // Resume (Unpause)
-                $actResponse = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/pause.htm', [
+                $actResponse = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/pause.htm', [
                     'id' => $targetObjid,
                     'action' => 'resume',
                     'username' => $prtgUser,
@@ -461,7 +461,7 @@ class CustomerController extends Controller
                 ]);
             } else {
                 // Pause dengan pesan "di matikan admin"
-                $actResponse = \Illuminate\Support\Facades\Http::get($prtgUrl . '/api/pause.htm', [
+                $actResponse = \Illuminate\Support\Facades\Http::timeout(5)->get($prtgUrl . '/api/pause.htm', [
                     'id' => $targetObjid,
                     'action' => 'pause',
                     'pausemsg' => 'di matikan admin',
