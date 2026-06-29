@@ -180,9 +180,28 @@
                 },
                 body: JSON.stringify({ command: command })
             })
-            .then(response => {
+            .then(async response => {
                 if (response.status === 401) {
-                    location.reload(); // Reload page to prompt re-authentication
+                    location.reload();
+                    return { error: 'Sesi kedaluwarsa. Menolak kembali...' };
+                }
+                if (response.status === 419) {
+                    return { error: 'Sesi CSRF Kedaluwarsa (Error 419). Harap segarkan (refresh/F5) halaman browser Anda.' };
+                }
+                if (response.status === 403) {
+                    return { error: 'Akses Ditolak (Error 403): Hanya akun Master Admin yang memiliki izin menggunakan terminal.' };
+                }
+                if (!response.ok) {
+                    const text = await response.text();
+                    // Extract title or first line from Laravel error page if possible
+                    let msg = text.substring(0, 150);
+                    if (text.includes('<title>')) {
+                        const match = text.match(/<title>([^<]+)<\/title>/i);
+                        if (match && match[1]) {
+                            msg = match[1];
+                        }
+                    }
+                    return { error: `Server Error (${response.status}): ${msg}` };
                 }
                 return response.json();
             })
