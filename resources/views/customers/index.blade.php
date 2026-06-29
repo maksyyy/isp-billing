@@ -22,7 +22,7 @@
             + Tambah Pelanggan
         </a>
         
-        <form action="{{ route('customers.sync-mikrotik') }}" method="POST" class="inline" onsubmit="return confirm('Sinkronisasi MikroTik -> Database:\n\nProses ini akan mengambil semua data dari address-list MikroTik dan mendaftarkannya sebagai pelanggan di database.\n\nLanjutkan?')">
+        <form action="{{ route('customers.sync-mikrotik') }}" method="POST" class="inline" onsubmit="return confirm('Sinkronisasi MikroTik -> Database:\n\nProses ini akan mendaftarkan/memperbarui pelanggan dari address-list MikroTik.\n\nPERINGATAN: Pelanggan di database yang tidak ada di MikroTik akan DIHAPUS dari sistem beserta seluruh tagihan, pembayaran, dan tiket mereka.\n\nLanjutkan?')">
             @csrf
             <button type="submit" class="btn-minimal-secondary">
                 Sinkron MikroTik -> Database

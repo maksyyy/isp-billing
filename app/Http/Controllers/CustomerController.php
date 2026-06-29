@@ -545,6 +545,7 @@ class CustomerController extends Controller
             $importedCount = 0;
             $updatedCount = 0;
             $skippedCount = 0;
+            $mikrotikCustomerCodes = [];
 
             foreach ($addressLists as $entry) {
                 $ipAddress = $entry['address'] ?? '';
@@ -576,6 +577,8 @@ class CustomerController extends Controller
                     $skippedCount++;
                     continue;
                 }
+
+                $mikrotikCustomerCodes[] = $customerCode;
 
                 // Cek apakah pelanggan sudah ada di database (dalam scope admin)
                 $existingCustomer = Customer::where(function ($q) use ($customerCode, $ipAddress) {
@@ -649,10 +652,26 @@ class CustomerController extends Controller
                 }
             }
 
+            // Temukan dan hapus pelanggan di database yang tidak ada di Mikrotik
+            $allDbCustomers = Customer::when($adminId !== null, fn ($q) => $q->where('admin_id', $adminId))->get();
+            $deletedCount = 0;
+
+            foreach ($allDbCustomers as $dbCust) {
+                if (!in_array($dbCust->customer_code, $mikrotikCustomerCodes)) {
+                    // Hapus data relasional terlebih dahulu
+                    \App\Models\Ticket::where('customer_id', $dbCust->id)->delete();
+                    \App\Models\Invoice::where('customer_id', $dbCust->id)->delete();
+                    \App\Models\Payment::where('customer_id', $dbCust->id)->delete();
+                    $dbCust->delete();
+                    $deletedCount++;
+                }
+            }
+
             return redirect()->route('customers.index')
                 ->with('success', "Sinkronisasi MikroTik → Database Berhasil! " .
                     "Ditambahkan: {$importedCount} pelanggan baru. " .
                     "Diperbarui: {$updatedCount} pelanggan. " .
+                    "Dihapus: {$deletedCount} pelanggan (tidak ada di MikroTik). " .
                     "Dilewati: {$skippedCount} (sudah sama/bukan pelanggan).");
 
         } catch (\Exception $e) {
