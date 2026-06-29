@@ -312,7 +312,7 @@ Route::get('/api/monthly-tickets', function (Request $request) {
 */
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('landing');
 
 Route::post('/api/telegram/webhook/{token}', [App\Http\Controllers\TelegramWebhookController::class, 'handle'])
     ->name('telegram.webhook');
