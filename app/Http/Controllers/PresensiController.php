@@ -44,13 +44,14 @@ class PresensiController extends Controller
 
         $request->validate([
             'user_id' => 'required|exists:users,id',
-            'photo' => 'required|string'
+            'photo' => 'nullable|string',
+            'is_manual' => 'nullable|boolean'
         ]);
 
         $targetUser = \App\Models\User::findOrFail($request->user_id);
 
-        // Pastikan wajah terdaftar
-        if (!$targetUser->face_photo) {
+        // Pastikan wajah terdaftar jika bukan presensi manual
+        if (!$request->is_manual && !$targetUser->face_photo) {
             return back()->with('error', 'Presensi ditolak! Wajah ' . $targetUser->name . ' belum terdaftar di sistem. Silakan hubungi Admin untuk meregistrasikan wajah terlebih dahulu.');
         }
 
@@ -74,19 +75,22 @@ class PresensiController extends Controller
             return back()->with('error', $targetUser->name . ' sudah melakukan presensi masuk & keluar untuk hari ini!');
         }
         
-        // Dekode Base64 foto
-        $img = $request->photo;
-        $img = str_replace('data:image/png;base64,', '', $img);
-        $img = str_replace(' ', '+', $img);
-        $data = base64_decode($img);
-        
-        $fileName = $targetUser->id . '_' . $actionType . '_' . time() . '.png';
-        $dir = public_path('storage/presensi');
-        if (!file_exists($dir)) {
-            mkdir($dir, 0755, true);
+        // Dekode Base64 foto (jika ada)
+        $savedPath = null;
+        if ($request->filled('photo')) {
+            $img = $request->photo;
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $data = base64_decode($img);
+            
+            $fileName = $targetUser->id . '_' . $actionType . '_' . time() . '.png';
+            $dir = public_path('storage/presensi');
+            if (!file_exists($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            file_put_contents($dir . '/' . $fileName, $data);
+            $savedPath = 'presensi/' . $fileName;
         }
-        file_put_contents($dir . '/' . $fileName, $data);
-        $savedPath = 'presensi/' . $fileName;
 
         if ($actionType === 'masuk') {
             // Presensi Masuk

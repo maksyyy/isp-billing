@@ -93,3 +93,55 @@ test('employee checkout before 4pm does not register overtime', function () {
     // Clean up
     Carbon::setTestNow(); // Reset mock time
 });
+
+test('employee manual checkin and checkout without photo works correctly', function () {
+    // 1. Create a user
+    $admin = User::factory()->create([
+        'role' => 'admin',
+        'timezone' => 'Asia/Jakarta'
+    ]);
+
+    $today = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+
+    // Mock time to 08:00:00 (before 08:30:00 limit)
+    $mockTimeMasuk = Carbon::createFromFormat('Y-m-d H:i:s', $today . ' 08:00:00', 'Asia/Jakarta');
+    Carbon::setTestNow($mockTimeMasuk);
+
+    // 2. Act as admin and post to presensi.store with is_manual = 1 and no photo
+    $response1 = $this->actingAs($admin)
+        ->post('/presensi', [
+            'user_id' => $admin->id,
+            'is_manual' => 1
+        ]);
+
+    $response1->assertSessionHasNoErrors();
+    $response1->assertStatus(302); // Redirect back
+
+    // Assert that presensi was created in DB with null foto_masuk
+    $presensi = Presensi::where('user_id', $admin->id)->where('tanggal', $today)->first();
+    $this->assertNotNull($presensi);
+    $this->assertEquals('Hadir', $presensi->status);
+    $this->assertNull($presensi->foto_masuk);
+
+    // Mock time to 17:00:00 (checkout)
+    $mockTimeKeluar = Carbon::createFromFormat('Y-m-d H:i:s', $today . ' 17:00:00', 'Asia/Jakarta');
+    Carbon::setTestNow($mockTimeKeluar);
+
+    // 3. Act as admin and post to presensi.store again to check out manually
+    $response2 = $this->actingAs($admin)
+        ->post('/presensi', [
+            'user_id' => $admin->id,
+            'is_manual' => 1
+        ]);
+
+    $response2->assertSessionHasNoErrors();
+    $response2->assertStatus(302);
+
+    // Assert that presensi was updated with checkout details
+    $presensi->refresh();
+    $this->assertEquals('17:00:00', $presensi->jam_keluar);
+    $this->assertNull($presensi->foto_keluar);
+
+    // Clean up
+    Carbon::setTestNow(); // Reset mock time
+});
