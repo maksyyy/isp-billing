@@ -111,22 +111,15 @@
                         <div class="text-center mb-6">
                             <span class="text-3xl">🔑</span>
                             <h3 class="text-base font-bold text-white mt-2">Masuk Layanan SSH Server</h3>
-                            <p class="text-[10px] text-[#A1A1AA] mt-1">Masukkan kredensial SSH untuk mendapatkan akses penuh ke server.</p>
+                            <p class="text-[10px] text-[#A1A1AA] mt-1">Masukkan username dan password SSH server lokal untuk mendapatkan akses penuh.</p>
                         </div>
 
                         <div id="ssh-error-alert" class="hidden p-3 border border-[#EF4444]/20 rounded bg-[#EF4444]/10 text-[#EF4444] text-xs font-semibold mb-4 leading-relaxed whitespace-pre-wrap"></div>
 
                         <form id="ssh-connect-form" class="space-y-4">
-                            <div class="grid grid-cols-3 gap-2">
-                                <div class="col-span-2 flex flex-col gap-1">
-                                    <label class="text-[9px] font-bold text-[#A1A1AA] uppercase tracking-wider">Host / IP</label>
-                                    <input type="text" id="ssh_host" required placeholder="127.0.0.1" value="127.0.0.1" class="bg-[#09090B] border border-[#27272A] focus:border-[#6366F1]/50 focus:ring-0 rounded p-2 text-xs font-mono text-white placeholder-[#52525B]">
-                                </div>
-                                <div class="flex flex-col gap-1">
-                                    <label class="text-[9px] font-bold text-[#A1A1AA] uppercase tracking-wider">Port</label>
-                                    <input type="number" id="ssh_port" required placeholder="22" value="22" class="bg-[#09090B] border border-[#27272A] focus:border-[#6366F1]/50 focus:ring-0 rounded p-2 text-xs font-mono text-white placeholder-[#52525B]">
-                                </div>
-                            </div>
+                            <!-- Hidden Host and Port (pointing to local server) -->
+                            <input type="hidden" id="ssh_host" value="127.0.0.1">
+                            <input type="hidden" id="ssh_port" value="22">
 
                             <div class="flex flex-col gap-1">
                                 <label class="text-[9px] font-bold text-[#A1A1AA] uppercase tracking-wider">SSH Username</label>
