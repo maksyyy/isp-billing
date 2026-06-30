@@ -105,8 +105,24 @@ class TerminalController extends Controller
             }
 
             // Execute chaining command to perform task and fetch new directory
-            $innerCommand = "cd " . escapeshellarg($cwd) . " && " . $command . " ; echo \"___CWD___\" ; pwd";
-            $output = $ssh->exec($innerCommand);
+            $isSudo = false;
+            $execCommand = $command;
+
+            if ($username !== 'root' && preg_match('/^sudo\s+/i', trim($command))) {
+                $isSudo = true;
+                $execCommand = preg_replace('/^sudo\s+/i', '', trim($command));
+            }
+
+            if ($isSudo) {
+                // If it is a sudo command, wrap the inner chain in a sudo bash shell and pipe the password
+                $innerCommand = "cd " . escapeshellarg($cwd) . " && " . $execCommand . " ; echo \"___CWD___\" ; pwd";
+                $chainedCommand = "echo " . escapeshellarg($password) . " | sudo -S -p '' bash -c " . escapeshellarg($innerCommand);
+            } else {
+                // Normal execution
+                $chainedCommand = "cd " . escapeshellarg($cwd) . " && " . $command . " ; echo \"___CWD___\" ; pwd";
+            }
+
+            $output = $ssh->exec($chainedCommand);
 
             $newCwd = $cwd;
             // Parse output for new working directory path
