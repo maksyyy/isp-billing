@@ -64,7 +64,7 @@
                     <span class="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span>
                     <span class="text-[10px] font-mono font-bold text-[#A1A1AA] ml-2">
                         @if($connected)
-                            ssh-session ({{ $username }}@{{ $host }}:{{ $port }})
+                            ssh-session ({{ $username }}&#64;{{ $host }}:{{ $port }})
                         @else
                             disconnected-session
                         @endif

@@ -116,8 +116,16 @@ class TerminalController extends Controller
                 // Get output part
                 $output = rtrim($parts[0]);
                 
-                // Get CWD part (trim whitespaces/newlines)
-                $newCwd = trim($parts[1] ?? $cwd);
+                // Get CWD part and extract the first non-empty line
+                $cwdPart = $parts[1] ?? '';
+                $lines = explode("\n", str_replace("\r", "", $cwdPart));
+                foreach ($lines as $line) {
+                    $trimmedLine = trim($line);
+                    if ($trimmedLine !== '') {
+                        $newCwd = $trimmedLine;
+                        break;
+                    }
+                }
                 
                 session(['ssh_cwd' => $newCwd]);
             }
