@@ -44,12 +44,6 @@ class TerminalController extends Controller
         $command = $request->command;
         $cwd = session('local_cwd', base_path());
 
-        // Block dangerous interactive programs or subshells
-        $lowerCommand = trim(strtolower($command));
-        if (in_array($lowerCommand, ['top', 'htop', 'nano', 'vi', 'vim', 'less', 'more', 'screen', 'cmd', 'powershell', 'bash', 'sh'])) {
-            return response()->json(['output' => "Error: Program interaktif/shell '" . $command . "' tidak didukung oleh web terminal ini.\n"]);
-        }
-
         try {
             $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
 
