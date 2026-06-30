@@ -16,6 +16,7 @@ export default function BackboneAlerts({ role }) {
     const [search, setSearch] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [editingDevice, setEditingDevice] = useState(null);
+    const [activeTab, setActiveTab] = useState("all");
     
     // Form states
     const [name, setName] = useState("");
@@ -355,113 +356,172 @@ export default function BackboneAlerts({ role }) {
                         <span>Live Checking</span>
                     </div>
                     
-                    <button 
-                        type="button" 
-                        onClick={openAddModal} 
-                        className="btn-minimal px-4 py-2.5"
-                    >
-                        Tambah Perangkat
-                    </button>
+                    {(activeTab === "all" || activeTab === "backbone") && (
+                        <button 
+                            type="button" 
+                            onClick={openAddModal} 
+                            className="btn-minimal px-4 py-2.5"
+                        >
+                            Tambah Perangkat
+                        </button>
+                    )}
                 </div>
             </header>
 
-            {/* Toolbar: Search */}
-            <div className="flex justify-between items-center mb-5 gap-4 flex-wrap">
-                <input 
-                    type="text" 
-                    placeholder="Cari nama atau IP perangkat..." 
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="w-72 text-xs py-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:border-[#6366F1]/40 focus:ring-0 rounded-md text-[#111111] transition-all"
-                />
-                <div className="text-xs text-[#71717A]">
-                    Menampilkan <strong className="text-[#111111]">{filteredDevices.length}</strong> perangkat
-                </div>
-            </div>
-
-            {/* Table Area */}
-            <div className="app-card overflow-hidden mb-8">
-                {loading ? (
-                    <div className="p-10 text-center text-[#71717A] text-sm">
-                        Memuat data perangkat backbone...
-                    </div>
-                ) : filteredDevices.length === 0 ? (
-                    <div className="p-12 text-center text-[#71717A] text-sm app-card border-dashed">
-                        Belum ada perangkat backbone yang terdaftar atau cocok dengan pencarian.
-                    </div>
-                ) : (
-                    <table className="app-table">
-                        <thead>
-                            <tr>
-                                <th>Nama Perangkat</th>
-                                <th>IP Address</th>
-                                <th>Status</th>
-                                <th>Waktu Cek Terakhir</th>
-                                <th style={{ textAlign: "right" }}>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredDevices.map(d => {
-                                const isUp = d.status === "up";
-                                return (
-                                    <tr key={d.id}>
-                                        <td className="font-semibold text-[#111111]">
-                                            {d.name}
-                                        </td>
-                                        <td className="font-mono text-xs">
-                                            {d.ip}
-                                        </td>
-                                        <td>
-                                            <span className={isUp ? "status-badge-active" : "status-badge-inactive"}>
-                                                <span 
-                                                    className={`w-1.5 h-1.5 rounded-full inline-block mr-1.5 ${isUp ? 'bg-[#059669] pulse-green' : 'bg-[#EF4444] pulse-red'}`}
-                                                ></span>
-                                                {d.status.toUpperCase()}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            {d.last_ping_at 
-                                                ? new Date(d.last_ping_at).toLocaleString("id-ID")
-                                                : "Belum pernah dicek"}
-                                        </td>
-                                        <td style={{ textAlign: "right" }}>
-                                            <div className="flex gap-2 justify-end">
-                                                <button 
-                                                    type="button" 
-                                                    onClick={() => openEditModal(d)} 
-                                                    className="btn-minimal-secondary px-3 py-1.5 text-[10px]"
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button 
-                                                    type="button" 
-                                                    onClick={() => handleDelete(d.id, d.name)} 
-                                                    className="btn-minimal-secondary border-[#FCA5A5]/30 hover:bg-[#FEF2F2] hover:border-[#EF4444] text-[#DC2626] px-3 py-1.5 text-[10px]"
-                                                >
-                                                    Hapus
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+            {/* Sub-Navbar for Features */}
+            <div className="flex border-b border-[#E4E4E7] mb-6 gap-2">
+                <button
+                    type="button"
+                    onClick={() => setActiveTab("all")}
+                    className={`pb-3 px-4 text-xs font-bold transition-all border-b-2 -mb-[2px] cursor-pointer focus:outline-none ${
+                        activeTab === "all"
+                            ? "text-[#6366F1] border-[#6366F1]"
+                            : "text-[#71717A] border-transparent hover:text-[#111111] hover:border-[#D4D4D8]"
+                    }`}
+                >
+                    🎛️ Semua Dashboard
+                </button>
+                <button
+                    type="button"
+                    onClick={() => setActiveTab("backbone")}
+                    className={`pb-3 px-4 text-xs font-bold transition-all border-b-2 -mb-[2px] cursor-pointer focus:outline-none ${
+                        activeTab === "backbone"
+                            ? "text-[#6366F1] border-[#6366F1]"
+                            : "text-[#71717A] border-transparent hover:text-[#111111] hover:border-[#D4D4D8]"
+                    }`}
+                >
+                    📡 Backbone Alerts
+                </button>
+                <button
+                    type="button"
+                    onClick={() => setActiveTab("mikrotik")}
+                    className={`pb-3 px-4 text-xs font-bold transition-all border-b-2 -mb-[2px] cursor-pointer focus:outline-none ${
+                        activeTab === "mikrotik"
+                            ? "text-[#6366F1] border-[#6366F1]"
+                            : "text-[#71717A] border-transparent hover:text-[#111111] hover:border-[#D4D4D8]"
+                    }`}
+                >
+                    📶 MikroTik Monitor
+                </button>
+                {prtgData.length > 0 && (
+                    <button
+                        type="button"
+                        onClick={() => setActiveTab("prtg")}
+                        className={`pb-3 px-4 text-xs font-bold transition-all border-b-2 -mb-[2px] cursor-pointer focus:outline-none ${
+                            activeTab === "prtg"
+                                ? "text-[#6366F1] border-[#6366F1]"
+                                : "text-[#71717A] border-transparent hover:text-[#111111] hover:border-[#D4D4D8]"
+                        }`}
+                    >
+                        🩺 PRTG Customers
+                    </button>
                 )}
             </div>
 
+            {/* Backbone Device Monitor Section */}
+            {(activeTab === "all" || activeTab === "backbone") && (
+                <>
+                    {/* Toolbar: Search */}
+                    <div className="flex justify-between items-center mb-5 gap-4 flex-wrap">
+                        <input 
+                            type="text" 
+                            placeholder="Cari nama atau IP perangkat..." 
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-72 text-xs py-2 bg-[#FFFFFF] border border-[#E4E4E7] focus:border-[#6366F1]/40 focus:ring-0 rounded-md text-[#111111] transition-all"
+                        />
+                        <div className="text-xs text-[#71717A]">
+                            Menampilkan <strong className="text-[#111111]">{filteredDevices.length}</strong> perangkat
+                        </div>
+                    </div>
+
+                    {/* Table Area */}
+                    <div className="app-card overflow-hidden mb-8">
+                        {loading ? (
+                            <div className="p-10 text-center text-[#71717A] text-sm">
+                                Memuat data perangkat backbone...
+                            </div>
+                        ) : filteredDevices.length === 0 ? (
+                            <div className="p-12 text-center text-[#71717A] text-sm app-card border-dashed">
+                                Belum ada perangkat backbone yang terdaftar atau cocok dengan pencarian.
+                            </div>
+                        ) : (
+                            <table className="app-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Perangkat</th>
+                                        <th>IP Address</th>
+                                        <th>Status</th>
+                                        <th>Waktu Cek Terakhir</th>
+                                        <th style={{ textAlign: "right" }}>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredDevices.map(d => {
+                                        const isUp = d.status === "up";
+                                        return (
+                                            <tr key={d.id}>
+                                                <td className="font-semibold text-[#111111]">
+                                                    {d.name}
+                                                </td>
+                                                <td className="font-mono text-xs">
+                                                    {d.ip}
+                                                </td>
+                                                <td>
+                                                    <span className={isUp ? "status-badge-active" : "status-badge-inactive"}>
+                                                        <span 
+                                                            className={`w-1.5 h-1.5 rounded-full inline-block mr-1.5 ${isUp ? 'bg-[#059669] pulse-green' : 'bg-[#EF4444] pulse-red'}`}
+                                                        ></span>
+                                                        {d.status.toUpperCase()}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {d.last_ping_at 
+                                                        ? new Date(d.last_ping_at).toLocaleString("id-ID")
+                                                        : "Belum pernah dicek"}
+                                                </td>
+                                                <td style={{ textAlign: "right" }}>
+                                                    <div className="flex gap-2 justify-end">
+                                                        <button 
+                                                            type="button" 
+                                                            onClick={() => openEditModal(d)} 
+                                                            className="btn-minimal-secondary px-3 py-1.5 text-[10px]"
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                        <button 
+                                                            type="button" 
+                                                            onClick={() => handleDelete(d.id, d.name)} 
+                                                            className="btn-minimal-secondary border-[#FCA5A5]/30 hover:bg-[#FEF2F2] hover:border-[#EF4444] text-[#DC2626] px-3 py-1.5 text-[10px]"
+                                                        >
+                                                            Hapus
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+                </>
+            )}
+
             {/* MikroTik Monitoring Panel — dengan tab Traffic terintegrasi */}
-            <MikrotikMonitoringPanel 
-                data={mikrotikData} 
-                loading={loadingMikrotik}
-                interfaces={mikrotikData?.interfaces || []}
-                selectedInterface={selectedIface}
-                onSelectInterface={(iface) => setSelectedIface(iface)}
-                trafficHistory={trafficHistory}
-            />
+            {(activeTab === "all" || activeTab === "mikrotik") && (
+                <MikrotikMonitoringPanel 
+                    data={mikrotikData} 
+                    loading={loadingMikrotik}
+                    interfaces={mikrotikData?.interfaces || []}
+                    selectedInterface={selectedIface}
+                    onSelectInterface={(iface) => setSelectedIface(iface)}
+                    trafficHistory={trafficHistory}
+                />
+            )}
 
             {/* PRTG Monitoring Panel */}
-            {prtgData.length > 0 && (
+            {(activeTab === "all" || activeTab === "prtg") && prtgData.length > 0 && (
                 <PrtgMonitoringPanel 
                     prtgCustomers={prtgCustomers}
                     getDeviceStatus={getDeviceStatus}
