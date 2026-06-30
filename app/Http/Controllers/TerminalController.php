@@ -52,8 +52,9 @@ class TerminalController extends Controller
                 // cmd.exe style chaining
                 $chainedCommand = "cd /d " . escapeshellarg($cwd) . " && " . $command . " & echo ___CWD___ & cd";
             } else {
-                // bash/sh style chaining
-                $chainedCommand = "cd " . escapeshellarg($cwd) . " && " . $command . " ; echo \"___CWD___\" ; pwd";
+                // bash/sh style chaining wrapped in a sudo bash shell
+                $innerCommand = "cd " . escapeshellarg($cwd) . " && " . $command . " ; echo \"___CWD___\" ; pwd";
+                $chainedCommand = "sudo bash -c " . escapeshellarg($innerCommand);
             }
 
             // Run process with 15 seconds timeout
