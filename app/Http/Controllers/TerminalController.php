@@ -5,33 +5,78 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Process;
+use phpseclib3\Net\SSH2;
 
 class TerminalController extends Controller
 {
     /**
-     * Show Local Server Terminal Console Page
+     * Show Web SSH Terminal Page
      */
     public function index(): View
     {
         abort_unless(auth()->user()->role == 'master', 403);
 
-        $connected = true; // Always connected locally
-        $host = gethostname();
-        $username = get_current_user() ?: 'web-server';
-        
-        // Initialize cwd to base path if not set in session
-        if (!session()->has('local_cwd')) {
-            session(['local_cwd' => base_path()]);
-        }
-        $cwd = session('local_cwd');
+        $connected = session()->has('ssh_host');
+        $host = session('ssh_host', '');
+        $username = session('ssh_username', '');
+        $port = session('ssh_port', 22);
+        $cwd = session('ssh_cwd', '~');
 
-        return view('terminal.index', compact('connected', 'host', 'username', 'cwd'));
+        return view('terminal.index', compact('connected', 'host', 'username', 'port', 'cwd'));
     }
 
     /**
-     * Execute Command on Local Server
+     * Connect to SSH Server and Store Credentials in Session
+     */
+    public function connect(Request $request): JsonResponse
+    {
+        abort_unless(auth()->user()->role == 'master', 403);
+
+        $request->validate([
+            'host' => 'required|string',
+            'port' => 'required|integer|min:1|max:65535',
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $host = $request->host;
+        $port = (int)$request->port;
+        $username = $request->username;
+        $password = $request->password;
+
+        try {
+            // Test connection with 10s timeout
+            $ssh = new SSH2($host, $port, 10);
+            if (!$ssh->login($username, $password)) {
+                return response()->json([
+                    'error' => "Autentikasi gagal: Username atau password salah."
+                ], 422);
+            }
+
+            // Save encrypted credentials to session
+            session([
+                'ssh_host' => $host,
+                'ssh_port' => $port,
+                'ssh_username' => $username,
+                'ssh_password' => encrypt($password),
+                'ssh_cwd' => trim($ssh->exec('pwd')) ?: '~'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'cwd' => session('ssh_cwd'),
+                'username' => $username,
+                'host' => $host
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Gagal menghubungkan ke server SSH: ' . $e->getMessage()
+            ], 422);
+        }
+    }
+
+    /**
+     * Execute Command via SSH
      */
     public function execute(Request $request): JsonResponse
     {
@@ -41,33 +86,27 @@ class TerminalController extends Controller
             'command' => 'required|string',
         ]);
 
+        if (!session()->has('ssh_host')) {
+            return response()->json(['error' => 'Tidak terhubung ke server SSH.'], 403);
+        }
+
         $command = $request->command;
-        $cwd = session('local_cwd', base_path());
+        $cwd = session('ssh_cwd', '~');
 
         try {
-            $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+            $host = session('ssh_host');
+            $port = session('ssh_port');
+            $username = session('ssh_username');
+            $password = decrypt(session('ssh_password'));
 
-            // Construct chained command to execute command and output the final directory path
-            if ($isWindows) {
-                // cmd.exe style chaining
-                $chainedCommand = "cd /d " . escapeshellarg($cwd) . " && " . $command . " & echo ___CWD___ & cd";
-            } else {
-                // bash/sh style chaining wrapped in a sudo bash shell
-                $innerCommand = "cd " . escapeshellarg($cwd) . " && " . $command . " ; echo \"___CWD___\" ; pwd";
-                $sudoPassword = env('SUDO_PASSWORD');
-                if (!empty($sudoPassword)) {
-                    $chainedCommand = "echo " . escapeshellarg($sudoPassword) . " | sudo -S bash -c " . escapeshellarg($innerCommand);
-                } else {
-                    $chainedCommand = "sudo bash -c " . escapeshellarg($innerCommand);
-                }
+            $ssh = new SSH2($host, $port, 15); // 15s timeout
+            if (!$ssh->login($username, $password)) {
+                return response()->json(['error' => 'Koneksi SSH terputus atau autentikasi ulang gagal.'], 401);
             }
 
-            // Run process with 15 seconds timeout
-            $result = Process::timeout(15)->run($chainedCommand);
-            
-            // Extract standard output and error output
-            $output = $result->output() . $result->errorOutput();
-
+            // Execute chaining command to perform task and fetch new directory
+            $innerCommand = "cd " . escapeshellarg($cwd) . " && " . $command . " ; echo \"___CWD___\" ; pwd";
+            $output = $ssh->exec($innerCommand);
 
             $newCwd = $cwd;
             // Parse output for new working directory path
@@ -80,17 +119,7 @@ class TerminalController extends Controller
                 // Get CWD part (trim whitespaces/newlines)
                 $newCwd = trim($parts[1] ?? $cwd);
                 
-                // Clean Windows newlines/directory output
-                if ($isWindows) {
-                    $newCwd = str_replace("\r", "", $newCwd);
-                }
-                
-                // Only update if the directory actually exists
-                if (is_dir($newCwd)) {
-                    session(['local_cwd' => $newCwd]);
-                } else {
-                    $newCwd = $cwd;
-                }
+                session(['ssh_cwd' => $newCwd]);
             }
 
             return response()->json([
@@ -98,13 +127,20 @@ class TerminalController extends Controller
                 'cwd' => $newCwd
             ]);
 
-        } catch (\Illuminate\Process\Exceptions\ProcessTimedOutException $e) {
-            return response()->json([
-                'output' => "[Command timed out after 15 seconds]\n",
-                'cwd' => $cwd
-            ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Gagal mengeksekusi perintah: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Gagal mengeksekusi perintah SSH: ' . $e->getMessage()], 500);
         }
+    }
+
+    /**
+     * Disconnect and clear SSH session
+     */
+    public function disconnect(): JsonResponse
+    {
+        abort_unless(auth()->user()->role == 'master', 403);
+
+        session()->forget(['ssh_host', 'ssh_port', 'ssh_username', 'ssh_password', 'ssh_cwd']);
+
+        return response()->json(['success' => true]);
     }
 }
