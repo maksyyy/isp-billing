@@ -125,6 +125,32 @@
             </details>
         </div>
 
+        <!-- CONFIGURATION PANEL (TOGGLE EVALUASI) -->
+        <div class="app-card bg-white border border-[#E4E4E7] shadow-xs rounded-md p-6">
+            <h3 class="font-bold text-xs uppercase tracking-wider text-[#111111] mb-2 flex items-center gap-2">
+                ⚙️ Konfigurasi Akses Halaman Evaluasi
+            </h3>
+            <p class="text-xs text-[#71717A] leading-normal font-light mb-4">
+                Aktifkan atau sembunyikan link menu **Pusat Evaluasi** di sidebar navigasi untuk semua admin dan staf.
+            </p>
+
+            <form action="{{ route('dashboard.toggle-evaluation') }}" method="POST" class="flex items-center justify-between bg-[#FAF9F6] border border-[#E4E4E7] p-4 rounded-md">
+                @csrf
+                <div>
+                    <span class="text-xs font-bold text-[#111111]">Tampilkan Menu "Pusat Evaluasi" di Sidebar</span>
+                    <p class="text-[10px] text-[#71717A] mt-0.5 font-light">Tampilan dinonaktifkan jika tombol dinonaktifkan.</p>
+                </div>
+                <div>
+                    <input type="hidden" name="show_evaluation" value="0">
+                    <label class="relative inline-flex items-center cursor-pointer select-none">
+                        <input type="checkbox" name="show_evaluation" value="1" @checked($showEvaluationSetting) 
+                               class="sr-only peer" onchange="this.form.submit()">
+                        <div class="w-9 h-5 bg-[#E4E4E7] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#6366F1]"></div>
+                    </label>
+                </div>
+            </form>
+        </div>
+
         <!-- Search Bar and Action Button -->
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-white border border-[#E4E4E7] p-4 rounded-md shadow-xs">
             <form action="{{ route('dashboard') }}" method="GET" class="w-full md:w-96 flex gap-2">

@@ -19,6 +19,7 @@ class User extends Authenticatable
         'telegram_bot_token',
         'password',
         'role',
+        'show_evaluation',
         'parent_admin_id',
         'face_photo',
         'prtg_url',

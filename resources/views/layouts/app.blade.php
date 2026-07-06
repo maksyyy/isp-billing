@@ -88,7 +88,18 @@
 
                 <ul class="space-y-1">
 
-                    <!-- PUSAT EVALUASI (ALL ROLES) -->
+                    @php
+                        $showEvaluationSetting = true;
+                        try {
+                            $masterUser = \App\Models\User::where('role', 'master')->first();
+                            if ($masterUser) {
+                                $showEvaluationSetting = (bool) $masterUser->show_evaluation;
+                            }
+                        } catch (\Exception $e) {}
+                    @endphp
+
+                    <!-- PUSAT EVALUASI (ALL ROLES, CONTROLLABLE BY MASTER) -->
+                    @if($showEvaluationSetting || $role == 'master')
                     <li>
                         <a href="{{ route('evaluation.index') }}" class="{{ $baseClass }} {{ request()->routeIs('evaluation.*') ? 'bg-gradient-to-r from-indigo-500/10 to-purple-500/10 text-indigo-600 border-indigo-500/30 shadow-[0_4px_12px_rgba(99,102,241,0.05)]' : $inactiveClass }}">
                             <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -97,6 +108,7 @@
                             <span class="font-bold text-indigo-600">Pusat Evaluasi</span>
                         </a>
                     </li>
+                    @endif
 
                     <!-- DASHBOARD (Unified React) -->
                     @if($role == 'admin' || $role == 'finance' || $role == 'noc')

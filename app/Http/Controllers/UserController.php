@@ -69,15 +69,13 @@ class UserController extends Controller
         ];
 
         if ($request->role !== 'admin') {
-            $rules['face_photo'] = 'required|string';
+            $rules['face_photo'] = 'nullable|string';
         } else {
             $rules['face_photo'] = 'nullable|string';
             $rules['customer_limit'] = 'required|integer|in:200,500,1000,2000,3000,4000,5000';
         }
 
-        $request->validate($rules, [
-            'face_photo.required' => 'Wajah wajib dipindai (scan wajah) terlebih dahulu.'
-        ]);
+        $request->validate($rules);
 
         $currentUser = auth()->user();
         $allowedRoles = $currentUser->role == 'master'
@@ -142,16 +140,9 @@ class UserController extends Controller
 
         if ($request->role === 'admin') {
             $rules['customer_limit'] = ['required', 'integer', 'in:200,500,1000,2000,3000,4000,5000'];
-        } else {
-            // Jika user belum memiliki foto wajah, wajib scan wajah baru
-            if (!$user->face_photo) {
-                $rules['face_photo'] = ['required', 'string'];
-            }
         }
 
-        $validated = $request->validate($rules, [
-            'face_photo.required' => 'Wajah wajib dipindai (scan wajah) terlebih dahulu.'
-        ]);
+        $validated = $request->validate($rules);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];

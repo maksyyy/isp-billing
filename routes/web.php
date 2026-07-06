@@ -334,6 +334,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('dashboard.broadcast')
         ->middleware('role:master');
 
+    Route::post('/dashboard/master/toggle-evaluation', [DashboardController::class, 'toggleEvaluation'])
+        ->name('dashboard.toggle-evaluation')
+        ->middleware('role:master');
+
     // =========================
     // SECURE WEB SSH TERMINAL (MASTER ONLY)
     // =========================

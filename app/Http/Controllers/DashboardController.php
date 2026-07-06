@@ -34,8 +34,9 @@ class DashboardController extends Controller
             $totalTenants = User::where('role', 'admin')->count();
             $totalCapacity = User::where('role', 'admin')->sum('customer_limit') ?: 0;
             $totalStaff = User::whereNotNull('parent_admin_id')->count();
+            $showEvaluationSetting = (bool) auth()->user()->show_evaluation;
 
-            return view('dashboard.master', compact('users', 'totalTenants', 'totalCapacity', 'totalStaff'));
+            return view('dashboard.master', compact('users', 'totalTenants', 'totalCapacity', 'totalStaff', 'showEvaluationSetting'));
         }
 
         abort(403);
@@ -60,7 +61,7 @@ class DashboardController extends Controller
         foreach ($admins as $admin) {
             try {
                 \Illuminate\Support\Facades\Mail::to($admin->email)->send(
-                    new \App\Mail\BroadcastEmail($request->subject, $request->message)
+                     new \App\Mail\BroadcastEmail($request->subject, $request->message)
                 );
                 $successCount++;
             } catch (\Exception $e) {
@@ -74,5 +75,14 @@ class DashboardController extends Controller
         }
 
         return back()->with('success', "Email broadcast berhasil dikirim ke seluruh ({$successCount}) admin penyewa.");
+    }
+
+    public function toggleEvaluation(Request $request)
+    {
+        $user = auth()->user();
+        $user->show_evaluation = $request->boolean('show_evaluation');
+        $user->save();
+
+        return back()->with('success', 'Status tampilan halaman evaluasi berhasil diperbarui.');
     }
 }
