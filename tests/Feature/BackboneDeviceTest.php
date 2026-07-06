@@ -128,7 +128,7 @@ test('admin can delete a backbone device', function () {
     ]);
 });
 
-test('monitor:backbone command delays telegram alerts until failure exceeds 1 minute', function () {
+test('monitor:backbone command delays telegram alerts until failure exceeds 2 minutes', function () {
     \Illuminate\Support\Facades\Http::fake();
 
     $admin = User::factory()->create([
@@ -164,8 +164,8 @@ test('monitor:backbone command delays telegram alerts until failure exceeds 1 mi
         return str_contains($request->url(), 'sendMessage');
     });
 
-    // Advance time by 65 seconds
-    \Illuminate\Support\Carbon::setTestNow(now()->addSeconds(65));
+    // Advance time by 125 seconds
+    \Illuminate\Support\Carbon::setTestNow(now()->addSeconds(125));
 
     // Run command again (still fails)
     $this->artisan('monitor:backbone');
@@ -208,7 +208,7 @@ test('monitor:backbone command delays telegram alerts until failure exceeds 1 mi
     \Illuminate\Support\Carbon::setTestNow(null);
 });
 
-test('monitor:backbone command does not send telegram alert if recovered within 1 minute', function () {
+test('monitor:backbone command does not send telegram alert if recovered within 2 minutes', function () {
     \Illuminate\Support\Facades\Http::fake();
 
     $admin = User::factory()->create([
@@ -237,8 +237,8 @@ test('monitor:backbone command does not send telegram alert if recovered within 
     expect($device->status)->toBe('down');
     expect($device->telegram_alert_sent)->toBeFalse();
 
-    // Advance time by 30 seconds (less than 1 minute)
-    \Illuminate\Support\Carbon::setTestNow(now()->addSeconds(30));
+    // Advance time by 90 seconds (less than 2 minutes)
+    \Illuminate\Support\Carbon::setTestNow(now()->addSeconds(90));
 
     // Update IP to local loopback (ping will succeed)
     $device->update(['ip' => '127.0.0.1']);

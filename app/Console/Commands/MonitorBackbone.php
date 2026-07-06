@@ -205,7 +205,7 @@ class MonitorBackbone extends Command
                                 $device->first_failed_at = now();
                             }
 
-                            if (!$device->telegram_alert_sent && (now()->timestamp - $device->first_failed_at->timestamp) > 60) {
+                            if (!$device->telegram_alert_sent && (now()->timestamp - $device->first_failed_at->timestamp) > 120) {
                                 $this->sendAlertNotification($device, false, $failureReason);
                                 $device->telegram_alert_sent = true;
                             }
