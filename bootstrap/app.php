@@ -18,6 +18,21 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
+        $middleware->preventRequestsDuringMaintenance(except: [
+            'login',
+            'logout',
+            'dashboard',
+            'dashboard/master/broadcast',
+            'terminal',
+            'terminal/*',
+            'settings',
+            'settings/*',
+            'users',
+            'users/*',
+            'branding',
+            'profile',
+            'evaluasi*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
