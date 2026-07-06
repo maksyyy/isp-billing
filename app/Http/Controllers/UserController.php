@@ -135,7 +135,7 @@ class UserController extends Controller
             'phone' => ['required', 'string', 'max:20'],
             'telegram_chat_id' => ['nullable', 'string', 'max:50'],
             'role' => ['required', Rule::in($roles)],
-            'password' => ['nullable', 'confirmed', 'min:5'],
+            'password' => ['nullable', 'min:5'],
         ];
 
         if ($request->role === 'admin') {
