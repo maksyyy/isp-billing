@@ -39,6 +39,21 @@
             </div>
         @endif
 
+        <!-- Validation Error Alerts -->
+        @if($errors->any())
+            <div class="bg-[#FEE2E2] border border-[#FCA5A5] text-[#991B1B] px-4 py-3 rounded-md flex items-start gap-2 mb-6 shadow-sm">
+                <span class="text-xs font-bold text-[#991B1B] shrink-0 font-mono">[ERROR]</span>
+                <div>
+                    <p class="font-bold text-xs text-[#991B1B] uppercase tracking-wider">Gagal Menyimpan Pengaturan</p>
+                    <ul class="list-disc pl-4 mt-1 space-y-0.5">
+                        @foreach($errors->all() as $error)
+                            <li class="text-xs text-[#991B1B]/90">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
+
         <!-- Tab Navigation -->
         @php
             $tabClass = "flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-[10px] uppercase tracking-wider transition-all cursor-pointer border-transparent text-[#71717A] hover:text-[#111111] hover:border-[#E4E4E7]";
@@ -55,9 +70,6 @@
                 @if(auth()->user()->role == 'master')
                 <button onclick="switchTab('email')" id="tab-btn-email" class="{{ $tabClass }} {{ $activeTab == 'email' ? $activeTabClass : '' }}">
                     ✉️ Pengaturan Email
-                </button>
-                <button onclick="switchTab('password')" id="tab-btn-password" class="{{ $tabClass }} {{ $activeTab == 'password' ? $activeTabClass : '' }}">
-                    🔑 Ganti Password
                 </button>
                 @else
                 <button onclick="switchTab('staff')" id="tab-btn-staff" class="{{ $tabClass }} {{ $activeTab == 'staff' ? $activeTabClass : '' }}">
@@ -78,6 +90,9 @@
                     </button>
                 @endif
                 @endif
+                <button onclick="switchTab('password')" id="tab-btn-password" class="{{ $tabClass }} {{ $activeTab == 'password' ? $activeTabClass : '' }}">
+                    🔑 Ganti Password
+                </button>
             </div>
 
             <!-- TAB CONTENT 1: BRANDING -->
@@ -267,6 +282,7 @@
                     </form>
                 </div>
             </div>
+            @endif
 
             <!-- TAB CONTENT: GANTI PASSWORD -->
             <div id="tab-content-password" class="p-6 {{ $activeTab == 'password' ? '' : 'hidden' }}">
@@ -279,7 +295,7 @@
                         Pelihara keamanan akun master Anda dengan memperbarui password secara berkala.
                     </p>
 
-                    <form action="{{ route('settings.password') }}" method="POST" class="space-y-4">
+                    <form action="{{ route('settings.password') }}" method="POST" class="space-y-4" onsubmit="return confirm('Apakah Anda yakin ingin memperbarui password Anda?')">
                         @csrf
                         <!-- Current Password -->
                         <div>
@@ -317,7 +333,6 @@
                     </form>
                 </div>
             </div>
-            @endif
 
             <!-- TAB CONTENT 2: MANAJEMEN STAF -->
             @if(auth()->user()->role != 'master')
