@@ -1,6 +1,31 @@
 <x-app-layout>
 <div class="p-6">
 
+    <!-- ALERTS -->
+    @if(session('success'))
+        <div class="bg-[#DCFCE7] border border-[#BBF7D0] text-[#15803D] px-4 py-3 rounded-md mb-6 flex items-start gap-2 shadow-xs">
+            <span class="text-xs font-bold text-[#15803D] shrink-0 font-mono">[OK]</span>
+            <div>
+                <p class="font-bold text-xs text-[#15803D] uppercase tracking-wider">Berhasil</p>
+                <p class="text-xs text-[#15803D]/90 mt-0.5">{{ session('success') }}</p>
+            </div>
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="bg-[#FEE2E2] border border-[#FCA5A5] text-[#991B1B] px-4 py-3 rounded-md mb-6 flex items-start gap-2 shadow-xs">
+            <span class="text-xs font-bold text-[#991B1B] shrink-0 font-mono">[ERROR]</span>
+            <div>
+                <p class="font-bold text-xs text-[#991B1B] uppercase tracking-wider">Gagal Validasi</p>
+                <ul class="list-disc pl-4 mt-1 space-y-0.5">
+                    @foreach($errors->all() as $error)
+                        <li class="text-xs text-[#991B1B]/90">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif
+
     <!-- HEADER -->
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-3xl font-bold tracking-tight text-[#111111]">
@@ -126,7 +151,7 @@
                                     @csrf
 
                                     <input type="file" name="bukti"
-                                           class="text-[9px] border border-[#E4E4E7] rounded px-1 py-0.5 bg-[#FFFFFF] w-28 text-xs text-[#111111] focus:border-[#6366F1]/40 focus:ring-0 shadow-sm" required>
+                                           class="text-[9px] border border-[#E4E4E7] rounded px-1 py-0.5 bg-[#FFFFFF] w-28 text-xs text-[#111111] focus:border-[#6366F1]/40 focus:ring-0 shadow-sm" title="Foto bukti perbaikan (opsional)">
 
                                     <button class="btn-minimal px-2 py-1 text-[10px]">
                                         Selesai

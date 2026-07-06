@@ -13,12 +13,12 @@ Untuk kenyamanan Anda dalam melihat rancangan database secara interaktif, bereso
 ### 🎨 Ilustrasi Visual ERD (Tech Conceptual Illustration)
 Berikut adalah ilustrasi visual bertema modern dark mode untuk rancangan basis data ISP Billing Anda:
 
-![Database ERD Illustration](file:///C:/Users/fadhi/.gemini/antigravity-ide/brain/1c2734cb-2200-4358-8c49-2f16fa88aaab/database_erd_illustration_1780873932603.png)
+![Database ERD Illustration](file:///C:/Users/fadhi/.gemini/antigravity-ide/brain/5edaf011-9240-46a0-a0d7-b5a516493a91/database_erd_illustration.png)
 
 ### 📊 Diagram Skema Rinci (Compiled Schema Diagram)
 Berikut adalah gambaran skema detail dari setiap kolom, tipe data, dan garis relasi database:
 
-![Database ERD Diagram](file:///C:/Users/fadhi/.gemini/antigravity-ide/brain/1c2734cb-2200-4358-8c49-2f16fa88aaab/database_erd_diagram_1780889598368.png)
+![Database ERD Diagram](file:///C:/Users/fadhi/.gemini/antigravity-ide/brain/5edaf011-9240-46a0-a0d7-b5a516493a91/database_erd_diagram.png)
 
 ---
 

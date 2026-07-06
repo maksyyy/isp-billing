@@ -212,7 +212,7 @@ class TicketController extends Controller
 
         // update status + waktu selesai
         $ticket->status         = 'done';
-        $ticket->tanggal_selesai = now();
+        $ticket->tanggal_selesai = now()->format('Y-m-d H:i:s');
 
         $ticket->save();
 

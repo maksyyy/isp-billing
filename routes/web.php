@@ -468,8 +468,16 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:teknisi')->group(function () {
         Route::get('/teknisi', fn() => "Dashboard Teknisi");
     });
-
-
+    // =========================
+    // PRESENTATION & EVALUATION MODULE
+    // =========================
+    Route::get('/evaluasi', [\App\Http\Controllers\EvaluationController::class, 'index'])->name('evaluation.index');
+    Route::post('/evaluasi/packages', [\App\Http\Controllers\EvaluationController::class, 'createTestPackage'])->name('evaluation.packages.create');
+    Route::put('/evaluasi/packages/{id}', [\App\Http\Controllers\EvaluationController::class, 'updateTestPackage'])->name('evaluation.packages.update');
+    Route::delete('/evaluasi/packages/{id}', [\App\Http\Controllers\EvaluationController::class, 'deleteTestPackage'])->name('evaluation.packages.delete');
+    Route::post('/evaluasi/customers', [\App\Http\Controllers\EvaluationController::class, 'createTestCustomer'])->name('evaluation.customers.create');
+    Route::post('/evaluasi/invoices', [\App\Http\Controllers\EvaluationController::class, 'createTestInvoice'])->name('evaluation.invoices.create');
+    Route::post('/evaluasi/backbone/{id}/ping', [\App\Http\Controllers\EvaluationController::class, 'simulatePingBackbone'])->name('evaluation.backbone.ping');
 
 });
  

@@ -88,6 +88,16 @@
 
                 <ul class="space-y-1">
 
+                    <!-- PUSAT EVALUASI (ALL ROLES) -->
+                    <li>
+                        <a href="{{ route('evaluation.index') }}" class="{{ $baseClass }} {{ request()->routeIs('evaluation.*') ? 'bg-gradient-to-r from-indigo-500/10 to-purple-500/10 text-indigo-600 border-indigo-500/30 shadow-[0_4px_12px_rgba(99,102,241,0.05)]' : $inactiveClass }}">
+                            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            <span class="font-bold text-indigo-600">Pusat Evaluasi</span>
+                        </a>
+                    </li>
+
                     <!-- DASHBOARD (Unified React) -->
                     @if($role == 'admin' || $role == 'finance' || $role == 'noc')
                     <li>

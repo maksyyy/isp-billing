@@ -50,10 +50,7 @@ class PresensiController extends Controller
 
         $targetUser = \App\Models\User::findOrFail($request->user_id);
 
-        // Pastikan wajah terdaftar jika bukan presensi manual
-        if (!$request->is_manual && !$targetUser->face_photo) {
-            return back()->with('error', 'Presensi ditolak! Wajah ' . $targetUser->name . ' belum terdaftar di sistem. Silakan hubungi Admin untuk meregistrasikan wajah terlebih dahulu.');
-        }
+        // Keaktifan wajah dinonaktifkan atas permintaan pengguna - tidak ada pemeriksaan face_photo
 
         $adminId = $targetUser->parent_admin_id ?: $targetUser->id;
         $adminUser = $targetUser->parent_admin_id ? \App\Models\User::find($targetUser->parent_admin_id) : $targetUser;
