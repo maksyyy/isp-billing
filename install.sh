@@ -4,7 +4,7 @@
 set -e
 
 # Clear screen for professional installer feel
-clear
+clear || true
 
 echo "================================================================="
 echo "        💻 ISP BILLING & MONITORING AUTOMATIC INSTALLER 💻       "
