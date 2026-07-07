@@ -27,7 +27,10 @@
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Instrument+Serif:ital,wght@0,400;0,900;1,400;1,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Instrument+Serif:ital,wght@0,400;0,900;1,400;1,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Instrument+Serif:ital,wght@0,400;0,900;1,400;1,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    </noscript>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -186,7 +189,7 @@
             </a>
             
             <!-- Quick Anchors -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-[#71717A]">
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-[#52525B]">
                 <a href="#features" class="hover:text-[#6366F1] transition-colors">Fitur Utama</a>
                 <a href="#monitoring" class="hover:text-[#6366F1] transition-colors">PRTG Status</a>
                 <a href="#pricing" class="hover:text-[#6366F1] transition-colors">Paket Harga</a>
@@ -203,7 +206,7 @@
                         </a>
                     @else
                         <a href="{{ route('login') }}"
-                           class="rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold text-[#71717A] hover:text-[#111111] transition-colors">
+                           class="rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold text-[#52525B] hover:text-[#111111] transition-colors">
                             Masuk
                         </a>
                         @if (Route::has('register'))
@@ -235,7 +238,7 @@
                 </span>
             </h1>
 
-            <p class="text-base sm:text-lg md:text-xl text-[#71717A] max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p class="text-base sm:text-lg md:text-xl text-[#52525B] max-w-2xl mx-auto mb-10 leading-relaxed">
                 Kelola ribuan pelanggan, otomatisasi invoice tagihan bulanan, sinkronisasi profil router, serta monitoring kualitas jaringan PRTG terpadu untuk tim Admin, Finance, NOC, dan Teknisi.
             </p>
 
@@ -262,7 +265,7 @@
                             <span class="w-3 h-3 rounded-full bg-rose-500"></span>
                             <span class="w-3 h-3 rounded-full bg-amber-500"></span>
                             <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                            <span class="ml-4 text-xs font-semibold text-[#71717A] tracking-wider uppercase">Live Dashboard Mockup</span>
+                            <span class="ml-4 text-xs font-semibold text-[#52525B] tracking-wider uppercase">Live Dashboard Mockup</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-100 text-[11px] font-bold text-emerald-600">
@@ -279,7 +282,7 @@
                         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                             <!-- Card 1 -->
                             <div class="bg-white border border-[#E4E4E7] p-4 rounded-xl text-left shadow-xs">
-                                <p class="text-xs font-semibold uppercase tracking-wider text-[#71717A]">Pelanggan Aktif</p>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-[#52525B]">Pelanggan Aktif</p>
                                 <div class="flex items-baseline justify-between mt-2">
                                     <p class="text-2xl sm:text-3xl font-extrabold text-[#111111]">1.248</p>
                                     <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded">+8.3%</span>
@@ -287,7 +290,7 @@
                             </div>
                             <!-- Card 2 -->
                             <div class="bg-white border border-[#E4E4E7] p-4 rounded-xl text-left shadow-xs">
-                                <p class="text-xs font-semibold uppercase tracking-wider text-[#71717A]">Invoice Bulan Ini</p>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-[#52525B]">Invoice Bulan Ini</p>
                                 <div class="flex items-baseline justify-between mt-2">
                                     <p class="text-2xl sm:text-3xl font-extrabold text-[#111111]">932</p>
                                     <span class="text-[10px] font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 px-1.5 py-0.5 rounded">99.8%</span>
@@ -295,7 +298,7 @@
                             </div>
                             <!-- Card 3 -->
                             <div class="bg-white border border-[#E4E4E7] p-4 rounded-xl text-left shadow-xs">
-                                <p class="text-xs font-semibold uppercase tracking-wider text-[#71717A]">Total Uptime NOC</p>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-[#52525B]">Total Uptime NOC</p>
                                 <div class="flex items-baseline justify-between mt-2">
                                     <p class="text-2xl sm:text-3xl font-extrabold text-emerald-600">99.98%</p>
                                     <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded">SLA</span>
@@ -303,7 +306,7 @@
                             </div>
                             <!-- Card 4 -->
                             <div class="bg-white border border-[#E4E4E7] p-4 rounded-xl text-left shadow-xs">
-                                <p class="text-xs font-semibold uppercase tracking-wider text-[#71717A]">Tiket Terbuka</p>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-[#52525B]">Tiket Terbuka</p>
                                 <div class="flex items-baseline justify-between mt-2">
                                     <p class="text-2xl sm:text-3xl font-extrabold text-rose-600">18</p>
                                     <span class="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-100 px-1.5 py-0.5 rounded">Prioritas</span>
@@ -339,12 +342,12 @@
                                 <circle cx="900" cy="45" r="12" fill="none" stroke="#6366F1" stroke-width="1.5" class="animate-ping" style="transform-origin: 900px 45px;" />
                             </svg>
 
-                            <div class="flex justify-between items-center text-xs text-[#71717A] font-semibold z-10">
+                            <div class="flex justify-between items-center text-xs text-[#52525B] font-semibold z-10">
                                 <span>Main Uplink: Fiber Backbone 10 Gbps (Active Transit)</span>
                                 <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#6366F1] inline-block animate-pulse"></span> RX/TX Syncing</span>
                             </div>
 
-                            <div class="flex justify-between text-[10px] text-[#71717A] font-bold z-10 pt-2 border-t border-[#E4E4E7]">
+                            <div class="flex justify-between text-[10px] text-[#52525B] font-bold z-10 pt-2 border-t border-[#E4E4E7]">
                                 <span>09:00 WIB</span>
                                 <span>11:00 WIB</span>
                                 <span>13:00 WIB</span>
@@ -362,7 +365,7 @@
             <div class="text-center mb-16">
                 <span class="text-xs text-[#6366F1] font-bold uppercase tracking-widest">Sistem Multi-Role</span>
                 <h2 class="text-3xl md:text-5xl font-extrabold mt-3 mb-4">Fitur Tangguh Tim Operasional</h2>
-                <p class="text-[#71717A] max-w-xl mx-auto text-sm sm:text-base">
+                <p class="text-[#52525B] max-w-xl mx-auto text-sm sm:text-base">
                     Sistem dirancang dengan pembagian hak akses teratur sesuai fungsi kerja masing-masing divisi ISP.
                 </p>
             </div>
@@ -380,11 +383,11 @@
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Finance: Otomatisasi Tagihan</h3>
-                        <p class="text-sm text-[#71717A] leading-relaxed max-w-xl">
+                        <p class="text-sm text-[#52525B] leading-relaxed max-w-xl">
                             Kelola pembuatan tagihan (Invoice) secara otomatis setiap bulannya. Lacak status pembayaran, rekapitulasi income kas masuk, cetak kuitansi massal, dan filter piutang secara instan.
                         </p>
                     </div>
-                    <div class="mt-8 flex items-center justify-between border-t border-[#E4E4E7] pt-4 text-xs text-[#71717A]">
+                    <div class="mt-8 flex items-center justify-between border-t border-[#E4E4E7] pt-4 text-xs text-[#52525B]">
                         <span>Laporan Pembayaran Real-Time</span>
                         <a href="{{ route('login') }}" aria-label="Eksplorasi Modul Finance ISP Billing" class="font-bold text-[#6366F1] hover:text-[#8B5CF6] transition-colors flex items-center gap-1">Eksplorasi Modul &rarr;</a>
                     </div>
@@ -401,13 +404,13 @@
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">NOC: Integrasi PRTG</h3>
-                        <p class="text-sm text-[#71717A] leading-relaxed">
+                        <p class="text-sm text-[#52525B] leading-relaxed">
                             Hubungkan sistem penagihan dengan software monitoring jaringan PRTG. Pantau status keaktifan perangkat OLT, core switch, dan router gateway langsung dari dasbor Anda.
                         </p>
                     </div>
                     <div class="mt-6 flex flex-wrap gap-2">
-                        <span class="px-2 py-1 rounded bg-[#F4F4F5] border border-[#E4E4E7] text-[10px] font-bold text-[#71717A]">Sensor Status</span>
-                        <span class="px-2 py-1 rounded bg-[#F4F4F5] border border-[#E4E4E7] text-[10px] font-bold text-[#71717A]">Traffic Ingestion</span>
+                        <span class="px-2 py-1 rounded bg-[#F4F4F5] border border-[#E4E4E7] text-[10px] font-bold text-[#52525B]">Sensor Status</span>
+                        <span class="px-2 py-1 rounded bg-[#F4F4F5] border border-[#E4E4E7] text-[10px] font-bold text-[#52525B]">Traffic Ingestion</span>
                     </div>
                 </div>
 
@@ -421,13 +424,13 @@
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Teknisi: Tiket & Work order</h3>
-                        <p class="text-sm text-[#71717A] leading-relaxed">
+                        <p class="text-sm text-[#52525B] leading-relaxed">
                             Menerima disposisi aduan gangguan pelanggan langsung melalui aplikasi. Teknisi dapat memperbarui status perbaikan dari lapangan secara instan setelah masalah selesai teratasi.
                         </p>
                     </div>
                     <div class="mt-6 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span class="text-xs text-[#71717A]">Response time terjamin</span>
+                        <span class="text-xs text-[#52525B]">Response time terjamin</span>
                     </div>
                 </div>
 
@@ -441,11 +444,11 @@
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Admin: Kontrol Sentral & Branding</h3>
-                        <p class="text-sm text-[#71717A] leading-relaxed max-w-xl">
+                        <p class="text-sm text-[#52525B] leading-relaxed max-w-xl">
                             Mengatur paket internet, memantau log aktivitas semua tim operasional, serta mengubah logo dan nama ISP secara dinamis untuk kustomisasi penuh (Branding Management).
                         </p>
                     </div>
-                    <div class="mt-8 flex items-center justify-between border-t border-[#E4E4E7] pt-4 text-xs text-[#71717A]">
+                    <div class="mt-8 flex items-center justify-between border-t border-[#E4E4E7] pt-4 text-xs text-[#52525B]">
                         <span>Multi-Tenant & Multi-User</span>
                         <a href="{{ route('register') }}" aria-label="Registrasi Admin Baru Portal ISP Billing" class="font-bold text-[#8B5CF6] hover:text-[#6366F1] transition-colors flex items-center gap-1">Registrasi Admin Baru &rarr;</a>
                     </div>
@@ -460,7 +463,7 @@
                 <div>
                     <span class="text-xs text-[#6366F1] font-bold uppercase tracking-widest">Network Integrations</span>
                     <h2 class="text-3xl sm:text-5xl font-extrabold mt-3 mb-6">Integrasi PRTG Core Monitoring</h2>
-                    <p class="text-[#71717A] text-sm sm:text-base leading-relaxed mb-6">
+                    <p class="text-[#52525B] text-sm sm:text-base leading-relaxed mb-6">
                         ISP Billing terhubung langsung dengan sistem sensor monitoring jaringan PRTG. Anda bisa mendeteksi perangkat mati (offline) atau mengalami packet loss ekstrim sebelum pelanggan mengirimkan tiket keluhan.
                     </p>
                     
@@ -485,8 +488,8 @@
                     <div class="absolute -top-12 -right-12 w-48 h-48 bg-[#6366F1]/5 rounded-full blur-3xl"></div>
                     
                     <div class="flex items-center justify-between border-b border-[#E4E4E7] pb-4 mb-6">
-                        <h4 class="font-bold text-sm">Simulasi PRTG Sensor Node</h4>
-                        <span class="text-[10px] text-[#71717A] bg-[#F4F4F5] border border-[#E4E4E7] px-2 py-1 rounded">Update berkala (30s)</span>
+                        <h3 class="font-bold text-sm">Simulasi PRTG Sensor Node</h3>
+                        <span class="text-[10px] text-[#52525B] bg-[#F4F4F5] border border-[#E4E4E7] px-2 py-1 rounded">Update berkala (30s)</span>
                     </div>
 
                     <!-- Sensor Status List -->
@@ -497,7 +500,7 @@
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 text-emerald-400 ping-node"></span>
                                 <div>
                                     <p class="text-xs font-bold">CORE-ROUTER-SBY</p>
-                                    <p class="text-[9px] text-[#71717A]">Router Mikrotik CCR2116</p>
+                                    <p class="text-[9px] text-[#52525B]">Router Mikrotik CCR2116</p>
                                 </div>
                             </div>
                             <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2.5 py-0.5 rounded">UP (0.9ms)</span>
@@ -508,7 +511,7 @@
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 text-emerald-400 ping-node"></span>
                                 <div>
                                     <p class="text-xs font-bold">OLT-GPON-CENTRAL</p>
-                                    <p class="text-[9px] text-[#71717A]">OLT ZTE C320 - 16 Port</p>
+                                    <p class="text-[9px] text-[#52525B]">OLT ZTE C320 - 16 Port</p>
                                 </div>
                             </div>
                             <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2.5 py-0.5 rounded">UP (1.2ms)</span>
@@ -519,7 +522,7 @@
                                 <span class="w-2.5 h-2.5 rounded-full bg-amber-400 text-amber-400 ping-node"></span>
                                 <div>
                                     <p class="text-xs font-bold">DIST-SWITCH-SDA</p>
-                                    <p class="text-[9px] text-[#71717A]">Switch Cisco Catalyst 3850</p>
+                                    <p class="text-[9px] text-[#52525B]">Switch Cisco Catalyst 3850</p>
                                 </div>
                             </div>
                             <span class="text-[10px] font-bold text-amber-600 bg-amber-50 border border-amber-100 px-2.5 py-0.5 rounded">WARN (42ms)</span>
@@ -534,7 +537,7 @@
             <div class="text-center mb-12">
                 <span class="text-xs text-[#6366F1] font-bold uppercase tracking-widest">Paket Layanan</span>
                 <h2 class="text-3xl md:text-5xl font-extrabold mt-3 mb-4">Investasi Terjangkau untuk Skala ISP Anda</h2>
-                <p class="text-[#71717A] max-w-xl mx-auto text-sm sm:text-base mb-8">
+                <p class="text-[#52525B] max-w-xl mx-auto text-sm sm:text-base mb-8">
                     Pilih paket yang paling sesuai dengan jumlah subscriber Anda. Tingkatkan kapasitas kapan saja seiring bertumbuhnya bisnis.
                 </p>
 
@@ -543,7 +546,7 @@
                     <button id="toggle-monthly" class="px-4 py-2 text-xs font-bold rounded-lg bg-[#6366F1] text-white transition-all shadow-md">
                         Bulanan
                     </button>
-                    <button id="toggle-yearly" class="px-4 py-2 text-xs font-bold rounded-lg text-[#71717A] hover:text-[#111111] transition-all">
+                    <button id="toggle-yearly" class="px-4 py-2 text-xs font-bold rounded-lg text-[#52525B] hover:text-[#111111] transition-all">
                         Tahunan (Hemat 20%)
                     </button>
                 </div>
@@ -554,12 +557,12 @@
                 <!-- Plan 1 -->
                 <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover-lift">
                     <div>
-                        <span class="text-xs font-bold text-[#71717A] uppercase tracking-widest">Startup ISP</span>
+                        <span class="text-xs font-bold text-[#52525B] uppercase tracking-widest">Startup ISP</span>
                         <div class="mt-4 flex items-baseline gap-1">
                             <span class="text-4xl font-extrabold" id="price-startup">Rp 299k</span>
-                            <span class="text-xs text-[#71717A]" id="period-startup">/ bulan</span>
+                            <span class="text-xs text-[#52525B]" id="period-startup">/ bulan</span>
                         </div>
-                        <p class="text-xs text-[#71717A] mt-2 leading-relaxed">Cocok untuk pengusaha RT/RW Net baru atau ISP berskala kecil.</p>
+                        <p class="text-xs text-[#52525B] mt-2 leading-relaxed">Cocok untuk pengusaha RT/RW Net baru atau ISP berskala kecil.</p>
                         
                         <div class="border-t border-[#E4E4E7] my-6"></div>
                         
@@ -586,9 +589,9 @@
                         <span class="text-xs font-bold text-[#6366F1] uppercase tracking-widest">Growth ISP</span>
                         <div class="mt-4 flex items-baseline gap-1">
                             <span class="text-4xl font-extrabold" id="price-growth">Rp 599k</span>
-                            <span class="text-xs text-[#71717A]" id="period-growth">/ bulan</span>
+                            <span class="text-xs text-[#52525B]" id="period-growth">/ bulan</span>
                         </div>
-                        <p class="text-xs text-[#71717A] mt-2 leading-relaxed">Solusi lengkap untuk ISP lokal berkembang dengan banyak tim operasional.</p>
+                        <p class="text-xs text-[#52525B] mt-2 leading-relaxed">Solusi lengkap untuk ISP lokal berkembang dengan banyak tim operasional.</p>
                         
                         <div class="border-t border-[#E4E4E7] my-6"></div>
                         
@@ -611,9 +614,9 @@
                         <span class="text-xs font-bold text-[#8B5CF6] uppercase tracking-widest">Enterprise ISP</span>
                         <div class="mt-4 flex items-baseline gap-1">
                             <span class="text-4xl font-extrabold" id="price-enterprise">Rp 999k</span>
-                            <span class="text-xs text-[#71717A]" id="period-enterprise">/ bulan</span>
+                            <span class="text-xs text-[#52525B]" id="period-enterprise">/ bulan</span>
                         </div>
-                        <p class="text-xs text-[#71717A] mt-2 leading-relaxed">Kapasitas tanpa batas untuk ISP besar skala regional / nasional.</p>
+                        <p class="text-xs text-[#52525B] mt-2 leading-relaxed">Kapasitas tanpa batas untuk ISP besar skala regional / nasional.</p>
                         
                         <div class="border-t border-[#E4E4E7] my-6"></div>
                         
@@ -644,10 +647,10 @@
                 <div class="glass-panel rounded-2xl overflow-hidden">
                     <button class="faq-toggle w-full px-6 py-5 flex items-center justify-between text-left font-bold text-sm sm:text-base hover:bg-[#F4F4F5]/50 transition-colors">
                         <span>Bagaimana sistem billing otomatis bekerja untuk memutus pelanggan yang telat membayar?</span>
-                        <span class="faq-icon text-xl text-[#71717A] leading-none transition-transform">&plus;</span>
+                        <span class="faq-icon text-xl text-[#52525B] leading-none transition-transform">&plus;</span>
                     </button>
                     <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-out px-6 bg-[#FAF9F6]/50">
-                        <p class="py-5 text-xs sm:text-sm text-[#71717A] leading-relaxed">
+                        <p class="py-5 text-xs sm:text-sm text-[#52525B] leading-relaxed">
                             Sistem secara rutin memeriksa jatuh tempo invoice setiap hari. Jika tagihan melewati tanggal jatuh tempo yang ditentukan (misalnya H+1), server penagihan akan mengirim API request ke AAA RADIUS / Mikrotik untuk mengubah profil speed pelanggan menjadi isolir atau nonaktif secara otomatis tanpa intervensi manual.
                         </p>
                     </div>
@@ -657,10 +660,10 @@
                 <div class="glass-panel rounded-2xl overflow-hidden">
                     <button class="faq-toggle w-full px-6 py-5 flex items-center justify-between text-left font-bold text-sm sm:text-base hover:bg-[#F4F4F5]/50 transition-colors">
                         <span>Apakah saya bisa mencustomize logo kuitansi dan nama portal pelanggan?</span>
-                        <span class="faq-icon text-xl text-[#71717A] leading-none transition-transform">&plus;</span>
+                        <span class="faq-icon text-xl text-[#52525B] leading-none transition-transform">&plus;</span>
                     </button>
                     <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-out px-6 bg-[#FAF9F6]/50">
-                        <p class="py-5 text-xs sm:text-sm text-[#71717A] leading-relaxed">
+                        <p class="py-5 text-xs sm:text-sm text-[#52525B] leading-relaxed">
                             Ya, tentu saja. Melalui menu Branding Management di akun Super Admin / Master Admin, Anda dapat mengunggah file logo perusahaan (.png) dan nama ISP Anda. Logo tersebut otomatis teraplikasikan di berkas invoice cetak, dashboard login, serta footer e-mail notifikasi ke pelanggan.
                         </p>
                     </div>
@@ -670,10 +673,10 @@
                 <div class="glass-panel rounded-2xl overflow-hidden">
                     <button class="faq-toggle w-full px-6 py-5 flex items-center justify-between text-left font-bold text-sm sm:text-base hover:bg-[#F4F4F5]/50 transition-colors">
                         <span>Bagaimana integrasi dengan PRTG Network Monitoring berjalan?</span>
-                        <span class="faq-icon text-xl text-[#71717A] leading-none transition-transform">&plus;</span>
+                        <span class="faq-icon text-xl text-[#52525B] leading-none transition-transform">&plus;</span>
                     </button>
                     <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-out px-6 bg-[#FAF9F6]/50">
-                        <p class="py-5 text-xs sm:text-sm text-[#71717A] leading-relaxed">
+                        <p class="py-5 text-xs sm:text-sm text-[#52525B] leading-relaxed">
                             Aplikasi kami menggunakan PRTG API token untuk menarik status sensor perangkat secara berkala. Dashboard NOC di dalam sistem billing Anda akan menampilkan metrik real-time seperti Ping RTT, Bandwidth In/Out, serta status keaktifan perangkat jaringan utama.
                         </p>
                     </div>
@@ -690,14 +693,14 @@
                 <x-company-logo class="text-[#111111]" :showText="true" markClass="h-8 w-8 text-slate-800" textClass="text-sm text-[#111111]" />
             </a>
             
-            <div class="flex flex-wrap justify-center gap-8 text-xs text-[#71717A] font-semibold">
+            <div class="flex flex-wrap justify-center gap-8 text-xs text-[#52525B] font-semibold">
                 <a href="#features" class="hover:text-[#111111] transition-colors">Fitur</a>
                 <a href="#monitoring" class="hover:text-[#111111] transition-colors">PRTG</a>
                 <a href="#pricing" class="hover:text-[#111111] transition-colors">Harga</a>
                 <a href="{{ route('login') }}" class="hover:text-[#111111] transition-colors">Portal Admin</a>
             </div>
 
-            <div class="text-xs text-[#A1A1AA]">
+            <div class="text-xs text-[#52525B]">
                 &copy; {{ date('Y') }} {{ config('app.name', 'ISP Billing') }} Platform. Hak Cipta Dilindungi.
             </div>
         </div>
@@ -748,9 +751,9 @@
         toggleMonthlyBtn.addEventListener('click', () => {
             // UI Toggle States
             toggleMonthlyBtn.classList.add('bg-[#6366F1]', 'text-white');
-            toggleMonthlyBtn.classList.remove('text-[#71717A]');
+            toggleMonthlyBtn.classList.remove('text-[#52525B]');
             toggleYearlyBtn.classList.remove('bg-[#6366F1]', 'text-white');
-            toggleYearlyBtn.classList.add('text-[#71717A]');
+            toggleYearlyBtn.classList.add('text-[#52525B]');
 
             // Values (Monthly)
             priceStartup.innerText = 'Rp 299k';
@@ -765,9 +768,9 @@
         toggleYearlyBtn.addEventListener('click', () => {
             // UI Toggle States
             toggleYearlyBtn.classList.add('bg-[#6366F1]', 'text-white');
-            toggleYearlyBtn.classList.remove('text-[#71717A]');
+            toggleYearlyBtn.classList.remove('text-[#52525B]');
             toggleMonthlyBtn.classList.remove('bg-[#6366F1]', 'text-white');
-            toggleMonthlyBtn.classList.add('text-[#71717A]');
+            toggleMonthlyBtn.classList.add('text-[#52525B]');
 
             // Values (Yearly with 20% discount applied: e.g. Rp 299k * 12 * 0.8 = Rp 2.87M, or show monthly equivalent: Rp 239k)
             priceStartup.innerText = 'Rp 239k';
