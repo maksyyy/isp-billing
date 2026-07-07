@@ -28,12 +28,12 @@
             body {
                 background-color: var(--color-space-bg);
                 color: #111111;
-                font-family: 'Geist Sans', 'Plus Jakarta Sans', sans-serif;
+                font-family: 'Geist', 'Plus Jakarta Sans', sans-serif;
                 overflow-x: hidden;
             }
 
             h1, h2, h3, h4, .font-heading {
-                font-family: 'Geist Sans', sans-serif;
+                font-family: 'Geist', sans-serif;
                 font-weight: 600;
                 letter-spacing: -0.02em;
             }

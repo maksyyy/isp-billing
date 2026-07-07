@@ -19,13 +19,13 @@
 
     <style>
         body {
-            font-family: 'Geist Sans', 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Geist', 'Plus Jakarta Sans', sans-serif;
             background-color: #FAF9F6;
             color: #111111;
         }
 
         h1, h2, h3, h4, .font-heading {
-            font-family: 'Geist Sans', sans-serif;
+            font-family: 'Geist', sans-serif;
             font-weight: 600;
             letter-spacing: -0.02em;
         }

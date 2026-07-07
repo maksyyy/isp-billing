@@ -29,6 +29,8 @@
     @if($hasLogo)
         <img src="{{ asset($logoFile) }}?v={{ filemtime($logoPath) }}"
              alt="{{ $companyName }}"
+             width="40"
+             height="40"
              class="{{ $markClass }} object-contain rounded-md bg-white p-1 border border-[#E5E5E0]">
     @else
         <div class="{{ $markClass }} rounded-md bg-[#111111] text-white flex items-center justify-center font-bold text-xs border border-[#2D2D30]">

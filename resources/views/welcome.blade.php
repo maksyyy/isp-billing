@@ -44,12 +44,12 @@
         body {
             background-color: var(--color-space-bg);
             color: #111111;
-            font-family: 'Geist Sans', 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Geist', 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
         }
 
         h1, h2, h3, h4, .font-heading {
-            font-family: 'Geist Sans', sans-serif;
+            font-family: 'Geist', sans-serif;
             font-weight: 600;
             letter-spacing: -0.02em;
         }
@@ -138,9 +138,36 @@
             background: #D4D4D8;
         }
     </style>
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7137805859216450"
-         crossorigin="anonymous"></script>
+    <!-- Google AdSense (Lazy Loaded) -->
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            let adsenseLoaded = false;
+            function loadAdSense() {
+                if (adsenseLoaded) return;
+                adsenseLoaded = true;
+                
+                // Remove event listeners
+                window.removeEventListener('scroll', loadAdSense);
+                window.removeEventListener('mousemove', loadAdSense);
+                window.removeEventListener('touchstart', loadAdSense);
+                
+                // Load script dynamically
+                let script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7137805859216450';
+                script.crossOrigin = 'anonymous';
+                document.head.appendChild(script);
+            }
+            
+            // Trigger load on user interaction
+            window.addEventListener('scroll', loadAdSense, { passive: true });
+            window.addEventListener('mousemove', loadAdSense, { passive: true });
+            window.addEventListener('touchstart', loadAdSense, { passive: true });
+            
+            // Or fallback load after 8 seconds of idle time
+            setTimeout(loadAdSense, 8000);
+        });
+    </script>
 </head>
 <body class="grid-bg min-h-screen antialiased selection:bg-[#6366F1] selection:text-white">
 
