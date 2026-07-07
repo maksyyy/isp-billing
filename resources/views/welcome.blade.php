@@ -3,6 +3,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ISP Billing Platform: Solusi manajemen billing otomatis dan monitoring jaringan terintegrasi PRTG. Kelola pelanggan, tagihan bulanan, router, tiket, dan performa NOC secara cerdas dalam satu portal.">
+    <meta name="keywords" content="isp billing, billing isp, rt rw net, mikrotik billing, prtg integration, manajemen pelanggan isp, tagihan isp otomatis, router gateway, noc monitoring">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ config('app.name', 'ISP Billing') }} - Intelligent Billing & Network Monitoring">
+    <meta property="og:description" content="Solusi manajemen billing otomatis dan monitoring jaringan terintegrasi PRTG. Kelola pelanggan, tagihan bulanan, router, tiket, dan performa NOC secara cerdas dalam satu portal.">
+    <meta property="og:image" content="{{ asset('company-logo.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="{{ config('app.name', 'ISP Billing') }} - Intelligent Billing & Network Monitoring">
+    <meta property="twitter:description" content="Solusi manajemen billing otomatis dan monitoring jaringan terintegrasi PRTG. Kelola pelanggan, tagihan bulanan, router, tiket, dan performa NOC secara cerdas dalam satu portal.">
+    <meta property="twitter:image" content="{{ asset('company-logo.png') }}">
+
     <title>{{ config('app.name', 'ISP Billing') }} - Intelligent Billing & Network Monitoring</title>
     
     <!-- Premium Fonts -->
@@ -135,7 +154,7 @@
     <header class="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-7xl">
         <div class="glass-panel px-6 py-4 flex items-center justify-between rounded-2xl shadow-xl backdrop-blur-md">
             <!-- Brand Logo -->
-            <a href="#" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <a href="{{ url('/') }}" aria-label="{{ config('app.name', 'ISP Billing') }} Home" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
                 <x-company-logo class="text-[#111111]" :showText="true" markClass="h-10 w-10 text-slate-800" textClass="text-lg text-[#111111] font-heading font-bold" />
             </a>
             
@@ -340,7 +359,7 @@
                     </div>
                     <div class="mt-8 flex items-center justify-between border-t border-[#E4E4E7] pt-4 text-xs text-[#71717A]">
                         <span>Laporan Pembayaran Real-Time</span>
-                        <a href="{{ route('login') }}" class="font-bold text-[#6366F1] hover:text-[#8B5CF6] transition-colors flex items-center gap-1">Eksplorasi Modul &rarr;</a>
+                        <a href="{{ route('login') }}" aria-label="Eksplorasi Modul Finance ISP Billing" class="font-bold text-[#6366F1] hover:text-[#8B5CF6] transition-colors flex items-center gap-1">Eksplorasi Modul &rarr;</a>
                     </div>
                 </div>
 
@@ -401,7 +420,7 @@
                     </div>
                     <div class="mt-8 flex items-center justify-between border-t border-[#E4E4E7] pt-4 text-xs text-[#71717A]">
                         <span>Multi-Tenant & Multi-User</span>
-                        <a href="{{ route('register') }}" class="font-bold text-[#8B5CF6] hover:text-[#6366F1] transition-colors flex items-center gap-1">Registrasi Admin Baru &rarr;</a>
+                        <a href="{{ route('register') }}" aria-label="Registrasi Admin Baru Portal ISP Billing" class="font-bold text-[#8B5CF6] hover:text-[#6366F1] transition-colors flex items-center gap-1">Registrasi Admin Baru &rarr;</a>
                     </div>
                 </div>
 
@@ -524,7 +543,7 @@
                             <li class="flex items-center gap-2"><span class="text-[#6366F1] font-bold">&check;</span> Akun NOC & Teknisi Standar</li>
                         </ul>
                     </div>
-                    <a href="{{ route('register') }}" class="mt-8 w-full py-3 rounded-xl bg-[#FAF9F6] border border-[#E4E4E7] hover:bg-[#F4F4F5] text-center font-bold text-xs text-[#111111] transition-colors">
+                    <a href="{{ route('register') }}" aria-label="Mulai Sekarang dengan Paket Startup ISP" class="mt-8 w-full py-3 rounded-xl bg-[#FAF9F6] border border-[#E4E4E7] hover:bg-[#F4F4F5] text-center font-bold text-xs text-[#111111] transition-colors">
                         Mulai Sekarang
                     </a>
                 </div>
@@ -554,7 +573,7 @@
                             <li class="flex items-center gap-2"><span class="text-[#6366F1] font-bold">&check;</span> Custom Branding Logo & Nama ISP</li>
                         </ul>
                     </div>
-                    <a href="{{ route('register') }}" class="mt-8 w-full py-3 rounded-xl bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:opacity-95 text-center font-bold text-xs text-white transition-all shadow-md shadow-[#6366F1]/10">
+                    <a href="{{ route('register') }}" aria-label="Coba Demo Gratis Paket Growth ISP" class="mt-8 w-full py-3 rounded-xl bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:opacity-95 text-center font-bold text-xs text-white transition-all shadow-md shadow-[#6366F1]/10">
                         Coba Demo Gratis
                     </a>
                 </div>
@@ -578,7 +597,7 @@
                             <li class="flex items-center gap-2"><span class="text-[#8B5CF6] font-bold">&check;</span> Skema Cluster High-Availability</li>
                         </ul>
                     </div>
-                    <a href="{{ route('register') }}" class="mt-8 w-full py-3 rounded-xl bg-[#FAF9F6] border border-[#E4E4E7] hover:bg-[#F4F4F5] text-center font-bold text-xs text-[#111111] transition-colors">
+                    <a href="{{ route('register') }}" aria-label="Hubungi Sales Paket Enterprise ISP" class="mt-8 w-full py-3 rounded-xl bg-[#FAF9F6] border border-[#E4E4E7] hover:bg-[#F4F4F5] text-center font-bold text-xs text-[#111111] transition-colors">
                         Hubungi Sales
                     </a>
                 </div>
@@ -640,9 +659,9 @@
     <!-- 8. Premium Minimalist Footer -->
     <footer class="relative z-10 border-t border-[#E4E4E7] bg-white py-12 px-6">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-2">
+            <a href="{{ url('/') }}" aria-label="{{ config('app.name', 'ISP Billing') }} Home" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
                 <x-company-logo class="text-[#111111]" :showText="true" markClass="h-8 w-8 text-slate-800" textClass="text-sm text-[#111111]" />
-            </div>
+            </a>
             
             <div class="flex flex-wrap justify-center gap-8 text-xs text-[#71717A] font-semibold">
                 <a href="#features" class="hover:text-[#111111] transition-colors">Fitur</a>

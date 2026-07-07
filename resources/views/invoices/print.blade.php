@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="robots" content="noindex, nofollow">
     <title>Cetak Invoice</title>
     <style>
         body { font-family: Arial; }

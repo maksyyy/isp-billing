@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="description" content="Halaman Akses ISP Billing Platform - Silakan masuk atau mendaftar untuk mengelola billing pelanggan, router gateway, monitoring PRTG, dan layanan internet Anda.">
+        <link rel="canonical" href="{{ url()->current() }}">
 
         <title>{{ config('app.name', 'ISP Billing') }}</title>
 
@@ -88,7 +90,7 @@
                     <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
 
                     <div class="relative z-10">
-                        <a href="/" class="inline-block hover:opacity-90 transition-opacity">
+                        <a href="/" aria-label="{{ config('app.name', 'ISP Billing') }} Home" class="inline-block hover:opacity-90 transition-opacity">
                             <x-company-logo class="text-[#111111]" :showText="true" markClass="h-10 w-10 text-slate-800" textClass="text-lg text-[#111111] font-heading font-bold" />
                         </a>
 

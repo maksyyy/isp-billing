@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="ISP Billing Control Panel - Kelola layanan billing ISP, monitoring jaringan PRTG, database pelanggan, dan keuangan dalam satu platform terpusat.">
+    <meta name="robots" content="noindex, nofollow">
 
     <title>{{ config('app.name', 'ISP Billing') }} - Control Panel</title>
 

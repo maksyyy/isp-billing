@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="robots" content="noindex, nofollow">
     <title>Cetak Semua Invoice</title>
 </head>
 <body onload="window.print()">
